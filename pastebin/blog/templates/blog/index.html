@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD операции с тегами</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<ul id="tagList">
+    {% for tag in tags %}
+    <li id="tag-{{ tag.id }}">
+        {{ tag.name }}
+        <button onclick="openEditModal({{ tag.id }}, '{{ tag.name }}')">Редактировать</button>
+        <button onclick="deleteTag({{ tag.id }})">Удалить</button>
+    </li>
+    {% endfor %}
+</ul>
+
+<!-- Кнопка для добавления нового тега -->
+<button onclick="openCreateModal()">Добавить новый тег</button>
+
+<!-- Модальное окно для создания тега -->
+<div id="createTagModal" style="display:none;">
+    <form id="createTagForm" onsubmit="createTag(event)">
+        <label for="tagName">Название тега:</label>
+        <input type="text" id="tagName" name="name" required>
+        <button type="submit">Создать</button>
+        <button type="button" onclick="closeCreateModal()">Закрыть</button>
+    </form>
+</div>
+
+<!-- Модальное окно для редактирования тега -->
+<div id="editTagModal" style="display:none;">
+    <form id="editTagForm" onsubmit="updateTag(event)">
+        <input type="hidden" id="editTagId" name="id">
+        <label for="editTagName">Название тега:</label>
+        <input type="text" id="editTagName" name="name" required>
+        <button type="submit">Сохранить</button>
+        <button type="button" onclick="closeEditModal()">Закрыть</button>
+    </form>
+</div>
+
+<script>
+    // Открытие модального окна для создания тега
+    function openCreateModal() {
+        document.getElementById('createTagModal').style.display = 'block';
+    }
+
+    // Закрытие модального окна для создания тега
+    function closeCreateModal() {
+        document.getElementById('createTagModal').style.display = 'none';
+    }
+
+    // Открытие модального окна для редактирования тега
+    function openEditModal(tagId, tagName) {
+        document.getElementById('editTagId').value = tagId;
+        document.getElementById('editTagName').value = tagName;
+        document.getElementById('editTagModal').style.display = 'block';
+    }
+
+    // Закрытие модального окна для редактирования тега
+    function closeEditModal() {
+        document.getElementById('editTagModal').style.display = 'none';
+    }
+
+    // Функция для создания нового тега
+    function createTag(event) {
+        event.preventDefault(); // Предотвращаем перезагрузку страницы
+        const tagName = document.getElementById('tagName').value;
+
+        fetch('{% url "blog:tag-create" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({name: tagName})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const tagList = document.getElementById('tagList');
+                    const newTag = document.createElement('li');
+                    newTag.id = `tag-${data.tag.id}`;
+                    newTag.innerHTML = `${data.tag.name} <button onclick="openEditModal(${data.tag.id}, '${data.tag.name}')">Редактировать</button> <button onclick="deleteTag(${data.tag.id})">Удалить</button>`;
+                    tagList.appendChild(newTag);
+                    closeCreateModal();
+                } else {
+                    alert("Ошибка при создании тега");
+                }
+            })
+            .catch(error => console.error('Ошибка:', error));
+    }
+
+    // Функция для обновления существующего тега
+    function updateTag(event) {
+        event.preventDefault(); // Предотвращаем перезагрузку страницы
+        const tagId = document.getElementById('editTagId').value;
+        const tagName = document.getElementById('editTagName').value;
+
+        fetch('{% url "blog:tag-update" 0 %}'.replace(/0/, tagId), {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({name: tagName})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const tagElement = document.getElementById(`tag-${tagId}`);
+                    // Обновляем имя тега в списке
+                    tagElement.innerHTML = `${data.tag.name} <button onclick="openEditModal(${data.tag.id}, '${data.tag.name}')">Редактировать</button> <button onclick="deleteTag(${data.tag.id})">Удалить</button>`;
+                    closeEditModal();
+                } else {
+                    alert("Ошибка при обновлении тега");
+                }
+            })
+            .catch(error => console.error('Ошибка:', error));
+    }
+
+    // Функция для удаления тега
+    function deleteTag(tagId) {
+        if (confirm('Вы уверены, что хотите удалить этот тег?')) {
+
+            fetch('{% url "blog:tag-delete" 0 %}'.replace(/0/, tagId), {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const tagElement = document.getElementById(`tag-${tagId}`);
+                        tagElement.parentNode.removeChild(tagElement); // Удаляем элемент из списка
+                    } else {
+                        alert("Ошибка при удалении тега");
+                    }
+                })
+                .catch(error => console.error('Ошибка:', error));
+        }
+    }
+
+    // Функция для получения CSRF-токена (если вы используете Django)
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Проверяем, начинается ли кука с имени
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+
+</body>
+</html>
