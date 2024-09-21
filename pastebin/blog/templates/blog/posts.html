@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/posts.css' %}">
+</head>
+<body>
+
+{% include 'blog/temps/header.html' %}
+
+<main>
+    <div class="main-container">
+        <div class="post-filter">
+            <form>
+                <input type="search" placeholder="Поиск...">
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <select name="category" style="width: 35%;">
+                        <option value="">Все категории</option>
+                        <option value="tech">Технологии</option>
+                        <option value="design">Дизайн</option>
+                        <option value="marketing">Маркетинг</option>
+                    </select>
+                    <select name="sort" style="width: 35%;">
+                        <option value="">Сортировать по</option>
+                        <option value="title">Заголовку</option>
+                        <option value="date">Дате</option>
+                        <option value="views">Количество просмотров</option>
+                    </select>
+                    <button type="submit" style="margin-left: auto;">Применить</button>
+                </div>
+            </form>
+            <div class="post-list">
+                <ul>
+                    <li>
+                        <a href="#">Новая технология в мире IT</a>
+                        <br>
+                        <span>Технологии 10.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                    </li>
+                    <li>
+                        <a href="#">Секреты дизайна: как создать привлекательный сайт</a>
+                        <br>
+                        <span>Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                    </li>
+                    <li>
+                        <a href="#">Маркетинговые стратегии для начинающих</a>
+                        <br>
+                        <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="right-block">
+            <h2>Популярные статьи</h2>
+            <ul>
+                <li>
+                    <a href="#">Название статьи 1</a>
+                    <br>
+                    <span>Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                </li>
+                <li>
+                    <a href="#">Название статьи 2</a>
+                    <br>
+                    <span>Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                </li>
+                <li>
+                    <a href="#">Название статьи 3</a>
+                    <br>
+                    <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                </li>
+                <li>
+                    <a href="#">Название статьи 4</a>
+                    <br>
+                    <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+{% include 'blog/temps/footer.html' %}
+
+</body>
+</html>

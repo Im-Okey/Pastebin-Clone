@@ -8,6 +8,7 @@ urlpatterns = [
     # main page
     path('', views.index, name='index'),
     path('post_check/', views.post_check, name='post_check'),
+    path('posts_check/', views.posts_check, name='posts_check'),
 
     # # tags logic
     # path('tags/', views.TagListView.as_view(), name='tag-list'),

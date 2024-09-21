@@ -15,6 +15,10 @@ def index(request):
 
 def post_check(request):
     return render(request, 'blog/post.html')
+
+
+def posts_check(request):
+    return render(request, 'blog/posts.html')
 # ----------------------------------------------------------------------------
 
 
