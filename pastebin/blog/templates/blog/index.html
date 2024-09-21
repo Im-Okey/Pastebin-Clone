@@ -1,169 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD операции с тегами</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Страница</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header>
+    <div class="header-container">
+        <div class="header-logo">Название сервиса</div>
+        <div class="header-category">
+            <select>
+                <option>Категория 1</option>
+                <option>Категория 2</option>
+                <option>Категория 3</option>
+            </select>
+        </div>
+        <div class="header-search">
+            <input type="search" placeholder="Поиск...">
+        </div>
+        <div class="header-auth">
+            <a href="#">Login</a> / <a href="#">Logout</a>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="main-container">
+        <div class="left-block">
+            <div class="post-editor">
+                <textarea placeholder="Введите текст поста..."></textarea>
+            </div>
+            <div class="post-settings">
+                <h3>Настройки публикации</h3>
+                <form>
+                    <label>
+                        <input type="checkbox"> Опубликовать как черновик
+                    </label>
+                    <label>
+                        <input type="checkbox"> Разрешить комментарии
+                    </label>
+                    <label>
+                        Категория:
+                        <select>
+                            <option>Технологии</option>
+                            <option>Дизайн</option>
+                            <option>Маркетинг</option>
+                        </select>
+                    </label>
+                    <label>
+                        Теги:
+                        <input type="text" placeholder="Введите теги...">
+                    </label>
+                    <button>Опубликовать</button>
+                </form>
+            </div>
+        </div>
+        <div class="right-block">
+            <h2>Популярные статьи</h2>
+            <ul>
+                <li>
+                    <a href="#">Название статьи 1</a>
+                    <br>
+                    <span>Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                </li>
+                <li>
+                    <a href="#">Название статьи 2</a>
+                    <br>
+                    <span>Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                </li>
+                <li>
+                    <a href="#">Название статьи 3</a>
+                    <br>
+                    <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+<footer>
+    <div class="footer-container">
+        <p>&copy; 2023 Название сервиса. Все права защищены.</p>
+    </div>
+</footer>
 
-<ul id="tagList">
-    {% for tag in tags %}
-    <li id="tag-{{ tag.id }}">
-        {{ tag.name }}
-        <button onclick="openEditModal({{ tag.id }}, '{{ tag.name }}')">Редактировать</button>
-        <button onclick="deleteTag({{ tag.id }})">Удалить</button>
-    </li>
-    {% endfor %}
-</ul>
 
-<!-- Кнопка для добавления нового тега -->
-<button onclick="openCreateModal()">Добавить новый тег</button>
-
-<!-- Модальное окно для создания тега -->
-<div id="createTagModal" style="display:none;">
-    <form id="createTagForm" onsubmit="createTag(event)">
-        <label for="tagName">Название тега:</label>
-        <input type="text" id="tagName" name="name" required>
-        <button type="submit">Создать</button>
-        <button type="button" onclick="closeCreateModal()">Закрыть</button>
-    </form>
-</div>
-
-<!-- Модальное окно для редактирования тега -->
-<div id="editTagModal" style="display:none;">
-    <form id="editTagForm" onsubmit="updateTag(event)">
-        <input type="hidden" id="editTagId" name="id">
-        <label for="editTagName">Название тега:</label>
-        <input type="text" id="editTagName" name="name" required>
-        <button type="submit">Сохранить</button>
-        <button type="button" onclick="closeEditModal()">Закрыть</button>
-    </form>
-</div>
-
-<script>
-    // Открытие модального окна для создания тега
-    function openCreateModal() {
-        document.getElementById('createTagModal').style.display = 'block';
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
     }
 
-    // Закрытие модального окна для создания тега
-    function closeCreateModal() {
-        document.getElementById('createTagModal').style.display = 'none';
+    .container {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
     }
 
-    // Открытие модального окна для редактирования тега
-    function openEditModal(tagId, tagName) {
-        document.getElementById('editTagId').value = tagId;
-        document.getElementById('editTagName').value = tagName;
-        document.getElementById('editTagModal').style.display = 'block';
+    .main-container {
+        display: flex;
+        justify-content: space-between;
+        height: 1000px;
+        width: 1500px;
+        margin: 40px auto;
     }
 
-    // Закрытие модального окна для редактирования тега
-    function closeEditModal() {
-        document.getElementById('editTagModal').style.display = 'none';
+    .left-block {
+        width: 70%;
+        background-color: #f0f0f0;
+        padding: 20px;
+        height: 100%;
+        margin-right: 50px;
     }
 
-    // Функция для создания нового тега
-    function createTag(event) {
-        event.preventDefault(); // Предотвращаем перезагрузку страницы
-        const tagName = document.getElementById('tagName').value;
 
-        fetch('{% url "blog:tag-create" %}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({name: tagName})
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const tagList = document.getElementById('tagList');
-                    const newTag = document.createElement('li');
-                    newTag.id = `tag-${data.tag.id}`;
-                    newTag.innerHTML = `${data.tag.name} <button onclick="openEditModal(${data.tag.id}, '${data.tag.name}')">Редактировать</button> <button onclick="deleteTag(${data.tag.id})">Удалить</button>`;
-                    tagList.appendChild(newTag);
-                    closeCreateModal();
-                } else {
-                    alert("Ошибка при создании тега");
-                }
-            })
-            .catch(error => console.error('Ошибка:', error));
+    .post-editor {
+        padding: 20px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 20px;
     }
 
-    // Функция для обновления существующего тега
-    function updateTag(event) {
-        event.preventDefault(); // Предотвращаем перезагрузку страницы
-        const tagId = document.getElementById('editTagId').value;
-        const tagName = document.getElementById('editTagName').value;
-
-        fetch('{% url "blog:tag-update" 0 %}'.replace(/0/, tagId), {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({name: tagName})
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const tagElement = document.getElementById(`tag-${tagId}`);
-                    // Обновляем имя тега в списке
-                    tagElement.innerHTML = `${data.tag.name} <button onclick="openEditModal(${data.tag.id}, '${data.tag.name}')">Редактировать</button> <button onclick="deleteTag(${data.tag.id})">Удалить</button>`;
-                    closeEditModal();
-                } else {
-                    alert("Ошибка при обновлении тега");
-                }
-            })
-            .catch(error => console.error('Ошибка:', error));
+    .post-editor textarea {
+        width: 100%;
+        height: 450px;
+        padding: 10px -20px 10px 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
     }
 
-    // Функция для удаления тега
-    function deleteTag(tagId) {
-        if (confirm('Вы уверены, что хотите удалить этот тег?')) {
-
-            fetch('{% url "blog:tag-delete" 0 %}'.replace(/0/, tagId), {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const tagElement = document.getElementById(`tag-${tagId}`);
-                        tagElement.parentNode.removeChild(tagElement); // Удаляем элемент из списка
-                    } else {
-                        alert("Ошибка при удалении тега");
-                    }
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
+    .post-settings {
+        padding: 20px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
     }
 
-    // Функция для получения CSRF-токена (если вы используете Django)
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Проверяем, начинается ли кука с имени
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+    .post-settings h3 {
+        margin-top: 0;
     }
-</script>
 
+    .post-settings form {
+        margin-top: 20px;
+    }
+
+    .post-settings label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .post-settings input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    .post-settings select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .post-settings input[type="text"] {
+        width: 97.5%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .post-settings button {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+    .right-block {
+        width: 30%;
+        background-color: #ccc;
+        padding: 20px;
+        height: 100%;
+    }
+
+    .right-block ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .right-block li {
+        margin-bottom: 20px;
+    }
+
+    .right-block a {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .right-block span {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .right-block i {
+        font-size: 14px;
+        margin-right: 5px;
+    }
+</style>
+
+
+<style>
+    .header-container {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        height: 70px;
+        width: 1500px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-logo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 20px;
+    }
+
+    .header-category {
+        margin-right: 20px;
+    }
+
+    .header-category select {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #444;
+        color: #fff;
+    }
+
+    .header-search {
+        margin-right: 20px;
+    }
+
+    .header-search input[type="search"] {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #444;
+        color: #fff;
+    }
+
+    .header-auth {
+        margin-left: auto;
+    }
+
+    .header-auth a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+</style>
+
+
+<style>
+    .footer-container {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        clear: both;
+        height: 70px;
+        width: 1500px;
+        margin: 70px auto;
+    }
+
+    .footer-container p {
+        margin-bottom: 10px;
+    }
+</style>
 
 </body>
 </html>
