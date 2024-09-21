@@ -1,0 +1,102 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>post</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
+</head>
+<body>
+
+{% include 'blog/temps/header.html' %}
+
+<main>
+    <div class="main-container">
+        <div class="left-block">
+            <div class="post-preview">
+                <div class="icon">
+                    <img src="https://th.bing.com/th/id/OIP.oESypaPq8Yzj1DuqXK9VjQAAAA?rs=1&pid=ImgDetMain"
+                         alt="{{ user.nickname }}" width="40" height="40">
+                </div>
+                <div class="info">
+                    <span class="post-title">Python for beginers</span>
+                    <br>
+                    <span class="post-meta">arseny0709 | 10.10.2024 | Просмотров: 510 | Сохранений: 10</span>
+                </div>
+            </div>
+            <div class="post-editor">
+                <textarea placeholder="Введите текст поста..."></textarea>
+            </div>
+            <div class="post-metadata">
+                <span class="categories">Программирование, Python</span> <br>
+                <span class="tags">Python, Программирование для начинающих</span>
+            </div>
+
+            <div class="post-settings">
+                <h3>Комментарии</h3>
+                <ul class="comments-list">
+                    <li>
+                        <span>Пользователь 1</span>
+                        <span>12.02.2023</span>
+                        <p>Текст комментария 1</p>
+                    </li>
+                    <li>
+                        <span>Пользователь 2</span>
+                        <span>15.03.2023</span>
+                        <p>Текст комментария 2</p>
+                    </li>
+                    <li>
+                        <span>Пользователь 3</span>
+                        <span>20.04.2023</span>
+                        <p>Текст комментария 3</p>
+                    </li>
+                    <li>
+                        <span>Пользователь 3</span>
+                        <span>20.04.2023</span>
+                        <p>Текст комментария 3</p>
+                    </li>
+                    <li>
+                        <span>Пользователь 3</span>
+                        <span>20.04.2023</span>
+                        <p>Текст комментария 3</p>
+                    </li>
+                    <li>
+                        <span>Пользователь 3</span>
+                        <span>20.04.2023</span>
+                        <p>Текст комментария 3</p>
+                    </li>
+                </ul>
+                <form class="comment-form">
+                    <textarea placeholder="Введите текст комментария..."></textarea>
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+        <div class="right-block">
+            <h2>Популярные статьи</h2>
+            <ul>
+                <li>
+                    <a href="#">Название статьи 1</a>
+                    <br>
+                    <span>Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                </li>
+                <li>
+                    <a href="#">Название статьи 2</a>
+                    <br>
+                    <span>Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                </li>
+                <li>
+                    <a href="#">Название статьи 3</a>
+                    <br>
+                    <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+{% include 'blog/temps/footer.html' %}
+
+</body>
+</html>

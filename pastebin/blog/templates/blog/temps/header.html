@@ -1,0 +1,26 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+</head>
+
+<header>
+    <div class="header-container">
+        <a href="{% url 'blog:index' %}" style='all: unset;'>
+            <div class="header-logo">Название сервиса</div>
+        </a>
+        <div class="header-category">
+            <select>
+                <option>Категория</option>
+                <option>Категория 2</option>
+                <option>Категория 3</option>
+            </select>
+        </div>
+        <div class="header-search">
+            <input type="search" placeholder="Поиск...">
+        </div>
+        <div class="header-auth">
+            <a href="#">Login</a> / <a href="#">Logout</a>
+        </div>
+    </div>
+</header>

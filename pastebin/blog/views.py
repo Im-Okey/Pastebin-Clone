@@ -11,6 +11,10 @@ from .models import Tag, Category
 # main page
 def index(request):
     return render(request, 'blog/index.html')
+
+
+def post_check(request):
+    return render(request, 'blog/post.html')
 # ----------------------------------------------------------------------------
 
 
