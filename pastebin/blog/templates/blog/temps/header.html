@@ -19,8 +19,46 @@
         <div class="header-search">
             <input type="search" placeholder="Поиск...">
         </div>
+
+        {% if request.user.is_authenticated %}
+        <div class="header-auth">
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit"
+                        style="background: none; border: none; padding: 0; font: inherit; cursor: pointer; color: white">
+                    Logout
+                </button>
+            </form>
+            <span class="dropdown-toggle" style="margin-left: 10px; position: relative;">
+                {{ request.user.username }} &#8711;
+                <div class="dropdown"
+                     style="display: none; position: absolute; top: 130%; right: 0; background-color: #333333; border: 1px solid #ddd; padding: 10px;">
+                    <ul style="list-style: none; padding: 0; margin: 0; color: white; width: 200px;">
+                        <li style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="#"
+                                                                                     style="text-decoration: none; color: #ffffff;">Мои посты</a></li>
+                        <li style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="#"
+                                                                                     style="text-decoration: none; color: #ffffff;">Настройки профиля</a></li>
+                        <li style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="#"
+                                                                                     style="text-decoration: none; color: #ffffff;">Изменить пароль</a></li>
+                        <li style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="#"
+                                                                                     style="text-decoration: none; color: #ffffff;">Сообщения</a></li>
+                        <li style="padding: 10px;"><a href="#" style="text-decoration: none; color: #ffffff;">Уведомления</a></li>
+                        <!-- добавьте здесь другие пункты настроек -->
+                    </ul>
+                </div>
+            </span>
+
+            <script>
+                document.querySelector('.dropdown-toggle').addEventListener('click', function () {
+                    var dropdown = this.querySelector('.dropdown');
+                    dropdown.style.display = dropdown.style.display == 'block' ? 'none' : 'block';
+                });
+            </script>
+        </div>
+        {% else %}
         <div class="header-auth">
             <a href="{% url 'users:login' %}">Login</a> / <a href="{% url 'users:register' %}">Reg</a>
         </div>
+        {% endif %}
     </div>
 </header>
