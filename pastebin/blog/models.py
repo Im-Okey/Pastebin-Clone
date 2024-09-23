@@ -32,12 +32,16 @@ class Category(models.Model):
 
 class Paste(models.Model):
     title = models.CharField(max_length=200)
-    content = models.TextField()  # A link to blob storage in the future
+    content_url = models.CharField(max_length=100, null=True, blank=True)  # A link to blob storage in the future
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    access_status = models.IntegerField(choices=[(0, 'Private'), (1, 'Public'), (2, 'Draft')], default=1)
+    time_live = models.DateTimeField(null=True, blank=True)  #дата когда паста будет удалена
+    password = models.CharField(max_length=100, null=True, blank=True)
+    is_delete_after_read = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

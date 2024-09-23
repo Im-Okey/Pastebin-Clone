@@ -21,36 +21,7 @@
             <div class="post-settings">
                 <h3>Настройки публикации</h3>
                 <form>
-                    <label>
-                        <input type="checkbox"> Опубликовать как черновик
-                    </label>
-                    <label>
-                        <input type="checkbox"> Разрешить комментарии
-                    </label>
-                    <label>
-                        <input type="checkbox"> Опубликовать как черновик
-                    </label>
-                    <label>
-                        <input type="checkbox"> Разрешить комментарии
-                    </label>
-                    <label>
-                        <input type="checkbox"> Опубликовать как черновик
-                    </label>
-                    <label>
-                        <input type="checkbox"> Разрешить комментарии
-                    </label>
-                    <label>
-                        <input type="checkbox"> Опубликовать как черновик
-                    </label>
-                    <label>
-                        <input type="checkbox"> Разрешить комментарии
-                    </label>
-                    <label>
-                        <input type="checkbox"> Опубликовать как черновик
-                    </label>
-                    <label>
-                        <input type="checkbox"> Разрешить комментарии
-                    </label>
+                    <!-- 1. Выпадающий список (выбор категории) -->
                     <label>
                         Категория:
                         <select>
@@ -59,13 +30,74 @@
                             <option>Маркетинг</option>
                         </select>
                     </label>
+
+                    <!-- 2. Просто поле для ввода (будут вводиться теги) -->
                     <label>
                         Теги:
                         <input type="text" placeholder="Введите теги...">
                     </label>
+
+                    <!-- 3. Поле для ввода (название поста) -->
+                    <label>
+                        Название поста:
+                        <input type="text" placeholder="Введите название...">
+                    </label>
+
+                    <!-- 4. Заблокированное поле для ввода (сгенерированный урл по названию поста) -->
+                    <label>
+                        URL:
+                        <input type="text" readonly>
+                    </label>
+
+                    <!-- 5. Выпадающий список (Public, Private или черновик) -->
+                    <label>
+                        Статус публикации:
+                        <select>
+                            <option>Public</option>
+                            <option>Private</option>
+                            <option>Черновик</option>
+                        </select>
+                    </label>
+
+                    <!-- 6. Выпадающий список (выбор времени через сколько удалится пост) -->
+                    <label>
+                        Время удаления:
+                        <select>
+                            <option>Никогда</option>
+                            <option>Через 1 час</option>
+                            <option>Через 1 день</option>
+                            <option>Через 1 неделю</option>
+                        </select>
+                    </label>
+
+                    <!-- 7. Чекбокс нужен ли пароль -->
+                    <label>
+                        <input type="checkbox" id="need-password"> Требуется пароль
+                    </label>
+
+                    <!-- 8. Заблокированное поле для пароля или разблокированное если выбран чекбокс -->
+                    <label>
+                        Пароль:
+                        <input type="password" id="password" disabled>
+                    </label>
+
+                    <!-- 9. Чекбокс на удаление после прочтения -->
+                    <label>
+                        <input type="checkbox"> Удалить после прочтения
+                    </label>
+
                     <button>Опубликовать</button>
                 </form>
             </div>
+            <script>
+                document.getElementById('need-password').addEventListener('change', function () {
+                    if (this.checked) {
+                        document.getElementById('password').disabled = false;
+                    } else {
+                        document.getElementById('password').disabled = true;
+                    }
+                });
+            </script>
         </div>
         <div class="right-block">
             <h2>Популярные статьи</h2>
