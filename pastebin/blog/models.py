@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import CustomUser as User
+from datetime import timedelta
 
 
 class Tag(models.Model):
@@ -31,15 +32,28 @@ class Category(models.Model):
 
 
 class Paste(models.Model):
+    ACCESS_STATUS_CHOICES = [
+        (0, 'Private'),
+        (1, 'Public'),
+        (2, 'Draft'),
+    ]
+
+    TIME_LIVE_CHOICES = [
+        (None, 'Никогда'),
+        (timedelta(hours=1), 'Через 1 час'),
+        (timedelta(days=1), 'Через 1 день'),
+        (timedelta(weeks=1), 'Через 1 неделю'),
+    ]
+
     title = models.CharField(max_length=200)
-    content_url = models.CharField(max_length=100, null=True, blank=True)  # A link to blob storage in the future
+    content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-    access_status = models.IntegerField(choices=[(0, 'Private'), (1, 'Public'), (2, 'Draft')], default=1)
-    time_live = models.DateTimeField(null=True, blank=True)  # Дата когда паста будет удалена
+    access_status = models.IntegerField(choices=ACCESS_STATUS_CHOICES, default=1)
+    time_live = models.DurationField(null=True, blank=True)  # Используйте DurationField
     password = models.CharField(max_length=100, null=True, blank=True)
     is_delete_after_read = models.BooleanField(default=False)
 

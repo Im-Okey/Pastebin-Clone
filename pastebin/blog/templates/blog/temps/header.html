@@ -16,10 +16,7 @@
 
         {% if request.user.is_authenticated %}
         <div class="header-auth">
-            <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">Выход</button>
-            </form>
+
             <span class="dropdown-toggle" style="margin-left: 10px; position: relative;">
                 {{ request.user.username }} &#8711;
                 <div class="dropdown">
@@ -29,22 +26,38 @@
                         <li><a href="#">Изменить пароль</a></li>
                         <li><a href="#">Сообщения</a></li>
                         <li><a href="#">Уведомления</a></li>
+                        <li><form action="{% url 'logout' %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-button" style="margin-left: 11px">Выход</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </span>
         </div>
         {% else %}
         <div class="header-auth">
-            <a href="{% url 'users:login' %}" class="auth-link">Вход</a> /
-            <a href="{% url 'users:register' %}" class="auth-link">Регистрация</a>
+            <a href="{% url 'users:login' %}" class="auth-link">Log In /</a>
+            <a href="{% url 'users:register' %}" class="auth-link">Sign In</a>
         </div>
         {% endif %}
     </div>
 </header>
 
 <script>
-    document.querySelector('.dropdown-toggle').addEventListener('click', function () {
-        var dropdown = this.querySelector('.dropdown');
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown');
+
+        dropdownToggle.addEventListener('click', function () {
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Закрываем меню, если кликнули вне его
+        window.addEventListener('click', function (event) {
+            if (!dropdownToggle.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
     });
 </script>

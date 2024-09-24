@@ -15,60 +15,48 @@
 <main class="container">
     <div class="main-container">
         <section class="left-block">
-            <div class="post-editor">
-                <textarea placeholder="Введите текст поста..."></textarea>
-            </div>
-            <div class="post-settings">
-                <h3>Настройки публикации</h3>
-                <form>
-                    <label>
-                        Категория:
-                        <select>
-                            <option>Технологии</option>
-                            <option>Дизайн</option>
-                            <option>Маркетинг</option>
-                        </select>
-                    </label>
-                    <label>
-                        Теги:
-                        <input type="text" placeholder="Введите теги...">
-                    </label>
-                    <label>
-                        Название поста:
-                        <input type="text" placeholder="Введите название...">
-                    </label>
-                    <label>
-                        URL:
-                        <input type="text" readonly>
-                    </label>
-                    <label>
-                        Статус публикации:
-                        <select>
-                            <option>Public</option>
-                            <option>Private</option>
-                            <option>Черновик</option>
-                        </select>
-                    </label>
-                    <label>
-                        Время удаления:
-                        <select>
-                            <option>Никогда</option>
-                            <option>Через 1 час</option>
-                            <option>Через 1 день</option>
-                            <option>Через 1 неделю</option>
-                        </select>
-                    </label>
-                    <label>
-                        <input type="checkbox" id="need-password"> Требуется пароль
-                    </label>
-                    <label>
-                        Пароль:
-                        <input type="password" id="password" disabled>
-                    </label>
-                    <label>
-                        <input type="checkbox"> Удалить после прочтения
-                    </label>
-                    <button type="submit">Опубликовать</button>
+            <div class="post-form">
+                <form method="POST" action="{% url 'blog:create_paste' %}">
+                    {% csrf_token %}
+                    <div class="post-editor">
+                        {{ form.content }}
+                    </div>
+                    <div class="post-settings">
+                        <h3>Настройки публикации</h3>
+                        <label>
+                            Категория:
+                            {{ form.category }}
+                        </label>
+                        <label>
+                            Теги:
+                            {{ form.tags }}
+                        </label>
+                        <label>
+                            Название поста:
+                            {{ form.title }}
+                        </label>
+                        <label>
+                            Статус публикации:
+                            {{ form.access_status }}
+                        </label>
+                        <label>
+                            Время удаления:
+                            {{ form.time_live }}
+                        </label>
+                        <label>
+                            <input type="checkbox" name="need_password" id="need-password" class="need-password">
+                            Требуется пароль
+                        </label>
+                        <label>
+                            Пароль:
+                            {{ form.password }}
+                        </label>
+                        <label>
+                            <input type="checkbox" name="is_delete_after_read" class="delete-after-read"> Удалить после
+                            прочтения
+                        </label>
+                        <button type="submit">Опубликовать</button>
+                    </div>
                 </form>
             </div>
         </section>

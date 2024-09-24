@@ -43,6 +43,7 @@ header {
 .header-auth {
     display: flex;
     align-items: center; /* Выравнивание по центру */
+    position: relative; /* Для правильного позиционирования выпадающего меню */
 }
 
 .header-auth a {
@@ -61,7 +62,7 @@ header {
 }
 
 .dropdown {
-    display: none;
+    display: none; /* Скрыто по умолчанию */
     position: absolute;
     top: 100%; /* Меню открывается под кнопкой */
     right: 0;
@@ -70,6 +71,17 @@ header {
     padding: 10px;
     z-index: 10; /* Убедитесь, что меню поверх других элементов */
     border-radius: 5px; /* Закругляем углы у меню */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для меню */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Плавный переход для появления */
+    opacity: 0; /* Скрыто по умолчанию */
+    visibility: hidden; /* Невидимо по умолчанию */
+    min-width: 200px; /* Минимальная ширина меню */
+}
+
+.dropdown.show {
+    display: block; /* Показываем меню */
+    opacity: 1; /* Полная видимость */
+    visibility: visible; /* Видимо */
 }
 
 .dropdown ul {
@@ -79,12 +91,21 @@ header {
 }
 
 .dropdown li {
-    padding: 5px 10px; /* Отступы внутри элементов меню */
+    padding: 10px; /* Увеличенные отступы для удобства клика */
+    transition: background-color 0.3s; /* Плавный переход для фона */
+    text-align: left; /* Выравнивание текста по левому краю */
+}
+
+.dropdown li:hover {
+    background-color: #444; /* Цвет фона при наведении */
+    border-radius: 5px; /* Закругляем углы при наведении */
 }
 
 .dropdown a {
     text-decoration: none;
     color: white; /* Цвет текста в меню */
+    display: block; /* Делает ссылку блочным элементом */
+    width: 100%; /* Занимает всю ширину элемента li */
 }
 
 .dropdown a:hover {
