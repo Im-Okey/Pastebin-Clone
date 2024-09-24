@@ -39,7 +39,7 @@ class Paste(models.Model):
     tags = models.ManyToManyField(Tag, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     access_status = models.IntegerField(choices=[(0, 'Private'), (1, 'Public'), (2, 'Draft')], default=1)
-    time_live = models.DateTimeField(null=True, blank=True)  #дата когда паста будет удалена
+    time_live = models.DateTimeField(null=True, blank=True)  # Дата когда паста будет удалена
     password = models.CharField(max_length=100, null=True, blank=True)
     is_delete_after_read = models.BooleanField(default=False)
 

@@ -1,4 +1,3 @@
-
 body {
     margin: 0;
     padding: 0;
@@ -6,8 +5,8 @@ body {
 }
 
 .container {
-    max-width: 1500px;
-    margin: 0 auto;
+    max-width: 1500px; /* Максимальная ширина */
+    margin: 0 auto; /* Центрирование */
     padding: 20px;
     box-sizing: border-box;
 }
@@ -15,8 +14,12 @@ body {
 .main-container {
     display: flex;
     justify-content: space-between;
-    width: 1500px;
+    max-width: 1400px; /* Ограничиваем ширину основного контейнера */
     margin: 40px auto;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень вокруг контейнера */
+    border-radius: 8px; /* Закругляем углы */
+    background-color: #ffffff; /* Белый фон для контейнера */
 }
 
 .left-block {
@@ -28,76 +31,6 @@ body {
     flex-grow: 1;
 }
 
-.post-editor {
-    padding: 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.post-editor textarea {
-    width: 100%;
-    height: 450px;
-    padding: 10px -20px 10px 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.post-settings {
-    padding: 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.post-settings h3 {
-    margin-top: 0;
-}
-
-.post-settings form {
-    margin-top: 20px;
-}
-
-.post-settings label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.post-settings input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-.post-settings select {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.post-settings input[type="text"] {
-    width: 97.5%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.post-settings button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-
 .right-block {
     width: 30%;
     background-color: #ccc;
@@ -105,31 +38,103 @@ body {
     height: 100%;
 }
 
-.right-block ul {
+.post-list ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.right-block li {
+.post-list li {
     margin-bottom: 20px;
 }
 
-.right-block a {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
+.post-list a {
+    display: block; /* Делаем ссылки блочными */
+    padding: 10px; /* Добавляем внутренние отступы */
+    background-color: #fff; /* Цвет фона для удобства чтения */
+    border-radius: 5px; /* Скругление углов */
     text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s; /* Плавный переход */
+}
+
+.post-list a:hover {
+    background-color: #e6e6e6; /* Цвет фона при наведении */
+}
+
+.post-list span {
+    font-size: 14px;
+    color: #666;
+}
+
+.post-list i {
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.right-block {
+    width: 30%;
+    background-color: #eeeeee; /* Светлый фон для правого блока */
+    padding: 20px;
+    border-radius: 5px;
+    height: auto; /* Позволяем высоте меняться автоматически */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень */
+    position: relative; /* Позволяет размещать элементы внутри с абсолютным позиционированием */
+}
+
+.right-block h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px; /* Отступ под заголовком */
+    color: #333; /* Цвет текста заголовка */
+    border-bottom: 2px solid #333333FF; /* Подчеркивание заголовка */
+    padding-bottom: 5px; /* Отступ снизу заголовка */
+}
+
+.right-block ul {
+    list-style: none; /* Убираем стандартные маркеры */
+    padding: 0;
+    margin: 0;
+}
+
+.right-block li {
+    margin-bottom: 15px; /* Отступ между статьями */
+    padding: 10px; /* Внутренний отступ для каждого элемента списка */
+    border: 3px solid #ddd; /* Легкая рамка вокруг каждого элемента */
+    border-radius: 5px; /* Закругленные углы */
+    transition: background-color 0.3s; /* Эффект при наведении */
+}
+
+.right-block li:hover {
+    background-color: #5c5a5a; /* Цвет фона при наведении */
+}
+
+.right-block a {
+    display: block; /* Делает ссылку блочным элементом */
+    padding: 15px; /* Добавляет внутренние отступы для большей области клика */
+    color: #333; /* Цвет текста */
+    text-decoration: none; /* Убирает подчеркивание текста */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s; /* Плавный переход для фона */
+}
+
+.right-block a:hover {
+    background-color: #e6e6e6; /* Цвет фона при наведении */
 }
 
 .right-block span {
-    font-size: 14px;
-    color: #666;
+    font-size: 14px; /* Размер шрифта для даты и просмотров */
+    color: #666; /* Цвет текста для мета-информации */
 }
 
 .right-block i {
     font-size: 14px;
     margin-right: 5px;
+}
+
+.article-title {
+    font-weight: bold;
+    font-size: 34px;
 }
 
 
@@ -146,83 +151,44 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding-bottom: 30px;
 }
 
-
-.post-filter input[type="search"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.post-filter select {
-    width: 35%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
+.post-filter input[type="search"],
+.post-filter select,
 .post-filter button[type="submit"] {
-    width: 15%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: auto;
-}
-
-.post-list {
-    padding: 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.post-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.post-list li {
-    margin-bottom: 20px;
-}
-
-.post-list a {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    text-decoration: none;
-}
-
-.post-list span {
-    font-size: 14px;
-    color: #666;
-}
-
-.post-list i {
-    font-size: 14px;
-    margin-right: 5px;
-}
-
-.post-filter select, .post-filter button[type="submit"] {
     width: 30%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-right: 10px;
 }
 
-.post-filter select:last-child {
-    margin-right: 0;
+.post-filter button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+
+.post-filter {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.post-list {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.post-list {
+    padding: 20px;
+}
+
+.post-filter input[type="search"] {
+    width: 100%;
+    margin-bottom: 10px;
 }

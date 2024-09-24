@@ -21,7 +21,7 @@
                          alt="{{ user.nickname }}" width="40" height="40">
                 </div>
                 <div class="info">
-                    <span class="post-title">Python for beginers</span>
+                    <span class="post-title">Python for beginners</span>
                     <br>
                     <span class="post-meta">arseny0709 | 10.10.2024 | Просмотров: 510 | Сохранений: 10</span>
                 </div>
@@ -52,21 +52,6 @@
                         <span>20.04.2023</span>
                         <p>Текст комментария 3</p>
                     </li>
-                    <li>
-                        <span>Пользователь 3</span>
-                        <span>20.04.2023</span>
-                        <p>Текст комментария 3</p>
-                    </li>
-                    <li>
-                        <span>Пользователь 3</span>
-                        <span>20.04.2023</span>
-                        <p>Текст комментария 3</p>
-                    </li>
-                    <li>
-                        <span>Пользователь 3</span>
-                        <span>20.04.2023</span>
-                        <p>Текст комментария 3</p>
-                    </li>
                 </ul>
                 <form class="comment-form">
                     <textarea placeholder="Введите текст комментария..."></textarea>
@@ -78,19 +63,32 @@
             <h2>Популярные статьи</h2>
             <ul>
                 <li>
-                    <a href="#">Название статьи 1</a>
-                    <br>
-                    <span>Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                    <a href="{% url 'blog:post_check' %}">
+                        <span class="article-title">Название статьи 1</span>
+                        <br>
+                        <span class="article-meta">Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                    </a>
                 </li>
                 <li>
-                    <a href="#">Название статьи 2</a>
-                    <br>
-                    <span>Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                    <a href="{% url 'blog:posts_check' %}">
+                        <span class="article-title">Название статьи 2</span>
+                        <br>
+                        <span class="article-meta">Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                    </a>
                 </li>
                 <li>
-                    <a href="#">Название статьи 3</a>
-                    <br>
-                    <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                    <a href="#">
+                        <span class="article-title">Название статьи 3</span>
+                        <br>
+                        <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="article-title">Название статьи 4</span>
+                        <br>
+                        <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                    </a>
                 </li>
             </ul>
         </div>

@@ -24,31 +24,58 @@
                         <option value="design">Дизайн</option>
                         <option value="marketing">Маркетинг</option>
                     </select>
-                    <select name="sort" style="width: 35%;">
+                    <select name="sort" style="width: 35%; margin-left: 20px;">
                         <option value="">Сортировать по</option>
                         <option value="title">Заголовку</option>
                         <option value="date">Дате</option>
                         <option value="views">Количество просмотров</option>
                     </select>
-                    <button type="submit" style="margin-left: auto;">Применить</button>
+                    <button type="submit" style="margin-left: 327px;">Применить</button>
                 </div>
             </form>
             <div class="post-list">
                 <ul>
                     <li>
-                        <a href="#">Новая технология в мире IT</a>
-                        <br>
-                        <span>Технологии 10.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                        <a href="#">
+                            <span class="article-title">Новая технология в мире IT</span>
+                            <br>
+                            <span class="article-meta">Технологии 10.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                        </a>
                     </li>
                     <li>
-                        <a href="#">Секреты дизайна: как создать привлекательный сайт</a>
-                        <br>
-                        <span>Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                        <a href="#">
+                            <span class="article-title">Секреты дизайна: как создать привлекательный сайт</span>
+                            <br>
+                            <span class="article-meta">Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                        </a>
                     </li>
                     <li>
-                        <a href="#">Маркетинговые стратегии для начинающих</a>
-                        <br>
-                        <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                        <a href="#">
+                            <span class="article-title">Маркетинговые стратегии для начинающих</span>
+                            <br>
+                            <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="article-title">Маркетинговые стратегии для начинающих</span>
+                            <br>
+                            <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="article-title">Маркетинговые стратегии для начинающих</span>
+                            <br>
+                            <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="article-title">Маркетинговые стратегии для начинающих</span>
+                            <br>
+                            <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -57,24 +84,32 @@
             <h2>Популярные статьи</h2>
             <ul>
                 <li>
-                    <a href="#">Название статьи 1</a>
-                    <br>
-                    <span>Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                    <a href="{% url 'blog:post_check' %}">
+                        <span class="article-title">Название статьи 1</span>
+                        <br>
+                        <span class="article-meta">Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
+                    </a>
                 </li>
                 <li>
-                    <a href="#">Название статьи 2</a>
-                    <br>
-                    <span>Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                    <a href="{% url 'blog:posts_check' %}">
+                        <span class="article-title">Название статьи 2</span>
+                        <br>
+                        <span class="article-meta">Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
+                    </a>
                 </li>
                 <li>
-                    <a href="#">Название статьи 3</a>
-                    <br>
-                    <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                    <a href="#">
+                        <span class="article-title">Название статьи 3</span>
+                        <br>
+                        <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                    </a>
                 </li>
                 <li>
-                    <a href="#">Название статьи 4</a>
-                    <br>
-                    <span>Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                    <a href="#">
+                        <span class="article-title">Название статьи 4</span>
+                        <br>
+                        <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
+                    </a>
                 </li>
             </ul>
         </div>

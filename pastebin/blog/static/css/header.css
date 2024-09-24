@@ -1,37 +1,28 @@
+header {
+    width: 100%; /* Устанавливаем ширину на всю ширину экрана */
+    background-color: #333; /* Цвет фона для всего хедера */
+}
 
 .header-container {
-    background-color: #333;
     color: #fff;
-    padding: 20px;
-    text-align: center;
-    height: 70px;
-    width: 1460px;
-    margin: 0 auto;
+    padding: 15px 20px; /* Отступы для внутреннего контейнера */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Выравниваем элементы по центру по вертикали */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Добавляем тень */
+    max-width: 1400px; /* Максимальная ширина контейнера */
+    margin: 0 auto; /* Центрируем контейнер */
 }
 
 .header-logo {
     font-size: 24px;
     font-weight: bold;
-    margin-right: 20px;
-}
-
-.header-category {
-    margin-right: 20px;
-}
-
-.header-category select {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #444;
-    color: #fff;
+    margin-right: 15px; /* Отступ справа от логотипа */
 }
 
 .header-search {
-    margin-right: 20px;
+    flex-grow: 1; /* Позволяем поисковой строке занимать оставшееся пространство */
+    display: flex; /* Используем флекс для внутреннего выравнивания */
+    margin-left: 20px; /* Добавляем отступ слева от поиска */
 }
 
 .header-search input[type="search"] {
@@ -40,14 +31,72 @@
     border-radius: 5px;
     background-color: #444;
     color: #fff;
+    transition: background-color 0.3s; /* Эффект при наведении */
+    width: 200px; /* Фиксированная ширина поля поиска */
+}
+
+.header-category select:hover,
+.header-search input[type="search"]:hover {
+    background-color: #555; /* Цвет при наведении */
 }
 
 .header-auth {
-    margin-left: auto;
+    display: flex;
+    align-items: center; /* Выравнивание по центру */
 }
 
 .header-auth a {
     color: #fff;
     text-decoration: none;
     margin-left: 10px;
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    color: #fff;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%; /* Меню открывается под кнопкой */
+    right: 0;
+    background-color: #333;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 10; /* Убедитесь, что меню поверх других элементов */
+    border-radius: 5px; /* Закругляем углы у меню */
+}
+
+.dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown li {
+    padding: 5px 10px; /* Отступы внутри элементов меню */
+}
+
+.dropdown a {
+    text-decoration: none;
+    color: white; /* Цвет текста в меню */
+}
+
+.dropdown a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+.auth-link {
+    color: white; /* Цвет текста для ссылок авторизации */
+    text-decoration: none; /* Убираем подчеркивание */
+    margin-left: 10px; /* Отступ между ссылками */
+}
+
+.auth-link:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
 }
