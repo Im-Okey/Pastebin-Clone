@@ -47,53 +47,40 @@
                             </a>
                         </div>
                         <div class="post-actions">
-                            <span class="post-status">{{post.get_access_status_display}}</span> <!-- Статус поста -->
-                            <span class="post-time">Удалится через 3 дня</span> <!-- Время до удаления -->
+                            <span class="post-status">{{ post.get_access_status_display }}</span> <!-- Статус поста -->
+                            <span class="post-time">{{ post.time_live }}</span> <!-- Время до удаления -->
+
+                            <!-- Кнопка "Поделиться" -->
+                            <button onclick="copyToClipboard('{{ request.build_absolute_uri|add:post.slug }}')">
+                                Поделиться
+                            </button>
+
                             <form method="post" action="{% url 'blog:post-delete' post.id %}">
                                 {% csrf_token %}
                                 <button type="submit">Удалить</button>
                             </form>
                         </div>
                     </li>
+                    <script>
+                        function copyToClipboard(url) {
+                            // Создаем временный элемент input
+                            const tempInput = document.createElement('input');
+                            tempInput.value = url; // Устанавливаем значение как URL
+                            document.body.appendChild(tempInput); // Добавляем его в DOM
+                            tempInput.select(); // Выделяем текст
+                            document.execCommand('copy'); // Копируем выделенный текст
+                            document.body.removeChild(tempInput); // Удаляем временный элемент
+
+                            alert('URL скопирован в буфер обмена!'); // Сообщение о том, что URL скопирован
+                        }
+                    </script>
 
                     {% endfor %}
                 </ul>
             </div>
         </div>
 
-        <div class="right-block">
-            <h2>Популярные статьи</h2>
-            <ul>
-                <li>
-                    <a href="{% url 'blog:post-check' %}">
-                        <span class="article-title">Название статьи 1</span>
-                        <br>
-                        <span class="article-meta">Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'blog:posts-check' %}">
-                        <span class="article-title">Название статьи 2</span>
-                        <br>
-                        <span class="article-meta">Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="article-title">Название статьи 3</span>
-                        <br>
-                        <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="article-title">Название статьи 4</span>
-                        <br>
-                        <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        {% include 'blog/temps/popular_posts.html' %}
     </div>
 </main>
 {% include 'blog/temps/footer.html' %}

@@ -1,4 +1,7 @@
+import uuid
+
 from django.db import models
+from django.urls import reverse
 from users.models import CustomUser as User
 from datetime import timedelta
 
@@ -50,6 +53,7 @@ class Paste(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slug = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     tags = models.ManyToManyField(Tag, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     access_status = models.IntegerField(choices=ACCESS_STATUS_CHOICES, default=1)
@@ -59,6 +63,9 @@ class Paste(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:paste-detail', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Паста'

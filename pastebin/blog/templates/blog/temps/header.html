@@ -7,11 +7,11 @@
 <header>
     <div class="header-container">
         <a href="{% url 'blog:index' %}" style='all: unset;'>
-            <div class="header-logo">Название сервиса</div>
+            <div class="header-logo">Pastebin Clone</div>
         </a>
 
         <div class="header-search">
-            <input type="search" placeholder="Поиск...">
+            <input type="search" placeholder="Search...">
         </div>
 
         {% if request.user.is_authenticated %}

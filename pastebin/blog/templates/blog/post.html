@@ -59,39 +59,7 @@
                 </form>
             </div>
         </div>
-        <div class="right-block">
-            <h2>Популярные статьи</h2>
-            <ul>
-                <li>
-                    <a href="{% url 'blog:post-check' %}">
-                        <span class="article-title">Название статьи 1</span>
-                        <br>
-                        <span class="article-meta">Технологии 12.02.2023 <i class="fa fa-eye"></i> 1234</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'blog:posts-check' %}">
-                        <span class="article-title">Название статьи 2</span>
-                        <br>
-                        <span class="article-meta">Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="article-title">Название статьи 3</span>
-                        <br>
-                        <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="article-title">Название статьи 4</span>
-                        <br>
-                        <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        {% include 'blog/temps/popular_posts.html' %}
     </div>
 </main>
 {% include 'blog/temps/footer.html' %}

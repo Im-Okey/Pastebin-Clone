@@ -16,12 +16,9 @@ def index(request):
     return render(request, 'blog/index.html', {'form': form})
 
 
-def post_check(request):
-    return render(request, 'blog/post.html')
-
-
 def posts_check(request):
-    return render(request, 'blog/posts.html')
+    posts = Paste.objects.all()
+    return render(request, 'blog/posts.html', {'posts': posts})
 
 
 # ----------------------------------------------------------------------------
@@ -81,4 +78,9 @@ def delete_paste(request, pk):
 
     # Для GET-запроса можно вернуть страницу подтверждения удаления (необязательно)
     return render(request, 'blog/post_confirm_delete.html', {'post': post})
+
+
+def detail_post(request, pk):
+    post = get_object_or_404(Paste, id=pk)
+    return render(request, 'blog/post.html', {'post': post})
 # ----------------------------------------------------------------------------
