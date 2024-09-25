@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
 
 from .forms import PasteForm
 
 from .backends.paste_backends import process_time_live, add_tags_to_paste, hash_password
+from .models import Paste
 
 
 # ----------------------------------------------------------------------------
@@ -68,4 +70,15 @@ def create_paste(request):
         form = PasteForm()
 
     return render(request, 'blog/index.html', {'form': form})
+
+
+def delete_paste(request, pk):
+    post = get_object_or_404(Paste, id=pk)  # Получаем пост по его ID
+
+    if request.method == 'POST':
+        post.delete()  # Удаляем пост
+        return redirect('users:posts-list')  # Перенаправляем на список постов
+
+    # Для GET-запроса можно вернуть страницу подтверждения удаления (необязательно)
+    return render(request, 'blog/post_confirm_delete.html', {'post': post})
 # ----------------------------------------------------------------------------

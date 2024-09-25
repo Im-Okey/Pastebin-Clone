@@ -10,4 +10,6 @@ urlpatterns = [
     path('register/', views.signup, name='register'),
 
     path('signup/', views.SignUpView.as_view(), name='signup'),
+
+    path('posts/', views.posts_list, name='posts-list'),
 ]

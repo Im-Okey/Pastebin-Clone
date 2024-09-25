@@ -3,9 +3,6 @@ from datetime import timedelta
 from django import forms
 from .models import Paste
 
-from django import forms
-from .models import Paste
-
 
 class PasteForm(forms.ModelForm):
     time_live = forms.ChoiceField(choices=[], required=False)

@@ -7,8 +7,8 @@ app_name = 'blog'
 urlpatterns = [
     # main page
     path('', views.index, name='index'),
-    path('post_check/', views.post_check, name='post_check'),
-    path('posts_check/', views.posts_check, name='posts_check'),
+    path('post_check/', views.post_check, name='post-check'),
+    path('posts_check/', views.posts_check, name='posts-check'),
 
     # # tags logic
     # path('tags/', views.TagListView.as_view(), name='tag-list'),
@@ -27,9 +27,9 @@ urlpatterns = [
     # path('comments/delete/<int:id>', CommentDeleteView.as_view(), name='comment-delete'),
 
 
-    path('posts/create/', views.create_paste, name='create_paste'),
+    path('posts/create/', views.create_paste, name='create-paste'),
     # path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     # path('posts/update/<int:pk>', PostUpdateView.as_view(), name='post-update'),
-    # path('posts/delete/<int:pk>', PostDeleteView.as_view(), name='post-delete'),
+    path('posts/delete/<int:pk>', views.delete_paste, name='post-delete'),
 
 ]

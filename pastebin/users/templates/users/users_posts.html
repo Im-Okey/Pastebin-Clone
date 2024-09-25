@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Страница</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/posts.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/users_posts.css' %}">
 </head>
 <body>
 
@@ -35,51 +35,32 @@
             </form>
             <div class="post-list">
                 <ul>
-                    <li>
-                        <a href="#">
-                            <span class="article-title">Новая технология в мире IT</span>
-                            <br>
-                            <span class="article-meta">Технологии 10.02.2023 <i class="fa fa-eye"></i> 1234</span>
-                        </a>
+                    {% for post in posts %}
+
+                    <li class="post-item">
+                        <div class="post-details">
+                            <a href="#">
+                                <span class="article-title">{{post.title}}</span>
+                                <br>
+                                <span class="article-meta">{{post.category}} {{post.created_at}} <i
+                                        class="fa fa-eye"></i> 1234</span>
+                            </a>
+                        </div>
+                        <div class="post-actions">
+                            <span class="post-status">{{post.get_access_status_display}}</span> <!-- Статус поста -->
+                            <span class="post-time">Удалится через 3 дня</span> <!-- Время до удаления -->
+                            <form method="post" action="{% url 'blog:post-delete' post.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Удалить</button>
+                            </form>
+                        </div>
                     </li>
-                    <li>
-                        <a href="#">
-                            <span class="article-title">Секреты дизайна: как создать привлекательный сайт</span>
-                            <br>
-                            <span class="article-meta">Дизайн 15.03.2023 <i class="fa fa-eye"></i> 5678</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="article-title">Маркетинговые стратегии для начинающих</span>
-                            <br>
-                            <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="article-title">Маркетинговые стратегии для начинающих</span>
-                            <br>
-                            <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="article-title">Маркетинговые стратегии для начинающих</span>
-                            <br>
-                            <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="article-title">Маркетинговые стратегии для начинающих</span>
-                            <br>
-                            <span class="article-meta">Маркетинг 20.04.2023 <i class="fa fa-eye"></i> 9012</span>
-                        </a>
-                    </li>
+
+                    {% endfor %}
                 </ul>
             </div>
         </div>
+
         <div class="right-block">
             <h2>Популярные статьи</h2>
             <ul>

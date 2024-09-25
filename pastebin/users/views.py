@@ -1,9 +1,10 @@
-from django.contrib.auth.forms import UserCreationForm
+
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import CustomUserCreationForm
+from blog.models import Paste
 
 
 def login(request):
@@ -30,4 +31,11 @@ class SignUpView(CreateView):
         user.set_password(form.cleaned_data['password1'])
         user.save()
         return super().form_valid(form)
+
+
+def posts_list(request):
+    user = request.user
+    posts = Paste.objects.filter(author=user).order_by('-created_at')
+
+    return render(request, 'users/users_posts.html', {'posts': posts})
 
