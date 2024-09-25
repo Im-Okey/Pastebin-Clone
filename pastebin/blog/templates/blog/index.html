@@ -44,7 +44,8 @@
                             {{ form.time_live }}
                         </label>
                         <label>
-                            <input type="checkbox" name="need_password" id="need-password" class="need-password">
+                            <input type="checkbox" name="need_password" id="need-password" class="need-password"
+                                   onclick="togglePasswordField()">
                             Требуется пароль
                         </label>
                         <label>
@@ -57,6 +58,28 @@
                         </label>
                         <button type="submit">Опубликовать</button>
                     </div>
+                    <script>
+                        // Функция для включения/выключения поля пароля
+                        function togglePasswordField() {
+                            // Получаем чекбокс и поле пароля
+                            var checkbox = document.getElementById('need-password');
+                            var passwordField = document.getElementById('{{ form.password.id_for_label }}');
+
+                            // Если чекбокс отмечен, разблокируем поле пароля
+                            if (checkbox.checked) {
+                                passwordField.disabled = false;
+                            } else {
+                                // Если чекбокс не отмечен, блокируем поле пароля
+                                passwordField.disabled = true;
+                                passwordField.value = '';  // Очищаем поле пароля
+                            }
+                        }
+
+                        // Блокируем поле пароля по умолчанию при загрузке страницы
+                        window.onload = function () {
+                            document.getElementById('{{ form.password.id_for_label }}').disabled = true;
+                        };
+                    </script>
                 </form>
             </div>
         </section>

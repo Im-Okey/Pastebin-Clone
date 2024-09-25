@@ -1,4 +1,3 @@
-
 from django.urls import path
 from . import views
 
@@ -15,7 +14,6 @@ urlpatterns = [
     # path('tags/update/<int:pk>/', views.TagUpdateView.as_view(), name='tag-update'),
     # path('tags/delete/<int:pk>/', views.TagDeleteView.as_view(), name='tag-delete'),
 
-
     # path('categories/', views.CategoryListView.as_view(), name='category-list'),
     # path('categories/create/', views.CategoryCreateView.as_view(), name='category-create'),
     # path('categories/update/<int:id>', views.CategoryUpdateView.as_view(), name='category-update'),
@@ -25,10 +23,11 @@ urlpatterns = [
     # path('comments/update/<int:id>', CommentUpdateView.as_view(), name='comment-update'),
     # path('comments/delete/<int:id>', CommentDeleteView.as_view(), name='comment-delete'),
 
-
     path('posts/create/', views.create_paste, name='create-paste'),
-    path('posts/<int:pk>/', views.detail_post, name='post-detail'),
+    path('posts/<slug:slug>/', views.detail_post, name='post-detail'),
     # path('posts/update/<int:pk>', PostUpdateView.as_view(), name='post-update'),
     path('posts/delete/<int:pk>', views.delete_paste, name='post-delete'),
+
+    path('posts/<slug:slug>/check-password/', views.post_password_check, name='post-password-check'),
 
 ]

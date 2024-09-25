@@ -1,9 +1,10 @@
 import uuid
+from django.utils import timezone
 
 from django.db import models
 from django.urls import reverse
 from users.models import CustomUser as User
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 class Tag(models.Model):
@@ -60,12 +61,25 @@ class Paste(models.Model):
     time_live = models.DurationField(null=True, blank=True)  # Используйте DurationField
     password = models.CharField(max_length=100, null=True, blank=True)
     is_delete_after_read = models.BooleanField(default=False)
+    views_count = models.PositiveIntegerField(default=100)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('blog:paste-detail', kwargs={'slug': self.slug})
+        """Возвращает уникальную ссулку на пасту."""
+        return reverse('blog:post-detail', kwargs={'slug': self.slug})
+
+    def get_deletion_date(self):
+        """Возвращает дату удаления пасты или 'Никогда'."""
+        if self.time_live:
+            deletion_date = timezone.now() + self.time_live
+            return deletion_date.strftime('%d.%m.%Y')  # Формат даты DD:MM:YYYY
+        return "Никогда"
+
+    def get_formatted_created_at(self):
+        """Возвращает дату создания пасты."""
+        return self.created_at.strftime('%d:%m:%Y')
 
     class Meta:
         verbose_name = 'Паста'

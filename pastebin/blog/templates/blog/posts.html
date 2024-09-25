@@ -37,7 +37,7 @@
                 <ul>
                     {% for post in posts %}
                         <li>
-                            <a href="{% url 'blog:post-detail' post.id %}">
+                            <a href="{% url 'blog:post-detail' post.slug %}">
                                 <span class="article-title">{{post.title}}</span>
                                 <br>
                                 <span class="article-meta">{{post.category}} {{post.created_at}} <i class="fa fa-eye"></i> 1234</span>

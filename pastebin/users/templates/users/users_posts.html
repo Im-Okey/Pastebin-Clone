@@ -36,22 +36,22 @@
             <div class="post-list">
                 <ul>
                     {% for post in posts %}
-
                     <li class="post-item">
                         <div class="post-details">
                             <a href="#">
-                                <span class="article-title">{{post.title}}</span>
+                                <span class="article-title">{{ post.title }}</span>
                                 <br>
-                                <span class="article-meta">{{post.category}} {{post.created_at}} <i
-                                        class="fa fa-eye"></i> 1234</span>
+                                <span class="article-meta">{{ post.category }} &nbsp; {{ post.get_formatted_created_at }} <i
+                                        class="fa fa-eye"></i> &nbsp; 1234</span>
                             </a>
                         </div>
                         <div class="post-actions">
                             <span class="post-status">{{ post.get_access_status_display }}</span> <!-- Статус поста -->
-                            <span class="post-time">{{ post.time_live }}</span> <!-- Время до удаления -->
+                            <span class="post-time">{{ post.get_deletion_date }}</span> <!-- Дата удаления -->
 
                             <!-- Кнопка "Поделиться" -->
-                            <button onclick="copyToClipboard('{{ request.build_absolute_uri|add:post.slug }}')">
+                            <button class="post-share-button"
+                                    onclick="copyToClipboard('{{ post.get_absolute_url }}')">
                                 Поделиться
                             </button>
 
@@ -60,12 +60,15 @@
                                 <button type="submit">Удалить</button>
                             </form>
                         </div>
+
                     </li>
+                    {% endfor %}
+
                     <script>
                         function copyToClipboard(url) {
                             // Создаем временный элемент input
                             const tempInput = document.createElement('input');
-                            tempInput.value = url; // Устанавливаем значение как URL
+                            tempInput.value = window.location.origin + url; // Формируем полный URL
                             document.body.appendChild(tempInput); // Добавляем его в DOM
                             tempInput.select(); // Выделяем текст
                             document.execCommand('copy'); // Копируем выделенный текст
@@ -74,8 +77,6 @@
                             alert('URL скопирован в буфер обмена!'); // Сообщение о том, что URL скопирован
                         }
                     </script>
-
-                    {% endfor %}
                 </ul>
             </div>
         </div>

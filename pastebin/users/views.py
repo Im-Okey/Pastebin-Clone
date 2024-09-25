@@ -36,6 +36,10 @@ class SignUpView(CreateView):
 def posts_list(request):
     user = request.user
     posts = Paste.objects.filter(author=user).order_by('-created_at')
+    popular_posts = Paste.objects.order_by('-views_count')[:5]
 
-    return render(request, 'users/users_posts.html', {'posts': posts})
+    return render(request, 'users/users_posts.html', {
+        'posts': posts,
+        'popular_posts': popular_posts
+    })
 

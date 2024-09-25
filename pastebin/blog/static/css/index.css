@@ -85,65 +85,6 @@ body {
     background-color: #444; /* Цвет кнопки при наведении */
 }
 
-.right-block {
-    width: 30%;
-    background-color: #eeeeee; /* Светлый фон для правого блока */
-    padding: 20px;
-    border-radius: 5px;
-    height: auto; /* Позволяем высоте меняться автоматически */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень */
-    position: relative; /* Позволяет размещать элементы внутри с абсолютным позиционированием */
-}
-
-.right-block h2 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 15px; /* Отступ под заголовком */
-    color: #333; /* Цвет текста заголовка */
-    border-bottom: 2px solid #333333FF; /* Подчеркивание заголовка */
-    padding-bottom: 5px; /* Отступ снизу заголовка */
-}
-
-.right-block ul {
-    list-style: none; /* Убираем стандартные маркеры */
-    padding: 0;
-    margin: 0;
-}
-
-.right-block li {
-    margin-bottom: 15px; /* Отступ между статьями */
-    padding: 10px; /* Внутренний отступ для каждого элемента списка */
-    border: 3px solid #ddd; /* Легкая рамка вокруг каждого элемента */
-    border-radius: 5px; /* Закругленные углы */
-    transition: background-color 0.3s; /* Эффект при наведении */
-}
-
-.right-block li:hover {
-    background-color: #5c5a5a; /* Цвет фона при наведении */
-}
-
-.right-block a {
-    display: block; /* Делает ссылку блочным элементом */
-    padding: 15px; /* Добавляет внутренние отступы для большей области клика */
-    color: #333; /* Цвет текста */
-    text-decoration: none; /* Убирает подчеркивание текста */
-    border-radius: 5px; /* Скругленные углы */
-    transition: background-color 0.3s; /* Плавный переход для фона */
-}
-
-.right-block a:hover {
-    background-color: #e6e6e6; /* Цвет фона при наведении */
-}
-
-.right-block span {
-    font-size: 14px; /* Размер шрифта для даты и просмотров */
-    color: #666; /* Цвет текста для мета-информации */
-}
-
-.right-block i {
-    font-size: 14px;
-    margin-right: 5px;
-}
 
 .article-title {
     font-weight: bold;

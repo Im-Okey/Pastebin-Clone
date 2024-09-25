@@ -108,6 +108,7 @@ body {
     padding: 20px;
 }
 
+
 .post-item {
     display: flex;
     justify-content: space-between;
@@ -124,19 +125,20 @@ body {
 }
 
 .post-details {
-    flex-grow: 1;
-    margin-right: 20px; /* Отступ справа от информации о посте */
+    display: flex;
+    flex-direction: column; /* Упорядочить элементы по вертикали */
+    gap: 10px; /* Установить расстояние между элементами */
 }
 
 .post-actions {
     display: flex;
     align-items: center;
     justify-content: space-between; /* Распределите элементы по ширине контейнера */
-    min-width: 350px;  /* Установите минимальную ширину */
+    min-width: 350px; /* Установите минимальную ширину */
 }
 
 .post-actions span {
-    margin-right: 15px;  /* Отступ справа для всех элементов */
+    margin-right: 15px; /* Отступ справа для всех элементов */
 }
 
 .post-actions form {
@@ -146,8 +148,10 @@ body {
 }
 
 .post-actions button {
-    padding: 5px 15px; /* Увеличьте padding для большей области нажатия */
-    background-color: #f44336;
+    width: 30%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #333;
     color: white;
     border: none;
     border-radius: 3px;
@@ -158,6 +162,12 @@ body {
 
 .post-actions button:hover {
     background-color: #e53935;
+}
+
+.post-time {
+    color: #FF9800;
+    min-width: 120px; /* Установите минимальную ширину для времени */
+    display: inline-block; /* Позволяет установить фиксированную ширину */
 }
 
 .post-status {
@@ -222,4 +232,21 @@ body {
 .article-title {
     font-weight: bold;
     font-size: 34px;
+}
+
+
+.post-share-button {
+    padding: 5px 15px; /* Увеличьте padding для большей области нажатия */
+    background-color: #f44336; /* Цвет фона */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    min-width: 80px; /* Установите минимальную ширину для кнопки */
+    margin-right: 10px; /* Отступ справа для разделения с кнопкой "Удалить" */
+}
+
+.post-share-button:hover {
+    background-color: #e53935; /* Цвет фона при наведении */
 }
