@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PasteForm
 
 from .backends.general_backends import process_time_live, add_tags_to_paste, hash_password, verify_password
-from .backends.post_logic_backends import handle_post_deletion, render_post_response
+from .backends.post_logic_backends import handle_post_deletion, render_post_response, render_edit_post_response
 
 from .models import Paste
 
@@ -85,6 +85,34 @@ def delete_paste(request, pk):
         return redirect('users:posts-list')
 
     return render(request, 'blog/post_confirm_delete.html', {'post': post})
+
+
+@login_required
+def edit_post(request, slug):
+    post = get_object_or_404(Paste, slug=slug, author=request.user)
+    popular_posts = Paste.objects.order_by('-views_count')[:5]  # Получаем популярные посты
+
+    if request.method == 'POST':
+        form = PasteForm(request.POST, instance=post)
+        if form.is_valid():
+            updated_paste = form.save(commit=False)
+
+            time_live_value = form.cleaned_data.get('time_live')
+            updated_paste.time_live = process_time_live(time_live_value)
+
+            password = form.cleaned_data.get('password')
+            if password:
+                updated_paste.password = hash_password(password)
+
+            updated_paste.save()
+
+            tags_input = form.cleaned_data['tags']
+            add_tags_to_paste(updated_paste, tags_input)
+
+            return redirect('post-detail', slug=slug)  # перенаправление на страницу поста
+
+    # Для GET-запроса, рендерим страницу редактирования
+    return render_edit_post_response(request, post, popular_posts)
 
 
 def detail_post(request, slug):

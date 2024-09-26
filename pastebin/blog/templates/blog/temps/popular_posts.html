@@ -9,11 +9,17 @@
     <ul>
         {% for popular_post in popular_posts %}
         <li>
-            <a href="#">
+            <a href="{% url 'blog:post-detail' popular_post.slug %}">
                 <span class="article-title">{{popular_post.title}}</span>
                 <br>
                 <span class="article-meta">{{ popular_post.category }} &nbsp; | &nbsp; {{ popular_post.get_formatted_created_at }} &nbsp; |  &nbsp;
-                                    <i class="fa fa-eye"></i> <span class="view-count">{{popular_post.views_count}}</span></span>
+                                    <i class="fa fa-eye"></i> <span
+                            class="view-count">{{popular_post.views_count}}</span></span>
+                {% if popular_post.password %}
+                <span><i class="fa fa-lock" aria-hidden="true" style="color: #FF9800;"></i></span>
+                {% else %}
+                <span><i class="fa fa-unlock" aria-hidden="true" style="color: #4CAF50;"></i></span>
+                {% endif %}
             </a>
         </li>
         {% endfor %}

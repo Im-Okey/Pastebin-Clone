@@ -61,3 +61,16 @@
 .view-count {
     margin-left: 0;
 }
+
+.post-actions i.fa-lock {
+    color: #FF9800;
+}
+
+.post-actions i.fa-unlock {
+    color: #4CAF50;
+}
+
+
+.article-meta {
+    margin-right: 20px;
+}

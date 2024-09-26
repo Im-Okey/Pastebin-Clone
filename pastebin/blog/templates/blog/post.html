@@ -1,14 +1,15 @@
 {% extends 'blog/temps/base.html' %}
 {% load static %}
 
-{% block title %}{{post.title}}{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block head %}
-    {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
-    <script src="{% static 'js/password_modal.js' %}"></script>
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
+<script src="{% static 'js/password_modal.js' %}"></script>
+<script src="{% static 'js/password_check_box.js' %}"></script>
+<script src="{% static 'js/show_edit_form.js' %}"></script>
 {% endblock %}
-
 
 {% block content %}
 <input type="hidden" id="post-password" value="{{ post.password }}">
@@ -20,51 +21,126 @@
 <main>
     <div class="main-container">
         <div id="post-content" class="left-block">
-            <div class="post-preview">
+            <div class="post-preview" style="display: flex; justify-content: space-between; align-items: center;">
                 <div class="icon">
                     <img src="https://th.bing.com/th/id/OIP.oESypaPq8Yzj1DuqXK9VjQAAAA?rs=1&pid=ImgDetMain"
                          alt="{{ user.nickname }}" width="40" height="40">
                 </div>
-                <div class="info">
-                    <span class="post-title">{{post.title}}</span>
+                <div class="info" style="flex-grow: 1;">
+                    <span class="post-title">{{ post.title }}</span>
                     <br>
-                    <span class="post-meta">{{request.user.username}} | {{ post.get_formatted_created_at }} | Просмотров: {{post.views_count}} | Сохранений: 10</span>
+                    <span class="post-meta">{{ request.user.username }} | {{ post.get_formatted_created_at }} | Просмотров: {{ post.views_count }} | Сохранений: 10</span>
                 </div>
-            </div>
-            <div class="post-editor">
-                <textarea placeholder="Введите текст поста..."></textarea>
-            </div>
-            <div class="post-metadata">
-                <span class="categories">{{post.category}}</span> <br>
-                <span class="tags">{{ post.tags.all|join:", " }}</span>
+                {% if request.user == post.author %}
+                <button id="edit-button" onclick="showEditForm(this)" style="margin-left: 20px;">Редактировать</button>
+                {% endif %}
             </div>
 
-            <div class="post-settings">
-                <h3>Комментарии</h3>
-                <ul class="comments-list">
-                    <li>
-                        <span>Пользователь 1</span>
-                        <span>12.02.2023</span>
-                        <p>Текст комментария 1</p>
-                    </li>
-                    <li>
-                        <span>Пользователь 2</span>
-                        <span>15.03.2023</span>
-                        <p>Текст комментария 2</p>
-                    </li>
-                    <li>
-                        <span>Пользователь 3</span>
-                        <span>20.04.2023</span>
-                        <p>Текст комментария 3</p>
-                    </li>
-                </ul>
-                <form class="comment-form">
-                    <textarea placeholder="Введите текст комментария..."></textarea>
-                    <button type="submit">Отправить</button>
-                </form>
+            <div id="post-content-display">
+                <div class="post-editor">
+                    <textarea placeholder="Введите текст поста..."></textarea>
+                </div>
+                <div class="post-metadata">
+                    <span class="categories">{{post.category}}</span> <br>
+                    <span class="tags">{{ post.tags.all|join:", " }}</span>
+                </div>
+
+                <div class="post-settings">
+                    <h3>Комментарии</h3>
+                    <ul class="comments-list">
+                        <li>
+                            <span>Пользователь 1</span>
+                            <span>12.02.2023</span>
+                            <p>Текст комментария 1</p>
+                        </li>
+                        <li>
+                            <span>Пользователь 2</span>
+                            <span>15.03.2023</span>
+                            <p>Текст комментария 2</p>
+                        </li>
+                        <li>
+                            <span>Пользователь 3</span>
+                            <span>20.04.2023</span>
+                            <p>Текст комментария 3</p>
+                        </li>
+                    </ul>
+                    <form class="comment-form">
+                        <textarea placeholder="Введите текст комментария..."></textarea>
+                        <button type="submit">Отправить</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="edit-post-form" style="display: none;">
+                <div class="post-form">
+                    <form method="POST" action="{% url 'blog:post-update' post.slug %}">
+                        {% csrf_token %}
+                        <div class="post-editor">
+                            <textarea name="content" placeholder="Введите текст поста...">{{ post.content }}</textarea>
+                        </div>
+                        <div class="post-settings">
+                            <h3>Настройки публикации</h3>
+                            <label>
+                                Категория:
+                                <select name="category">
+                                    {% for category in form.category.field.queryset %}
+                                        <option value="{{ category.id }}" {% if category == post.category %}selected{% endif %}>
+                                            {{ category.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                            <label>
+                                Теги:
+                                <input type="text" name="tags" value="{{ post.tags.all|join:', ' }}">
+                            </label>
+                            <label>
+                                Название поста:
+                                <input type="text" name="title" value="{{ post.title }}">
+                            </label>
+                            <label>
+                                Статус публикации:
+                                <select name="access_status">
+                                    <option value="public" {% if post.access_status == 'public' %}selected{% endif %}>Публичный</option>
+                                    <option value="private" {% if post.access_status == 'private' %}selected{% endif %}>Приватный</option>
+                                    <option value="draft" {% if post.access_status == 'draft' %}selected{% endif %}>Черновик</option>
+                                </select>
+                            </label>
+                            <label>
+                                Время удаления:
+                                <select name="time_live" class="post-settings-select">
+                                    {% for value, label in form.time_live.field.choices %}
+                                        <option value="{{ value }}" {% if value|stringformat:"d" == post.time_live|stringformat:"d" %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="need_password" id="need-password" class="need-password" {% if post.password %}checked{% endif %} onclick="togglePasswordField()">
+                                Требуется пароль
+                            </label>
+                            {% if post.password %}
+                                <label>
+                                    Пароль:
+                                    <input type="password" name="password" id="{{ form.password.id_for_label }}" value="{{ post.password }}" disabled>
+                                </label>
+                            {% else %}
+                                <label>
+                                    Пароль:
+                                    <input type="password" name="password" id="{{ form.password.id_for_label }}" placeholder="Введите пароль" disabled>
+                                </label>
+                            {% endif %}
+                            <label>
+                                <input type="checkbox" name="is_delete_after_read" class="delete-after-read" {% if post.is_delete_after_read %}checked{% endif %}> Удалить после прочтения
+                            </label>
+                            <button type="submit">Сохранить изменения</button>
+                            <div data-password-id="{{ form.password.id_for_label }}"></div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         {% include 'blog/temps/popular_posts.html' %}
     </div>
 </main>
+
 {% endblock %}

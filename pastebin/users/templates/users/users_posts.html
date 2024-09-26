@@ -37,7 +37,7 @@
                     {% for post in posts %}
                     <li class="post-item">
                         <div class="post-details">
-                            <a href="#">
+                            <a href="{% url 'blog:post-detail' post.slug %}">
                                 <span class="article-title">{{ post.title }}</span>
                                 <br>
                                 <span class="article-meta">{{ post.category }} &nbsp; | &nbsp; {{ post.get_formatted_created_at }} &nbsp; |  &nbsp;
