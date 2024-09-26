@@ -1,18 +1,18 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif; /* Изменяем шрифт */
+    font-family: 'Roboto', sans-serif;
 }
 
 .main-container {
     display: flex;
     justify-content: space-between;
-    max-width: 1400px; /* Ограничиваем ширину основного контейнера */
+    max-width: 1400px;
     margin: 40px auto;
     padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень вокруг контейнера */
-    border-radius: 8px; /* Закругляем углы */
-    background-color: #ffffff; /* Белый фон для контейнера */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #ffffff;
 }
 
 .main-container {
@@ -27,7 +27,7 @@ body {
     padding: 40px;
     margin-right: 50px;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Добавляем тень */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .post-editor textarea {
@@ -37,7 +37,7 @@ body {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    resize: none; /* Запретить изменение размера */
+    resize: none;
 }
 
 .post-settings {
@@ -78,11 +78,11 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s; /* Эффект при наведении */
+    transition: background-color 0.3s;
 }
 
 .post-settings button:hover {
-    background-color: #444; /* Цвет кнопки при наведении */
+    background-color: #444;
 }
 
 
@@ -99,7 +99,7 @@ body {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    resize: none; /* Запретить изменение размера */
+    resize: none;
 }
 
 .post-settings {
@@ -136,9 +136,9 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s; /* Эффект при наведении */
+    transition: background-color 0.3s;
 }
 
 .post-settings button:hover {
-    background-color: #444; /* Цвет кнопки при наведении */
+    background-color: #444;
 }

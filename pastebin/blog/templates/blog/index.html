@@ -1,17 +1,15 @@
+{% extends 'blog/temps/base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Страница</title>
+{% block title %}Главная страница{% endblock %}
+
+{% block head %}
+    {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
-</head>
-<body>
+    <script src="{% static 'js/password_check_box.js' %}"></script>
+{% endblock %}
 
-{% include 'blog/temps/header.html' %}
-
+{% block content %}
 <main class="container">
     <div class="main-container">
         <section class="left-block">
@@ -57,29 +55,8 @@
                             прочтения
                         </label>
                         <button type="submit">Опубликовать</button>
+                        <div data-password-id="{{ form.password.id_for_label }}"></div>
                     </div>
-                    <script>
-                        // Функция для включения/выключения поля пароля
-                        function togglePasswordField() {
-                            // Получаем чекбокс и поле пароля
-                            var checkbox = document.getElementById('need-password');
-                            var passwordField = document.getElementById('{{ form.password.id_for_label }}');
-
-                            // Если чекбокс отмечен, разблокируем поле пароля
-                            if (checkbox.checked) {
-                                passwordField.disabled = false;
-                            } else {
-                                // Если чекбокс не отмечен, блокируем поле пароля
-                                passwordField.disabled = true;
-                                passwordField.value = '';  // Очищаем поле пароля
-                            }
-                        }
-
-                        // Блокируем поле пароля по умолчанию при загрузке страницы
-                        window.onload = function () {
-                            document.getElementById('{{ form.password.id_for_label }}').disabled = true;
-                        };
-                    </script>
                 </form>
             </div>
         </section>
@@ -88,8 +65,4 @@
 
     </div>
 </main>
-
-{% include 'blog/temps/footer.html' %}
-
-</body>
-</html>
+{% endblock %}

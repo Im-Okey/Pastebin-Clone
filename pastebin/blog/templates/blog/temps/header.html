@@ -2,6 +2,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+    <script src="{% static 'js/header_dropdown.js' %}"></script>
 </head>
 
 <header>
@@ -43,21 +44,3 @@
         {% endif %}
     </div>
 </header>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dropdownToggle = document.querySelector('.dropdown-toggle');
-        const dropdownMenu = document.querySelector('.dropdown');
-
-        dropdownToggle.addEventListener('click', function () {
-            dropdownMenu.classList.toggle('show');
-        });
-
-        // Закрываем меню, если кликнули вне его
-        window.addEventListener('click', function (event) {
-            if (!dropdownToggle.contains(event.target)) {
-                dropdownMenu.classList.remove('show');
-            }
-        });
-    });
-</script>

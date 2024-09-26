@@ -1,17 +1,16 @@
+{% extends 'blog/temps/base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Страница</title>
+{% block title %}Мои публикации{% endblock %}
+
+{% block head %}
+    {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'css/users_posts.css' %}">
-</head>
-<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="{% static 'js/copy_full_post_path.js' %}"></script>
+{% endblock %}
 
-{% include 'blog/temps/header.html' %}
-
+{% block content %}
 <main>
     <div class="main-container">
         <div class="post-filter">
@@ -41,17 +40,21 @@
                             <a href="#">
                                 <span class="article-title">{{ post.title }}</span>
                                 <br>
-                                <span class="article-meta">{{ post.category }} &nbsp; {{ post.get_formatted_created_at }} <i
-                                        class="fa fa-eye"></i> &nbsp; 1234</span>
+                                <span class="article-meta">{{ post.category }} &nbsp; | &nbsp; {{ post.get_formatted_created_at }} &nbsp; |  &nbsp;
+                                    <i class="fa fa-eye"></i> <span class="view-count">{{post.views_count}}</span></span>
                             </a>
                         </div>
                         <div class="post-actions">
-                            <span class="post-status">{{ post.get_access_status_display }}</span> <!-- Статус поста -->
-                            <span class="post-time">{{ post.get_deletion_date }}</span> <!-- Дата удаления -->
+                            <span class="post-status">{{ post.get_access_status_display }}</span>
+                            <span class="post-time">{{ post.get_deletion_date }}</span>
 
-                            <!-- Кнопка "Поделиться" -->
-                            <button class="post-share-button"
-                                    onclick="copyToClipboard('{{ post.get_absolute_url }}')">
+                            {% if post.password %}
+                            <span><i class="fa fa-lock" aria-hidden="true" style="color: #FF9800;"></i></span>
+                            {% else %}
+                            <span><i class="fa fa-unlock" aria-hidden="true" style="color: #4CAF50;"></i></span>
+                            {% endif %}
+
+                            <button class="post-share-button" onclick="copyToClipboard('{{ post.get_absolute_url }}')">
                                 Поделиться
                             </button>
 
@@ -60,23 +63,9 @@
                                 <button type="submit">Удалить</button>
                             </form>
                         </div>
-
                     </li>
                     {% endfor %}
 
-                    <script>
-                        function copyToClipboard(url) {
-                            // Создаем временный элемент input
-                            const tempInput = document.createElement('input');
-                            tempInput.value = window.location.origin + url; // Формируем полный URL
-                            document.body.appendChild(tempInput); // Добавляем его в DOM
-                            tempInput.select(); // Выделяем текст
-                            document.execCommand('copy'); // Копируем выделенный текст
-                            document.body.removeChild(tempInput); // Удаляем временный элемент
-
-                            alert('URL скопирован в буфер обмена!'); // Сообщение о том, что URL скопирован
-                        }
-                    </script>
                 </ul>
             </div>
         </div>
@@ -84,7 +73,4 @@
         {% include 'blog/temps/popular_posts.html' %}
     </div>
 </main>
-{% include 'blog/temps/footer.html' %}
-
-</body>
-</html>
+{% endblock %}

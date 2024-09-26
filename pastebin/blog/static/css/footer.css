@@ -19,8 +19,8 @@
 }
 
 .footer-container li {
-    display: inline; /* Отображение элементов в ряд */
-    margin: 0 15px; /* Отступ между ссылками */
+    display: inline;
+    margin: 0 15px;
 }
 
 .footer-container a {
@@ -29,31 +29,31 @@
 }
 
 .footer-container a:hover {
-    text-decoration: underline; /* Подчеркивание при наведении */
+    text-decoration: underline;
 }
 
 
 
 html, body {
-    height: 100%; /* Убедитесь, что высота html и body 100% */
-    margin: 0; /* Убираем отступы */
+    height: 100%;
+    margin: 0;
 }
 
 body {
     display: flex;
-    flex-direction: column; /* Устанавливаем вертикальную ориентацию для flexbox */
+    flex-direction: column;
 }
 
 main {
-    flex: 1; /* Заставляем main занимать оставшееся пространство */
+    flex: 1;
 }
 
 footer {
-    width: 100%; /* Ширина футера на всю ширину экрана */
-    background-color: #333; /* Цвет фона */
-    color: #fff; /* Цвет текста */
-    padding: 20px; /* Отступы внутри футера */
-    text-align: center; /* Центрирование текста */
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); /* Тень */
-    position: relative; /* Меняем на relative, чтобы он не прилипал к низу */
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
 }

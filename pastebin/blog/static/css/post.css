@@ -1,19 +1,19 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif; /* Изменяем шрифт */
-    background-color: #f8f9fa; /* Светлый фон страницы */
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
 }
 
 .main-container {
     display: flex;
     justify-content: space-between;
-    max-width: 1400px; /* Ограничиваем ширину основного контейнера */
+    max-width: 1400px;
     margin: 40px auto;
     padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень вокруг контейнера */
-    border-radius: 8px; /* Закругляем углы */
-    background-color: #ffffff; /* Белый фон для контейнера */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #ffffff;
 }
 
 .left-block {
@@ -23,18 +23,18 @@ body {
     margin-right: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    flex-grow: 1; /* Позволяем блоку расти */
+    flex-grow: 1;
 }
 
 .post-preview {
     display: flex;
-    align-items: center; /* Центрируем элементы по вертикали */
-    margin-bottom: 20px; /* Отступ снизу */
+    align-items: center;
+    margin-bottom: 20px;
     padding-right: 20px;
 }
 
 .icon {
-    margin-right: 15px; /* Отступ между иконкой и информацией */
+    margin-right: 15px;
 }
 
 .post-title {
@@ -59,12 +59,12 @@ body {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    resize: none; /* Запретить изменение размера */
-    transition: border-color 0.3s; /* Плавный переход */
+    resize: none;
+    transition: border-color 0.3s;
 }
 
 .post-editor textarea:focus {
-    border-color: #007bff; /* Цвет границы при фокусе */
+    border-color: #007bff;
 }
 
 .post-settings {
@@ -87,7 +87,7 @@ body {
 
 .comments-list li {
     margin-bottom: 10px;
-    border-bottom: 1px solid #ddd; /* Разделяем комментарии линией */
+    border-bottom: 1px solid #ddd;
     padding-bottom: 10px;
 }
 
@@ -117,7 +117,7 @@ body {
 }
 
 .comment-form textarea:focus {
-    border-color: #007bff; /* Цвет границы при фокусе */
+    border-color: #007bff;
 }
 
 .comment-form button {
@@ -128,66 +128,66 @@ body {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
-    transition: background-color 0.3s; /* Плавный переход */
+    transition: background-color 0.3s;
 }
 
 .comment-form button:hover {
-    background-color: #0056b3; /* Цвет кнопки при наведении */
+    background-color: #0056b3;
 }
 
 .right-block {
     width: 30%;
-    background-color: #eeeeee; /* Светлый фон для правого блока */
+    background-color: #eeeeee;
     padding: 20px;
     border-radius: 5px;
-    height: auto; /* Позволяем высоте меняться автоматически */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень */
-    position: relative; /* Позволяет размещать элементы внутри с абсолютным позиционированием */
+    height: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .right-block h2 {
     font-size: 22px;
     font-weight: bold;
-    margin-bottom: 15px; /* Отступ под заголовком */
-    color: #333; /* Цвет текста заголовка */
-    border-bottom: 2px solid #333333FF; /* Подчеркивание заголовка */
-    padding-bottom: 5px; /* Отступ снизу заголовка */
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #333333FF;
+    padding-bottom: 5px;
 }
 
 .right-block ul {
-    list-style: none; /* Убираем стандартные маркеры */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .right-block li {
-    margin-bottom: 15px; /* Отступ между статьями */
-    padding: 10px; /* Внутренний отступ для каждого элемента списка */
-    border: 3px solid #ddd; /* Легкая рамка вокруг каждого элемента */
-    border-radius: 5px; /* Закругленные углы */
-    transition: background-color 0.3s; /* Эффект при наведении */
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 3px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .right-block li:hover {
-    background-color: #5c5a5a; /* Цвет фона при наведении */
+    background-color: #5c5a5a;
 }
 
 .right-block a {
-    display: block; /* Делает ссылку блочным элементом */
-    padding: 15px; /* Добавляет внутренние отступы для большей области клика */
-    color: #333; /* Цвет текста */
-    text-decoration: none; /* Убирает подчеркивание текста */
-    border-radius: 5px; /* Скругленные углы */
-    transition: background-color 0.3s; /* Плавный переход для фона */
+    display: block;
+    padding: 15px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .right-block a:hover {
-    background-color: #e6e6e6; /* Цвет фона при наведении */
+    background-color: #e6e6e6;
 }
 
 .right-block span {
-    font-size: 14px; /* Размер шрифта для даты и просмотров */
-    color: #666; /* Цвет текста для мета-информации */
+    font-size: 14px;
+    color: #666;
 }
 
 .right-block i {

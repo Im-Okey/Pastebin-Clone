@@ -74,7 +74,7 @@ class Paste(models.Model):
         """Возвращает дату удаления пасты или 'Никогда'."""
         if self.time_live:
             deletion_date = timezone.now() + self.time_live
-            return deletion_date.strftime('%d.%m.%Y')  # Формат даты DD:MM:YYYY
+            return deletion_date.strftime('%d.%m.%Y')
         return "Никогда"
 
     def get_formatted_created_at(self):

@@ -1,59 +1,63 @@
 .right-block {
     width: 30%;
-    background-color: #eeeeee; /* Светлый фон для правого блока */
+    background-color: #eeeeee;
     padding: 20px;
     border-radius: 5px;
-    height: auto; /* Позволяем высоте меняться автоматически */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень */
-    position: relative; /* Позволяет размещать элементы внутри с абсолютным позиционированием */
+    height: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .right-block h2 {
     font-size: 22px;
     font-weight: bold;
-    margin-bottom: 15px; /* Отступ под заголовком */
-    color: #333; /* Цвет текста заголовка */
-    border-bottom: 2px solid #333333FF; /* Подчеркивание заголовка */
-    padding-bottom: 5px; /* Отступ снизу заголовка */
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #333333FF;
+    padding-bottom: 5px;
 }
 
 .right-block ul {
-    list-style: none; /* Убираем стандартные маркеры */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .right-block li {
-    margin-bottom: 15px; /* Отступ между статьями */
-    padding: 10px; /* Внутренний отступ для каждого элемента списка */
-    border: 3px solid #ddd; /* Легкая рамка вокруг каждого элемента */
-    border-radius: 5px; /* Закругленные углы */
-    transition: background-color 0.3s; /* Эффект при наведении */
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 3px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .right-block li:hover {
-    background-color: #5c5a5a; /* Цвет фона при наведении */
+    background-color: #5c5a5a;
 }
 
 .right-block a {
-    display: block; /* Делает ссылку блочным элементом */
-    padding: 15px; /* Добавляет внутренние отступы для большей области клика */
-    color: #333; /* Цвет текста */
-    text-decoration: none; /* Убирает подчеркивание текста */
-    border-radius: 5px; /* Скругленные углы */
-    transition: background-color 0.3s; /* Плавный переход для фона */
+    display: block;
+    padding: 15px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .right-block a:hover {
-    background-color: #e6e6e6; /* Цвет фона при наведении */
+    background-color: #e6e6e6;
 }
 
 .right-block span {
-    font-size: 14px; /* Размер шрифта для даты и просмотров */
-    color: #666; /* Цвет текста для мета-информации */
+    font-size: 14px;
+    color: #666;
 }
 
 .right-block i {
     font-size: 14px;
     margin-right: 5px;
+}
+
+.view-count {
+    margin-left: 0;
 }
