@@ -39,3 +39,26 @@ def verify_password(stored_password: str, provided_password: str) -> bool:
     """Проверяет, соответствует ли введенный пароль сохраненному хешу."""
     salt, hashed_password = stored_password.split(':')
     return hashed_password == hashlib.sha256(bytes.fromhex(salt) + provided_password.encode()).hexdigest()
+
+
+def process_time(form):
+    """Обрабатывает полученное с формы время удаления"""
+    time_live_value = form.cleaned_data.get('time_live')
+    return None if time_live_value == 0 else process_time_live(time_live_value)
+
+
+def handle_password(form, paste, old_hashed_password):
+    """Работает с паролем в зависимости от данных полученных с клиента"""
+    password = form.cleaned_data.get('password')
+    need_password = form.cleaned_data.get('need_password')
+
+    if need_password:
+        if password:
+            paste.password = hash_password(password)
+        else:
+            form.add_error('password', 'Пароль обязателен, если установлен чекбокс.')
+            return True
+    else:
+        paste.password = old_hashed_password
+
+    return False

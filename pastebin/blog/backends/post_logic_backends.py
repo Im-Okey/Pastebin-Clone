@@ -32,10 +32,15 @@ def render_post_response(request, post, popular_posts, requires_password, error_
 
 def render_edit_post_response(request, post, popular_posts, error_message=None):
     """Рендерит страницу редактирования поста."""
-    form = PasteForm(instance=post)  # Загружаем данные поста в форму
+    form = PasteForm(instance=post)
     return render(request, 'blog/post.html', {
         'form': form,
         'post': post,
         'popular_posts': popular_posts,
         'error_message': error_message,
     })
+
+
+def handle_form_error(form, post, popular_posts, request):
+    """Рендерит страницу поста при ошибке"""
+    return render(request, 'post.html', {'form': form, 'post': post, 'popular_posts': popular_posts})

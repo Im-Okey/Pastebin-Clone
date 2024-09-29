@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import PasteForm
 
-from .backends.general_backends import process_time_live, add_tags_to_paste, hash_password, verify_password
-from .backends.post_logic_backends import handle_post_deletion, render_post_response
+from .backends.general_backends import process_time_live, add_tags_to_paste, hash_password, verify_password, \
+    process_time, handle_password
+from .backends.post_logic_backends import handle_post_deletion, render_post_response, handle_form_error
 
 from .models import Paste
 
@@ -58,12 +59,9 @@ def create_paste(request):
             paste = form.save(commit=False)
             paste.author = request.user
 
-            time_live_value = form.cleaned_data.get('time_live')
-            paste.time_live = process_time_live(time_live_value)  # Преобразуем секунды в timedelta
+            paste.time_live = process_time(form)
 
-            password = form.cleaned_data.get('password')
-            if password:
-                paste.password = hash_password(password)
+            handle_password(form, paste, paste.password)
 
             paste.save()
 
@@ -91,33 +89,21 @@ def delete_paste(request, pk):
 def edit_post(request, slug):
     post = get_object_or_404(Paste, slug=slug, author=request.user)
     popular_posts = Paste.objects.order_by('-views_count')[:5]
+    old_hashed_password = post.password
 
     if request.method == 'POST':
         form = PasteForm(request.POST, instance=post)
         if form.is_valid():
             paste = form.save(commit=False)
 
-            time_live_value = form.cleaned_data.get('time_live')
-            if time_live_value == 0:
-                paste.time_live = None
-            else:
-                paste.time_live = process_time_live(time_live_value)
+            paste.time_live = process_time(form)
+            password_error = handle_password(form, paste, old_hashed_password)
 
-            password = form.cleaned_data.get('password')
-            need_password = form.cleaned_data.get('need_password')
-
-            if need_password:
-                if password:
-                    paste.password = hash_password(password)
-                else:
-                    paste.password = post.password
-            else:
-                paste.password = post.password
+            if password_error:
+                return handle_form_error(form, post, popular_posts, request)
 
             paste.save()
-
-            tags_input = form.cleaned_data['tags']
-            add_tags_to_paste(paste, tags_input)
+            add_tags_to_paste(paste, form.cleaned_data['tags'])
 
             return render_post_response(request, post, popular_posts, requires_password=False)
     else:

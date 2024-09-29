@@ -79,7 +79,7 @@ class Paste(models.Model):
 
     def get_formatted_created_at(self):
         """Возвращает дату создания пасты."""
-        return self.created_at.strftime('%d:%m:%Y')
+        return self.created_at.strftime('%d.%m.%Y')
 
     def get_time_live_display(self):
         """Возвращает строковое представление времени жизни пасты."""
