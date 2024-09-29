@@ -6,6 +6,7 @@ from .models import Paste
 
 class PasteForm(forms.ModelForm):
     time_live = forms.ChoiceField(choices=[], required=False)
+    need_password = forms.BooleanField(required=False)
 
     tags = forms.CharField(
         widget=forms.TextInput(attrs={
@@ -47,7 +48,7 @@ class PasteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['time_live'].choices = [
-            (None, 'Никогда'),
+            (0, 'Никогда'),
             (timedelta(hours=1).total_seconds(), 'Через 1 час'),
             (timedelta(days=1).total_seconds(), 'Через 1 день'),
             (timedelta(weeks=1).total_seconds(), 'Через 1 неделю'),

@@ -101,39 +101,36 @@
                             <label>
                                 Статус публикации:
                                 <select name="access_status">
-                                    <option value="public" {% if post.access_status == 'public' %}selected{% endif %}>Публичный</option>
-                                    <option value="private" {% if post.access_status == 'private' %}selected{% endif %}>Приватный</option>
-                                    <option value="draft" {% if post.access_status == 'draft' %}selected{% endif %}>Черновик</option>
+                                    <option value="0" {% if post.access_status == 0 %}selected{% endif %}>Приватный</option>
+                                    <option value="1" {% if post.access_status == 1 %}selected{% endif %}>Публичный</option>
+                                    <option value="2" {% if post.access_status == 2 %}selected{% endif %}>Черновик</option>
                                 </select>
                             </label>
                             <label>
                                 Время удаления:
                                 <select name="time_live" class="post-settings-select">
                                     {% for value, label in form.time_live.field.choices %}
-                                        <option value="{{ value }}" {% if value|stringformat:"d" == post.time_live|stringformat:"d" %}selected{% endif %}>{{ label }}</option>
+                                        <option value="{{ value }}" {% if label == post.get_time_live_display %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
                                     {% endfor %}
                                 </select>
                             </label>
                             <label>
-                                <input type="checkbox" name="need_password" id="need-password" class="need-password" {% if post.password %}checked{% endif %} onclick="togglePasswordField()">
+                                <input type="checkbox" name="need_password" id="need-password" class="need-password" onclick="togglePasswordField()">
                                 Требуется пароль
                             </label>
-                            {% if post.password %}
-                                <label>
-                                    Пароль:
-                                    <input type="password" name="password" id="{{ form.password.id_for_label }}" value="{{ post.password }}" disabled>
-                                </label>
-                            {% else %}
-                                <label>
-                                    Пароль:
-                                    <input type="password" name="password" id="{{ form.password.id_for_label }}" placeholder="Введите пароль" disabled>
-                                </label>
-                            {% endif %}
+
+                            <label>
+                                Пароль:
+                                <input type="password" name="password" id="password-field" placeholder="Введите пароль"
+                                       {% if post.password %} value="{{ post.password }}" {% else %} value="" {% endif %}
+                                       disabled>
+                            </label>
                             <label>
                                 <input type="checkbox" name="is_delete_after_read" class="delete-after-read" {% if post.is_delete_after_read %}checked{% endif %}> Удалить после прочтения
                             </label>
                             <button type="submit">Сохранить изменения</button>
-                            <div data-password-id="{{ form.password.id_for_label }}"></div>
                         </div>
                     </form>
                 </div>

@@ -58,7 +58,7 @@ class Paste(models.Model):
     tags = models.ManyToManyField(Tag, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     access_status = models.IntegerField(choices=ACCESS_STATUS_CHOICES, default=1)
-    time_live = models.DurationField(null=True, blank=True)  # Используйте DurationField
+    time_live = models.DurationField(null=True, blank=True)
     password = models.CharField(max_length=100, null=True, blank=True)
     is_delete_after_read = models.BooleanField(default=False)
     views_count = models.PositiveIntegerField(default=100)
@@ -80,6 +80,19 @@ class Paste(models.Model):
     def get_formatted_created_at(self):
         """Возвращает дату создания пасты."""
         return self.created_at.strftime('%d:%m:%Y')
+
+    def get_time_live_display(self):
+        """Возвращает строковое представление времени жизни пасты."""
+        if self.time_live is None:
+            return "Никогда"
+        elif self.time_live <= timedelta(hours=1):
+            return "Через 1 час"
+        elif self.time_live <= timedelta(days=1):
+            return "Через 1 день"
+        elif self.time_live <= timedelta(weeks=1):
+            return "Через 1 неделю"
+        else:
+            return "Неизвестно"
 
     class Meta:
         verbose_name = 'Паста'

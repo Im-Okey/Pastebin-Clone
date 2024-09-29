@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PasteForm
 
 from .backends.general_backends import process_time_live, add_tags_to_paste, hash_password, verify_password
-from .backends.post_logic_backends import handle_post_deletion, render_post_response, render_edit_post_response
+from .backends.post_logic_backends import handle_post_deletion, render_post_response
 
 from .models import Paste
 
@@ -59,7 +59,7 @@ def create_paste(request):
             paste.author = request.user
 
             time_live_value = form.cleaned_data.get('time_live')
-            paste.time_live = process_time_live(time_live_value)
+            paste.time_live = process_time_live(time_live_value)  # Преобразуем секунды в timedelta
 
             password = form.cleaned_data.get('password')
             if password:
@@ -90,29 +90,40 @@ def delete_paste(request, pk):
 @login_required
 def edit_post(request, slug):
     post = get_object_or_404(Paste, slug=slug, author=request.user)
-    popular_posts = Paste.objects.order_by('-views_count')[:5]  # Получаем популярные посты
+    popular_posts = Paste.objects.order_by('-views_count')[:5]
 
     if request.method == 'POST':
         form = PasteForm(request.POST, instance=post)
         if form.is_valid():
-            updated_paste = form.save(commit=False)
+            paste = form.save(commit=False)
 
             time_live_value = form.cleaned_data.get('time_live')
-            updated_paste.time_live = process_time_live(time_live_value)
+            if time_live_value == 0:
+                paste.time_live = None
+            else:
+                paste.time_live = process_time_live(time_live_value)
 
             password = form.cleaned_data.get('password')
-            if password:
-                updated_paste.password = hash_password(password)
+            need_password = form.cleaned_data.get('need_password')
 
-            updated_paste.save()
+            if need_password:
+                if password:
+                    paste.password = hash_password(password)
+                else:
+                    paste.password = post.password
+            else:
+                paste.password = post.password
+
+            paste.save()
 
             tags_input = form.cleaned_data['tags']
-            add_tags_to_paste(updated_paste, tags_input)
+            add_tags_to_paste(paste, tags_input)
 
-            return redirect('post-detail', slug=slug)  # перенаправление на страницу поста
+            return render_post_response(request, post, popular_posts, requires_password=False)
+    else:
+        form = PasteForm(instance=post)
 
-    # Для GET-запроса, рендерим страницу редактирования
-    return render_edit_post_response(request, post, popular_posts)
+    return render(request, 'post.html', {'form': form, 'post': post, 'popular_posts': popular_posts})
 
 
 def detail_post(request, slug):
@@ -142,7 +153,8 @@ def post_password_check(request, slug):
             post.save()
             return handle_post_deletion(request, post, popular_posts)
 
-        return render_post_response(request, post, popular_posts, True, "Неверный пароль. Пожалуйста, попробуйте снова.")
+        return render_post_response(request, post, popular_posts, True,
+                                    "Неверный пароль. Пожалуйста, попробуйте снова.")
 
     return redirect('blog:post-detail', slug=slug)
 

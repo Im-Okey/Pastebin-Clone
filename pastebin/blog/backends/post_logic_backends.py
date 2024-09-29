@@ -10,7 +10,8 @@ def handle_post_deletion(request, post, popular_posts):
 
     if post.is_delete_after_read:
         response = render_post_response(request, post, popular_posts, False)
-        post.delete()
+        if post.author != request.user:
+            post.delete()
         return response
 
     return render_post_response(request, post, popular_posts, False)

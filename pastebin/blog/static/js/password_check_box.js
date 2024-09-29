@@ -1,18 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var passwordFieldId = document.querySelector('[data-password-id]').getAttribute('data-password-id');
-    var passwordField = document.getElementById(passwordFieldId);
     var checkbox = document.getElementById('need-password');
+    var passwordField = document.getElementById('password-field');
 
+    // Функция для переключения состояния поля пароля
     function togglePasswordField() {
         if (checkbox.checked) {
-            passwordField.disabled = false;
+            passwordField.disabled = false; // Разблокировать поле пароля
+            passwordField.value = '';       // Очистить поле для нового пароля
         } else {
-            passwordField.disabled = true;
-            passwordField.value = '';
+            passwordField.disabled = true;  // Заблокировать поле пароля
+            passwordField.value = '';       // Очистить поле
         }
     }
 
-    passwordField.disabled = true;
+    // Проверка начального состояния при загрузке страницы
+    passwordField.disabled = true; // Начально заблокировано
 
-    checkbox.addEventListener('click', togglePasswordField);
+    // Слушатель для изменения состояния чекбокса
+    checkbox.addEventListener('change', togglePasswordField);
 });

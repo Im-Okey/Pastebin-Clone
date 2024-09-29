@@ -18,7 +18,9 @@ def process_time_live(time_live_value: Optional[str]) -> Optional[timedelta]:
 
 
 def add_tags_to_paste(paste: 'Paste', tags_input: Optional[str]) -> None:
-    """Функция для добавления тегов к пасте."""
+    """Функция для перезаписи тегов у пасты."""
+    paste.tags.clear()
+
     if tags_input:
         tags_list: List[str] = [tag.strip() for tag in tags_input.split(',') if tag.strip()]
         for tag_name in tags_list:
