@@ -117,16 +117,20 @@
                                 </select>
                             </label>
                             <label>
-                                <input type="checkbox" name="need_password" id="need-password" class="need-password" onclick="togglePasswordField()">
+                                <input type="checkbox" name="need_password" id="need-password" class="need-password" {% if post.password %}checked{% endif %} onclick="togglePasswordField()">
                                 Требуется пароль
                             </label>
 
                             <label>
                                 Пароль:
                                 <input type="password" name="password" id="password-field" placeholder="Введите пароль"
-                                       {% if post.password %} value="{{ post.password }}" {% else %} value="" {% endif %}
-                                       disabled>
+                                       {% if post.password %} value="{{ post.password }}" {% else %} value="" {% endif %} disabled>
                             </label>
+                            <!-- Скрытое поле для хеша пароля -->
+                            <input type="hidden" name="stored_password" id="stored-password" value="{{ post.password }}">
+                            {% if error_message %}
+                            <div class="error-message" style="color: red;">{{ error_message }}</div>
+                            {% endif %}
                             <label>
                                 <input type="checkbox" name="is_delete_after_read" class="delete-after-read" {% if post.is_delete_after_read %}checked{% endif %}> Удалить после прочтения
                             </label>

@@ -40,7 +40,3 @@ def render_edit_post_response(request, post, popular_posts, error_message=None):
         'error_message': error_message,
     })
 
-
-def handle_form_error(form, post, popular_posts, request):
-    """Рендерит страницу поста при ошибке"""
-    return render(request, 'post.html', {'form': form, 'post': post, 'popular_posts': popular_posts})

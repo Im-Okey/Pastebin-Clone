@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import PasteForm
 
-from .backends.general_backends import process_time_live, add_tags_to_paste, hash_password, verify_password, \
+from .backends.general_backends import add_tags_to_paste, verify_password, \
     process_time, handle_password
-from .backends.post_logic_backends import handle_post_deletion, render_post_response, handle_form_error
+from .backends.post_logic_backends import handle_post_deletion, render_post_response
 
 from .models import Paste
 
@@ -100,7 +100,7 @@ def edit_post(request, slug):
             password_error = handle_password(form, paste, old_hashed_password)
 
             if password_error:
-                return handle_form_error(form, post, popular_posts, request)
+                return render_post_response(request, post, popular_posts, requires_password=False, error_message="Пожалуйста, введите пароль или отключите его.")
 
             paste.save()
             add_tags_to_paste(paste, form.cleaned_data['tags'])

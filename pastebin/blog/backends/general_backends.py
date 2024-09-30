@@ -49,16 +49,22 @@ def process_time(form):
 
 def handle_password(form, paste, old_hashed_password):
     """Работает с паролем в зависимости от данных полученных с клиента"""
-    password = form.cleaned_data.get('password')
     need_password = form.cleaned_data.get('need_password')
+    stored_password = form.cleaned_data.get('stored_password')
 
     if need_password:
+        password = form.cleaned_data.get('password')
         if password:
             paste.password = hash_password(password)
+        elif old_hashed_password:
+            paste.password = old_hashed_password
         else:
             form.add_error('password', 'Пароль обязателен, если установлен чекбокс.')
             return True
     else:
-        paste.password = old_hashed_password
+        if stored_password:
+            paste.password = old_hashed_password
+        else:
+            paste.password = None
 
     return False

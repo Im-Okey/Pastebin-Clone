@@ -42,13 +42,12 @@
                             {{ form.time_live }}
                         </label>
                         <label>
-                            <input type="checkbox" name="need_password" id="need-password" class="need-password"
-                                   onclick="togglePasswordField()">
+                            <input type="checkbox" name="need_password" id="need-password" class="need-password" onclick="togglePasswordField()">
                             Требуется пароль
                         </label>
                         <label>
                             Пароль:
-                            {{ form.password }}
+                             <input type="password" name="password" id="password-field" placeholder="Введите пароль" disabled>
                         </label>
                         <label>
                             <input type="checkbox" name="is_delete_after_read" class="delete-after-read"> Удалить после
