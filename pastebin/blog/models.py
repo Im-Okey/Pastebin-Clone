@@ -44,6 +44,7 @@ class Paste(models.Model):
 
     TIME_LIVE_CHOICES = [
         (None, 'Никогда'),
+        (timedelta(minutes=2), 'Через 2 минуты'),
         (timedelta(hours=1), 'Через 1 час'),
         (timedelta(days=1), 'Через 1 день'),
         (timedelta(weeks=1), 'Через 1 неделю'),
@@ -85,6 +86,8 @@ class Paste(models.Model):
         """Возвращает строковое представление времени жизни пасты."""
         if self.time_live is None:
             return "Никогда"
+        elif self.time_live <= timedelta(minutes=2):
+            return "Через 2 минуты"
         elif self.time_live <= timedelta(hours=1):
             return "Через 1 час"
         elif self.time_live <= timedelta(days=1):

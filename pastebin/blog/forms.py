@@ -49,6 +49,7 @@ class PasteForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['time_live'].choices = [
             (0, 'Никогда'),
+            (timedelta(minutes=2).total_seconds(), 'Через 2 минуты'),
             (timedelta(hours=1).total_seconds(), 'Через 1 час'),
             (timedelta(days=1).total_seconds(), 'Через 1 день'),
             (timedelta(weeks=1).total_seconds(), 'Через 1 неделю'),
