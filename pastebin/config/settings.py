@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'storages',
     'django_celery_beat',
+    'django_celery_results',
 
     # my apps
     'blog.apps.BlogConfig',
@@ -97,12 +98,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # URL для вашего брокера сообщений (Redis, RabbitMQ)
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'delete_expired_pastes_every_minute': {
         'task': 'blog.tasks.delete_expired_pastes',
-        'schedule': 60.0,  # Каждую минуту
+        'schedule': 60.0,
     },
 }
