@@ -324,6 +324,8 @@ body {
 }
 
 .star {
-    font-size: 24px; /* Размер звезды */
+    font-size: 34px !important; /* Увеличенный размер звезды */
     transition: color 0.3s; /* Плавный переход цвета */
+    margin-top: -5px; /* Сдвиг вверх на 5 пикселей */
+    display: inline-block; /* Для корректного сдвига */
 }

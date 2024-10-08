@@ -55,7 +55,7 @@
 
                             <!-- Звезда для избранного -->
                             <span class="post-favorite" onclick="toggleFavorite(this)">
-                                <span class="star" id="favorite-star">&#9734;</span> <!-- Пустая звезда -->
+                                <span class="star" id="favorite-star">☆</span> <!-- Пустая звезда -->
                             </span>
 
                             <button class="post-share-button" onclick="copyToClipboard('{{ post.get_absolute_url }}')">
@@ -75,14 +75,17 @@
     function toggleFavorite(element) {
         const star = element.querySelector('.star');
 
-        console.log("Текущий символ звезды:", star.innerHTML); // Для отладки
+        // Выводим текущий символ звезды в консоль
+        console.log("Текущий символ звезды:", star.innerHTML);
 
-        if (star.innerHTML === '&#9734;') { // Если пустая звезда
-            star.innerHTML = '&#9733;'; // Меняем на заполненную
+        if (star.innerHTML.trim() === '☆') { // Проверяем пустую звезду
+            star.innerHTML = '★'; // Меняем на заполненную
             star.style.color = '#FFD700'; // Золотой цвет для заполненной звезды
+            console.log("Звезда теперь заполнена.");
         } else {
-            star.innerHTML = '&#9734;'; // Меняем на пустую
+            star.innerHTML = '☆'; // Меняем на пустую
             star.style.color = 'black'; // Черный цвет для пустой звезды
+            console.log("Звезда теперь пустая.");
         }
     }
 </script>
