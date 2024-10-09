@@ -121,3 +121,7 @@ header {
 .auth-link:hover {
     text-decoration: underline;
 }
+
+.dropdown-toggle::after {
+    display: none;
+}
