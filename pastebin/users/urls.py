@@ -1,4 +1,3 @@
-
 from django.urls import path
 from . import views
 
@@ -11,5 +10,6 @@ urlpatterns = [
     path('register/', views.signup, name='register'),
 
     path('posts/', views.posts_list, name='posts-list'),
-    path('toggle-favorite/<slug:slug>/', views.toggle_favorite, name='toggle-favorite')
+    path('toggle-favorite/<slug:slug>/', views.toggle_favorite, name='toggle-favorite'),
+    path('profile/', views.profile, name='user-profile'),
 ]

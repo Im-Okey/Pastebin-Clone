@@ -82,7 +82,7 @@
 
 .all-posts-link a {
     display: inline-block;
-    background-color: #4CAF50;
+    background-color: #434343;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -92,5 +92,5 @@
 }
 
 .all-posts-link a:hover {
-    background-color: #45a049;
+    background-color: #333333;
 }

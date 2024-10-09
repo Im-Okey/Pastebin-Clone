@@ -1,0 +1,81 @@
+{% extends 'blog/temps/base.html' %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block head %}
+{{ block.super }}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/user_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="main-container">
+        <div class="left-block">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Мой профиль</h4>
+                    <form>
+                        <div class="form-group row">
+                            <label for="username" class="col-sm-3 col-form-label">Имя пользователя:</label>
+                            <div class="col-sm-9">
+                                <input type="text" readonly class="form-control" id="username"
+                                       value="{{ user.username }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                            <div class="col-sm-9">
+                                <input type="email" readonly class="form-control" id="email" value="{{ user.email }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Статус email:</label>
+                            <div class="col-sm-9">
+                                <span class="text-success">Подтвержден!</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="additional-info" class="col-sm-3 col-form-label">Дополнительная
+                                информация:</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="additional-info" rows="3"
+                                          placeholder="Введите дополнительную информацию о себе...">{% if user.bio %}{{ user.bio }}{% endif %}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="location" class="col-sm-3 col-form-label">Местоположение:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="location" placeholder="Откуда вы?"
+                                       {%if user.address%}value="{{ user.address }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Аватар:</label>
+                            <div class="col-sm-9">
+                                <img src="https://via.placeholder.com/100" alt="Avatar" class="avatar">
+                                <a href="#" class="ml-3">[сменить аватар]</a>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Тип аккаунта:</label>
+                            <div class="col-sm-9">
+                                <span>Бесплатный</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Обновить профиль</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% include 'blog/temps/popular_posts.html' %}
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

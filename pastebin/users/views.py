@@ -61,3 +61,10 @@ def toggle_favorite(request, slug):
         is_favorite = True
 
     return JsonResponse({'is_favorite': is_favorite})
+
+
+def profile(request):
+    popular_posts = Paste.objects.order_by('-views_count')[:5]
+    return render(request, 'users/user_profile.html', {
+        'popular_posts': popular_posts,
+    })
