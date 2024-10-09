@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     bio = models.TextField(blank=True, null=True)
+    favorites = models.ManyToManyField('blog.Paste', related_name='favorited_by', blank=True)
 
     groups = models.ManyToManyField(
         'auth.Group',
