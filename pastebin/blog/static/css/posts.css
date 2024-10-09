@@ -319,13 +319,13 @@ body {
 .post-favorite {
     margin-right: 10px;
     cursor: pointer;
-    font-size: 24px; /* Размер звезды */
-    display: inline-block; /* Обеспечиваем правильное выравнивание */
+    font-size: 24px;
+    display: inline-block;
 }
 
 .star {
-    font-size: 34px !important; /* Увеличенный размер звезды */
-    transition: color 0.3s; /* Плавный переход цвета */
-    margin-top: -5px; /* Сдвиг вверх на 5 пикселей */
-    display: inline-block; /* Для корректного сдвига */
+    font-size: 34px !important;
+    transition: color 0.3s;
+    margin-top: -5px;
+    display: inline-block;
 }

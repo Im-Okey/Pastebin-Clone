@@ -11,4 +11,5 @@ urlpatterns = [
     path('register/', views.signup, name='register'),
 
     path('posts/', views.posts_list, name='posts-list'),
+    path('toggle-favorite/<slug:slug>/', views.toggle_favorite, name='toggle-favorite')
 ]

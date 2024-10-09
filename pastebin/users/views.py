@@ -1,6 +1,8 @@
-
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView
 
 from .forms import CustomUserCreationForm
@@ -33,6 +35,7 @@ class SignUpView(CreateView):
         return super().form_valid(form)
 
 
+@login_required
 def posts_list(request):
     user = request.user
     posts = Paste.objects.filter(author=user).order_by('-created_at')
@@ -43,3 +46,18 @@ def posts_list(request):
         'popular_posts': popular_posts
     })
 
+
+@csrf_exempt
+@login_required
+def toggle_favorite(request, slug):
+    post = get_object_or_404(Paste, slug=slug)
+    user = request.user
+
+    if post in user.favorites.all():
+        user.favorites.remove(post)
+        is_favorite = False
+    else:
+        user.favorites.add(post)
+        is_favorite = True
+
+    return JsonResponse({'is_favorite': is_favorite})

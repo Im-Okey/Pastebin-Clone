@@ -7,7 +7,6 @@
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'css/posts.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 {% endblock %}
 
 {% block content %}
@@ -53,9 +52,12 @@
                                                        style="color: #4CAF50;"></i></span>
                             {% endif %}
 
-                            <!-- Звезда для избранного -->
-                            <span class="post-favorite" onclick="toggleFavorite(this)">
-                                <span class="star" id="favorite-star">☆</span> <!-- Пустая звезда -->
+                            <span class="post-favorite" data-post-slug="{{ post.slug }}"
+                                  onclick="toggleFavorite(this, '{{ post.slug }}')">
+                                <span class="star" id="favorite-star"
+                                      style="color: {% if post in user.favorites.all %}#FFD700{% else %}black{% endif %};">
+                                    {% if post in user.favorites.all %}★{% else %}☆{% endif %}
+                                </span>
                             </span>
 
                             <button class="post-share-button" onclick="copyToClipboard('{{ post.get_absolute_url }}')">
@@ -74,19 +76,34 @@
 <script>
     function toggleFavorite(element) {
         const star = element.querySelector('.star');
+        const postSlug = element.getAttribute('data-post-slug');  // Получаем слаг из data-атрибута
 
-        // Выводим текущий символ звезды в консоль
-        console.log("Текущий символ звезды:", star.innerHTML);
+        const toggleFavoriteUrl = `/users/toggle-favorite/${postSlug}/`;
 
-        if (star.innerHTML.trim() === '☆') { // Проверяем пустую звезду
-            star.innerHTML = '★'; // Меняем на заполненную
-            star.style.color = '#FFD700'; // Золотой цвет для заполненной звезды
-            console.log("Звезда теперь заполнена.");
-        } else {
-            star.innerHTML = '☆'; // Меняем на пустую
-            star.style.color = 'black'; // Черный цвет для пустой звезды
-            console.log("Звезда теперь пустая.");
-        }
+        fetch(toggleFavoriteUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_favorite) {
+                    star.innerHTML = '★';
+                    star.style.color = '#FFD700';
+                } else {
+                    star.innerHTML = '☆';
+                    star.style.color = 'black';
+                }
+            })
+            .catch(error => console.error('Ошибка:', error));
     }
+
+    // Добавляем событие клика на все элементы с классом "post-favorite"
+    document.querySelectorAll('.post-favorite').forEach(item => {
+        item.addEventListener('click', function () {
+            toggleFavorite(this);
+        });
+    });
 </script>
 {% endblock %}
