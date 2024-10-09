@@ -79,7 +79,7 @@ def delete_paste(request, pk):
     post = get_object_or_404(Paste, id=pk)
 
     if request.method == 'POST':
-        post.delete()  # Удаляем пост
+        post.delete()
         return redirect('users:posts-list')
 
     return render(request, 'blog/post_confirm_delete.html', {'post': post})
@@ -135,7 +135,6 @@ def post_password_check(request, slug):
         entered_password = request.POST.get('password')
 
         if verify_password(post.password, entered_password):
-            post.views_count += 1
             post.save()
             return handle_post_deletion(request, post, popular_posts)
 
