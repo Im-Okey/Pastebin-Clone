@@ -1,30 +1,32 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView
 
-from .forms import CustomUserCreationForm, UserProfileForm
+from .forms import CustomUserCreationForm
 from blog.models import Paste
 
 
 def login(request):
-    return render(request, 'users/registration/login.html')
+    return render(request, 'registration/login.html')
 
 
 def logout(request):
-    return render(request, 'users/registration/login.html')
+    return render(request, 'registration/login.html')
 
 
 def signup(request):
-    return render(request, 'users/registration/signup.html')
+    return render(request, 'registration/signup.html')
 
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("users:login")
-    template_name = "users/registration/login.html"
+    template_name = "registration/login.html"
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -41,7 +43,7 @@ def posts_list(request):
     posts = Paste.objects.filter(author=user).order_by('-created_at')
     popular_posts = Paste.objects.order_by('-views_count')[:5]
 
-    return render(request, 'users/users_posts.html', {
+    return render(request, 'users_posts.html', {
         'posts': posts,
         'popular_posts': popular_posts
     })
@@ -65,7 +67,7 @@ def toggle_favorite(request, slug):
 
 def profile(request):
     popular_posts = Paste.objects.order_by('-views_count')[:5]
-    return render(request, 'users/user_profile.html', {
+    return render(request, 'user_profile.html', {
         'popular_posts': popular_posts,
     })
 
@@ -93,7 +95,28 @@ def update_profile(request):
 
         return redirect('users:user-profile')
 
-    return render(request, 'users/user_profile.html', {
+    return render(request, 'user_profile.html', {
         'user': user,
         'popular_posts': popular_posts
     })
+
+
+@method_decorator(login_required, name='dispatch')
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'password_change_page.html'
+    success_url = reverse_lazy('users:password-change-done')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['popular_posts'] = Paste.objects.order_by('-views_count')[:5]
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class CustomPasswordChangeDoneView(PasswordChangeDoneView):
+    template_name = 'password_change_done.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['popular_posts'] = Paste.objects.order_by('-views_count')[:5]
+        return context

@@ -1,0 +1,75 @@
+{% extends 'blog/temps/base.html' %}
+{% load static %}
+
+{% block title %}Мои публикации{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/users_posts.css' %}">
+    <script src="{% static 'js/copy_full_post_path.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="main-container">
+        <div class="post-filter">
+            <form>
+                <input type="search" placeholder="Поиск...">
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <select name="category" style="width: 35%;">
+                        <option value="">Все категории</option>
+                        <option value="tech">Технологии</option>
+                        <option value="design">Дизайн</option>
+                        <option value="marketing">Маркетинг</option>
+                    </select>
+                    <select name="sort" style="width: 35%; margin-left: 20px;">
+                        <option value="">Сортировать по</option>
+                        <option value="title">Заголовку</option>
+                        <option value="date">Дате</option>
+                        <option value="views">Количество просмотров</option>
+                    </select>
+                    <button type="submit" style="margin-left: 327px;">Применить</button>
+                </div>
+            </form>
+            <div class="post-list">
+                <ul>
+                    {% for post in posts %}
+                    <li class="post-item">
+                        <div class="post-details">
+                            <a href="{% url 'blog:post-detail' post.slug %}">
+                                <span class="article-title">{{ post.title }}</span>
+                                <br>
+                                <span class="article-meta">{{ post.category }} &nbsp; | &nbsp; {{ post.get_formatted_created_at }} &nbsp; |  &nbsp;
+                                    <i class="fa fa-eye"></i> <span class="view-count">{{post.views_count}}</span></span>
+                            </a>
+                        </div>
+                        <div class="post-actions">
+                            <span class="post-status">{{ post.get_access_status_display }}</span>
+                            <span class="post-time">{{ post.get_deletion_date }}</span>
+
+                            {% if post.password %}
+                            <span><i class="fa fa-lock" aria-hidden="true" style="color: #FF9800;"></i></span>
+                            {% else %}
+                            <span><i class="fa fa-unlock" aria-hidden="true" style="color: #4CAF50;"></i></span>
+                            {% endif %}
+
+                            <button class="post-share-button" onclick="copyToClipboard('{{ post.get_absolute_url }}')">
+                                Поделиться
+                            </button>
+
+                            <form method="post" action="{% url 'blog:post-delete' post.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Удалить</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+
+        {% include 'blog/temps/popular_posts.html' %}
+    </div>
+</main>
+{% endblock %}
