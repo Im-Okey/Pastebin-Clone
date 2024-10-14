@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView
 
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, UserProfileForm
 from blog.models import Paste
 
 
@@ -67,4 +67,33 @@ def profile(request):
     popular_posts = Paste.objects.order_by('-views_count')[:5]
     return render(request, 'users/user_profile.html', {
         'popular_posts': popular_posts,
+    })
+
+
+@login_required
+def update_profile(request):
+    popular_posts = Paste.objects.order_by('-views_count')[:5]
+    user = request.user
+
+    if request.method == 'POST':
+        username = request.POST.get('username', user.username)
+        email = request.POST.get('email', user.email)
+        bio = request.POST.get('bio', user.bio)
+        address = request.POST.get('address', user.address)
+
+        if 'avatar' in request.FILES:
+            user.avatar = request.FILES['avatar']
+
+        user.username = username
+        user.email = email
+        user.bio = bio
+        user.address = address
+
+        user.save()
+
+        return redirect('users:user-profile')
+
+    return render(request, 'users/user_profile.html', {
+        'user': user,
+        'popular_posts': popular_posts
     })

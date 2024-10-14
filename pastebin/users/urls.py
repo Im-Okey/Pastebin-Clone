@@ -11,5 +11,7 @@ urlpatterns = [
 
     path('posts/', views.posts_list, name='posts-list'),
     path('toggle-favorite/<slug:slug>/', views.toggle_favorite, name='toggle-favorite'),
+
     path('profile/', views.profile, name='user-profile'),
+    path('update-profile/', views.update_profile, name='update-profile'),
 ]
