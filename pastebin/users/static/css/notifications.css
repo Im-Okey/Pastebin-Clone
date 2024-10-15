@@ -285,26 +285,67 @@ body {
     border-radius: 50%;
 }
 
-.notifications-block,
-.messages-block {
-    margin-bottom: 20px;
+.notifications-block {
+    background-color: #f8f9fa;
+    border: 1px solid #e2e3e5;
+    border-radius: 8px;
+    padding: 20px;
 }
 
-.notification-time,
-.message-time {
+.notifications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-item {
+    padding: 0;
+}
+
+.notification-link {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.3s;
+}
+
+.notification-link:hover {
+    background-color: #eeeeee;
+    text-decoration: none;
+}
+
+.notification-avatar {
+    margin-right: 15px;
+}
+
+.avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-message {
+    font-size: 1em;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.notification-time {
     font-size: 0.8em;
     color: #888;
 }
 
-.message-sender {
-    font-weight: bold;
-}
-
-ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-li {
-    margin-bottom: 10px;
+.no-notifications {
+    text-align: center;
+    color: #888;
+    font-size: 1em;
+    margin-top: 15px;
 }

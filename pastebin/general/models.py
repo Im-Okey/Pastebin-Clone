@@ -56,10 +56,30 @@ class Messages(models.Model):
 
 
 class Notifications(models.Model):
+    NOTE_TYPES = [
+        (1, 'Comment'),
+        (2, 'Like'),
+        (3, 'Dislike'),
+        (4, 'Favourite'),
+    ]
+
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='note_receiver', default=None)
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='note_sender', default=None)
     send_time = models.DateTimeField(auto_now_add=True)
 
+    notification_type = models.IntegerField(choices=NOTE_TYPES, max_length=1)
+
     class Meta:
         verbose_name = 'Уведомление'
         verbose_name_plural = 'Уведомления'
+
+    def get_notification_message(self):
+        if self.notification_type == 1:
+            return f'{self.sender} прокомментировал ваш пост'
+        elif self.notification_type == 2:
+            return f'{self.sender} лайкнул ваш пост'
+        elif self.notification_type == 3:
+            return f'{self.sender} поставил дизлайк вашему посту'
+        elif self.notification_type == 4:
+            return f'{self.sender} добавил ваш пост в избранное'
+        return 'Неизвестное уведомление'
