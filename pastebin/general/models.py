@@ -38,3 +38,28 @@ class LikeDislikeComment(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['user', 'comment'], name='unique_user_comment_like_dislike'),
         ]
+
+
+class Messages(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='message_receiver', default=None)
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='message_sender', default=None)
+    post = models.ForeignKey(Paste, on_delete=models.CASCADE)
+    text = models.TextField()
+    send_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Сообщения'
+
+
+class Notifications(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='note_receiver', default=None)
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='note_sender', default=None)
+    send_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Уведомление'
+        verbose_name_plural = 'Уведомления'

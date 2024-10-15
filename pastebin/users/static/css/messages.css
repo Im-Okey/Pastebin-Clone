@@ -284,3 +284,74 @@ body {
     object-fit: cover;
     border-radius: 50%;
 }
+
+
+.messages-block {
+    margin-bottom: 20px;
+}
+
+.messages-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.message-item {
+    padding: 0;
+}
+
+.message-link {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.3s;
+}
+
+.message-link:hover {
+    background-color: #f9f9f9;
+    text-decoration: none;
+}
+
+.message-avatar {
+    margin-right: 15px;
+}
+
+.avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.message-content {
+    flex-grow: 1;
+}
+
+.message-sender {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.message-text {
+    margin: 5px 0;
+    font-size: 0.95em;
+    color: #555;
+}
+
+.message-time {
+    font-size: 0.8em;
+    color: #888;
+    display: block;
+    margin-top: 5px;
+}
+
+.no-messages {
+    text-align: center;
+    color: #888;
+    font-size: 1em;
+    margin-top: 15px;
+}

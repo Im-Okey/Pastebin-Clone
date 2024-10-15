@@ -284,3 +284,27 @@ body {
     object-fit: cover;
     border-radius: 50%;
 }
+
+.notifications-block,
+.messages-block {
+    margin-bottom: 20px;
+}
+
+.notification-time,
+.message-time {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.message-sender {
+    font-weight: bold;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}

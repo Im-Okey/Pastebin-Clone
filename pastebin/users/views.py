@@ -10,6 +10,8 @@ from django.views.generic import CreateView
 from .forms import CustomUserCreationForm
 from blog.models import Paste
 
+from general.models import Notifications, Messages
+
 
 def login(request):
     return render(request, 'registration/login.html')
@@ -120,3 +122,21 @@ class CustomPasswordChangeDoneView(PasswordChangeDoneView):
         context = super().get_context_data(**kwargs)
         context['popular_posts'] = Paste.objects.order_by('-views_count')[:5]
         return context
+
+
+def notifications(requests):
+    popular_posts = Paste.objects.order_by('-views_count')[:5]
+    notes = Notifications.objects.all().filter(user=requests.user)
+    return render(requests, 'notifications.html', {
+        'popular_posts': popular_posts,
+        'notes': notes,
+    })
+
+
+def messages(requests):
+    popular_posts = Paste.objects.order_by('-views_count')[:5]
+    mess = Messages.objects.all().filter(user=requests.user)
+    return render(requests, 'messages.html', {
+        'popular_posts': popular_posts,
+        'messages': mess,
+    })

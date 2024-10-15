@@ -25,8 +25,8 @@
                         <li><a href="{% url 'users:posts-list' %}">Мои посты</a></li>
                         <li><a href="{% url 'users:user-profile' %}">Настройки профиля</a></li>
                         <li><a href="{% url 'users:password-change' %}">Изменить пароль</a></li>
-                        <li><a href="#">Сообщения</a></li>
-                        <li><a href="#">Уведомления</a></li>
+                        <li><a href="{% url 'users:messages' %}">Сообщения</a></li>
+                        <li><a href="{% url 'users:notifications' %}">Уведомления</a></li>
                         <li><form action="{% url 'logout' %}" method="post" style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="logout-button" style="margin-left: 11px">Выход</button>
