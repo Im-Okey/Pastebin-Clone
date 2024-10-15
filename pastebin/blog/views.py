@@ -5,9 +5,9 @@ from .forms import PasteForm
 
 from .backends.general_backends import add_tags_to_paste, verify_password, \
     process_time, handle_password
-from .backends.post_logic_backends import handle_post_deletion, render_post_response
+from .backends.post_logic_backends import handle_post_deletion, render_post_response, get_post_context
 
-from .models import Paste
+from .models import Paste, Comment
 
 
 # ----------------------------------------------------------------------------
@@ -40,6 +40,18 @@ def posts_check(request):
 
 # ----------------------------------------------------------------------------
 # comments
+
+def create_comment(request, slug):
+    post, popular_posts = get_post_context(request, slug)
+    if request.method == "POST":
+        comment = Comment.objects.create(
+            author=request.user,
+            paste=get_object_or_404(Paste, slug=slug),
+            content=request.POST.get('content')
+        )
+        comment.save()
+    return render_post_response(request, post, popular_posts, requires_password=False)
+
 # ----------------------------------------------------------------------------
 
 
@@ -87,8 +99,8 @@ def delete_paste(request, pk):
 
 @login_required
 def edit_post(request, slug):
-    post = get_object_or_404(Paste, slug=slug, author=request.user)
-    popular_posts = Paste.objects.order_by('-views_count')[:5]
+    post, popular_posts = get_post_context(request, slug)
+
     old_hashed_password = post.password
 
     if request.method == 'POST':
@@ -109,12 +121,14 @@ def edit_post(request, slug):
     else:
         form = PasteForm(instance=post)
 
-    return render(request, 'post.html', {'form': form, 'post': post, 'popular_posts': popular_posts})
+    return render(request, 'post.html', {
+        'form': form, 'post': post,
+        'popular_posts': popular_posts,
+    })
 
 
 def detail_post(request, slug):
-    post = get_object_or_404(Paste, slug=slug)
-    popular_posts = Paste.objects.order_by('-views_count')[:5]
+    post, popular_posts = get_post_context(request, slug)
 
     requires_password = bool(post.password)
 
@@ -128,8 +142,7 @@ def detail_post(request, slug):
 
 
 def post_password_check(request, slug):
-    post = get_object_or_404(Paste, slug=slug)
-    popular_posts = Paste.objects.order_by('-views_count')[:5]
+    post, popular_posts = get_post_context(request, slug)
 
     if request.method == 'POST':
         entered_password = request.POST.get('password')

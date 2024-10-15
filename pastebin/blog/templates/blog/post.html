@@ -38,7 +38,7 @@
 
             <div id="post-content-display">
                 <div class="post-editor">
-                    <textarea placeholder="Введите текст поста..."></textarea>
+                    <textarea placeholder="Введите текст поста..." disabled>{{post.content}}</textarea>
                 </div>
                 <div class="post-metadata">
                     <span class="categories">{{post.category}}</span> <br>
@@ -48,24 +48,17 @@
                 <div class="post-settings">
                     <h3>Комментарии</h3>
                     <ul class="comments-list">
+                        {% for comment in post.comments.all %}
                         <li>
-                            <span>Пользователь 1</span>
-                            <span>12.02.2023</span>
-                            <p>Текст комментария 1</p>
+                            <span>{{comment.author}}</span>
+                            <span>{{comment.created_at}}</span>
+                            <p>{{comment.content}}</p>
                         </li>
-                        <li>
-                            <span>Пользователь 2</span>
-                            <span>15.03.2023</span>
-                            <p>Текст комментария 2</p>
-                        </li>
-                        <li>
-                            <span>Пользователь 3</span>
-                            <span>20.04.2023</span>
-                            <p>Текст комментария 3</p>
-                        </li>
+                        {% endfor %}
                     </ul>
-                    <form class="comment-form">
-                        <textarea placeholder="Введите текст комментария..."></textarea>
+                    <form class="comment-form" method="POST" action="{% url 'blog:comment-create' post.slug %}">
+                        {% csrf_token %}
+                        <textarea placeholder="Введите текст комментария..." maxlength="100" name="content"></textarea>
                         <button type="submit">Отправить</button>
                     </form>
                 </div>
@@ -84,9 +77,9 @@
                                 Категория:
                                 <select name="category">
                                     {% for category in form.category.field.queryset %}
-                                        <option value="{{ category.id }}" {% if category == post.category %}selected{% endif %}>
-                                            {{ category.name }}
-                                        </option>
+                                    <option value="{{ category.id }}" {% if category == post.category %}selected{% endif %}>
+                                        {{ category.name }}
+                                    </option>
                                     {% endfor %}
                                 </select>
                             </label>
@@ -101,23 +94,28 @@
                             <label>
                                 Статус публикации:
                                 <select name="access_status">
-                                    <option value="0" {% if post.access_status == 0 %}selected{% endif %}>Приватный</option>
-                                    <option value="1" {% if post.access_status == 1 %}selected{% endif %}>Публичный</option>
-                                    <option value="2" {% if post.access_status == 2 %}selected{% endif %}>Черновик</option>
+                                    <option value="0" {% if post.access_status == 0 %}selected{% endif %}>Приватный
+                                    </option>
+                                    <option value="1" {% if post.access_status == 1 %}selected{% endif %}>Публичный
+                                    </option>
+                                    <option value="2" {% if post.access_status == 2 %}selected{% endif %}>Черновик
+                                    </option>
                                 </select>
                             </label>
                             <label>
                                 Время удаления:
                                 <select name="time_live" class="post-settings-select">
                                     {% for value, label in form.time_live.field.choices %}
-                                        <option value="{{ value }}" {% if label == post.get_time_live_display %}selected{% endif %}>
-                                            {{ label }}
-                                        </option>
+                                    <option value="{{ value }}"
+                                            {% if label == post.get_time_live_display %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
                                     {% endfor %}
                                 </select>
                             </label>
                             <label>
-                                <input type="checkbox" name="need_password" id="need-password" class="need-password" {% if post.password %}checked{% endif %} onclick="togglePasswordField()">
+                                <input type="checkbox" name="need_password" id="need-password" class="need-password"
+                                       {% if post.password %}checked{% endif %} onclick="togglePasswordField()">
                                 Требуется пароль
                             </label>
 
@@ -127,12 +125,14 @@
                                        {% if post.password %} value="{{ post.password }}" {% else %} value="" {% endif %} disabled>
                             </label>
                             <!-- Скрытое поле для хеша пароля -->
-                            <input type="hidden" name="stored_password" id="stored-password" value="{{ post.password }}">
+                            <input type="hidden" name="stored_password" id="stored-password"
+                                   value="{{ post.password }}">
                             {% if error_message %}
                             <div class="error-message" style="color: red;">{{ error_message }}</div>
                             {% endif %}
                             <label>
-                                <input type="checkbox" name="is_delete_after_read" class="delete-after-read" {% if post.is_delete_after_read %}checked{% endif %}> Удалить после прочтения
+                                <input type="checkbox" name="is_delete_after_read" class="delete-after-read"
+                                       {% if post.is_delete_after_read %}checked{% endif %}> Удалить после прочтения
                             </label>
                             <button type="submit">Сохранить изменения</button>
                         </div>

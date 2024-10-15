@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from ..forms import PasteForm
+from ..models import Paste
 
 
 def handle_post_deletion(request, post, popular_posts):
@@ -40,3 +41,10 @@ def render_edit_post_response(request, post, popular_posts, error_message=None):
         'error_message': error_message,
     })
 
+
+def get_post_context(request, slug):
+    """Возвращает контекст для поста."""
+    post = get_object_or_404(Paste, slug=slug)
+    popular_posts = Paste.objects.order_by('-views_count')[:5]
+
+    return post, popular_posts
