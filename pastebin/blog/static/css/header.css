@@ -125,3 +125,41 @@ header {
 .dropdown-toggle::after {
     display: none;
 }
+
+.notification-badge {
+    position: absolute;  /* Размещаем по отношению к родителю */
+    top: 50%;
+    right: 10px;         /* Расстояние от правого края */
+    width: 12px;
+    height: 12px;
+    background-color: #ff6600;  /* Оранжевый цвет */
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    font-size: 10px;
+    color: white;
+    line-height: 12px;
+    transform: translateY(-50%); /* Центрируем по вертикали */
+}
+
+.notification-item {
+    position: relative;  /* Родитель для абсолютного позиционирования badge */
+    padding-right: 25px; /* Добавляем отступ справа, чтобы не загораживать текст */
+}
+
+.dropdown a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    width: 100%;
+}
+
+.dropdown li {
+    padding: 10px 0;
+    transition: background-color 0.3s;
+}
+
+.dropdown li:hover {
+    background-color: #444;
+    border-radius: 5px;
+}

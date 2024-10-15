@@ -18,13 +18,16 @@
             <!-- Блок уведомлений -->
             <div class="card notifications-block">
                 <div class="card-body">
-                    <h4 class="card-title">Уведомления</h4>
+                    <div class="card-title-container">
+                        <h4 class="card-title">Уведомления ({{ unread_notifications_count }})</h4>
+                        <a href="#" class="mark-all-read">Пометить все как прочитанное</a>
+                    </div>
                     <ul class="notifications-list">
                         {% for notification in notes %}
                         <li class="notification-item">
-                            <a href="#" class="notification-link"> <!-- Можно заменить ссылку на реальную -->
+                            <a href="{% url 'blog:post-detail' notification.post.slug %}" class="notification-link">
                                 <div class="notification-avatar">
-                                    <img src="{% if notification.sender.avatar %}{{ notification.sender.avatar.url }}{% else %}https://via.placeholder.com/100{% endif %}"
+                                    <img src="{% if notification.sender.avatar %}{{ notification.sender.avatar.url }}{% else %}https://th.bing.com/th/id/OIP.0TsJGYhWWOy_hBFOH0hX-gHaHa?rs=1&pid=ImgDetMain{% endif %}"
                                          alt="Avatar"
                                          class="avatar-img">
                                 </div>
@@ -32,6 +35,9 @@
                                     <p class="notification-message">{{ notification.get_notification_message }}</p>
                                     <span class="notification-time">{{ notification.send_time|date:"d M Y H:i" }}</span>
                                 </div>
+                                {% if not notification.is_checked %}
+                                <span class="notification-badge"></span>
+                                {% endif %}
                             </a>
                         </li>
                         {% empty %}

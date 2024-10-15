@@ -14,17 +14,19 @@
 {% block content %}
 <main>
     <div class="main-container">
-
         <div class="left-block">
             <div class="card messages-block">
                 <div class="card-body">
-                    <h4 class="card-title">Сообщения</h4>
+                    <div class="card-title-container">
+                        <h4 class="card-title">Сообщения ({{ unread_messages_count }})</h4>
+                        <a href="#" class="mark-all-read">Пометить все как прочитанное</a>
+                    </div>
                     <ul class="messages-list">
                         {% for message in messages %}
                         <li class="message-item">
                             <a href="{% url 'blog:post-detail' message.post.slug %}" class="message-link">
                                 <div class="message-avatar">
-                                    <img src="{% if message.sender.avatar %}{{ message.sender.avatar.url }}{% else %}https://via.placeholder.com/100{% endif %}"
+                                    <img src="{% if message.sender.avatar %}{{ message.sender.avatar.url }}{% else %}https://th.bing.com/th/id/OIP.0TsJGYhWWOy_hBFOH0hX-gHaHa?rs=1&pid=ImgDetMain{% endif %}"
                                          alt="Avatar"
                                          class="avatar-img">
                                 </div>
@@ -33,6 +35,9 @@
                                     <p class="message-text">{{ message.text }}</p>
                                     <span class="message-time">{{ message.send_time }}</span>
                                 </div>
+                                {% if not message.is_read %}
+                                <span class="notification-badge"></span>
+                                {% endif %}
                             </a>
                         </li>
                         {% empty %}

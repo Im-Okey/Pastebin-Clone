@@ -285,22 +285,24 @@ body {
     border-radius: 50%;
 }
 
-
-.messages-block {
-    margin-bottom: 20px;
+.notifications-block {
+    background-color: #f8f9fa;
+    border: 1px solid #e2e3e5;
+    border-radius: 8px;
+    padding: 20px;
 }
 
-.messages-list {
+.notifications-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.message-item {
+.notification-item {
     padding: 0;
 }
 
-.message-link {
+.notification-link {
     display: flex;
     align-items: flex-start;
     padding: 10px;
@@ -310,12 +312,12 @@ body {
     transition: background-color 0.3s;
 }
 
-.message-link:hover {
-    background-color: #f9f9f9;
+.notification-link:hover {
+    background-color: #eeeeee;
     text-decoration: none;
 }
 
-.message-avatar {
+.notification-avatar {
     margin-right: 15px;
 }
 
@@ -326,32 +328,65 @@ body {
     object-fit: cover;
 }
 
-.message-content {
+.notification-content {
     flex-grow: 1;
 }
 
-.message-sender {
-    font-weight: bold;
-    font-size: 1.1em;
-    color: #333;
-}
-
-.message-text {
-    margin: 5px 0;
-    font-size: 0.95em;
+.notification-message {
+    font-size: 1em;
+    margin-bottom: 5px;
     color: #555;
 }
 
-.message-time {
+.notification-time {
     font-size: 0.8em;
     color: #888;
-    display: block;
-    margin-top: 5px;
 }
 
-.no-messages {
+.no-notifications {
     text-align: center;
     color: #888;
     font-size: 1em;
     margin-top: 15px;
+}
+
+.notification-item {
+    position: relative;
+    padding-right: 25px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    background-color: #ff6600;
+    border-radius: 50%;
+    display: inline-block;
+    transform: translateY(-50%);
+}
+
+
+.card-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.mark-all-read {
+    font-size: 0.9em;
+    color: #333333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mark-all-read:hover {
+     color: #784726;
 }

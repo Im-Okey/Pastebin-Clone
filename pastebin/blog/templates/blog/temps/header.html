@@ -25,9 +25,20 @@
                         <li><a href="{% url 'users:posts-list' %}">Мои посты</a></li>
                         <li><a href="{% url 'users:user-profile' %}">Настройки профиля</a></li>
                         <li><a href="{% url 'users:password-change' %}">Изменить пароль</a></li>
-                        <li><a href="{% url 'users:messages' %}">Сообщения</a></li>
-                        <li><a href="{% url 'users:notifications' %}">Уведомления</a></li>
-                        <li><form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        <li class="notification-item">
+                            <a href="{% url 'general:messages' %}">Сообщения</a>
+                            {% if unread_messages_count > 0 %}
+                            <span class="notification-badge"></span>
+                            {% endif %}
+                        </li>
+                        <li class="notification-item">
+                            <a href="{% url 'general:notifications' %}">Уведомления</a>
+                            {% if unread_notifications_count > 0 %}
+                            <span class="notification-badge"></span>
+                            {% endif %}
+                        </li>
+                        <li>
+                            <form action="{% url 'logout' %}" method="post" style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="logout-button" style="margin-left: 11px">Выход</button>
                             </form>

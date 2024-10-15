@@ -46,6 +46,7 @@ class Messages(models.Model):
     post = models.ForeignKey(Paste, on_delete=models.CASCADE)
     text = models.TextField()
     send_time = models.DateTimeField(auto_now_add=True)
+    is_checked = models.BooleanField(default=False)
 
     def __str__(self):
         return self.text
@@ -65,7 +66,9 @@ class Notifications(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='note_receiver', default=None)
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='note_sender', default=None)
+    post = models.ForeignKey(Paste, on_delete=models.CASCADE)
     send_time = models.DateTimeField(auto_now_add=True)
+    is_checked = models.BooleanField(default=False)
 
     notification_type = models.IntegerField(choices=NOTE_TYPES, max_length=1)
 

@@ -8,6 +8,7 @@ from .backends.general_backends import add_tags_to_paste, verify_password, \
 from .backends.post_logic_backends import handle_post_deletion, render_post_response, get_post_context
 
 from .models import Paste, Comment
+from general.models import Notifications, Messages
 
 
 # ----------------------------------------------------------------------------
@@ -15,9 +16,13 @@ from .models import Paste, Comment
 def index(request):
     form = PasteForm()
     popular_posts = Paste.objects.order_by('-views_count')[:5]
+    unread_notifications_count = Notifications.objects.filter(user=request.user, is_checked=False).count()
+    unread_messages_count = Messages.objects.filter(user=request.user, is_checked=False).count()
     return render(request, 'blog/index.html', {
         'form': form,
-        'popular_posts': popular_posts
+        'popular_posts': popular_posts,
+        'unread_notifications_count': unread_notifications_count,
+        'unread_messages_count': unread_messages_count
     })
 
 
