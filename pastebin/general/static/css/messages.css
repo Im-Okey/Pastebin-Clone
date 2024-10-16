@@ -397,3 +397,40 @@ body {
 .mark-all-read:hover {
      color: #784726;
 }
+
+
+.messages-section {
+    margin-bottom: 30px;
+    padding-top: 20px;
+}
+
+.section-title {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.message-item {
+    position: relative;
+    padding-right: 25px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    background-color: #ff6600;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+.no-messages {
+    text-align: center;
+    color: #888;
+    font-size: 1em;
+    margin-top: 15px;
+}

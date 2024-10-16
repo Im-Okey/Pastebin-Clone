@@ -20,7 +20,7 @@
                 <div class="card-body">
                     <div class="card-title-container">
                         <h4 class="card-title">Уведомления ({{ unread_notifications_count }})</h4>
-                        <a href="#" class="mark-all-read">Пометить все как прочитанное</a>
+                        <a href="{% url 'general:mark-all-notes-read' %}" class="mark-all-read">Пометить все как прочитанное</a>
                     </div>
                     <ul class="notifications-list">
                         {% for notification in notes %}
