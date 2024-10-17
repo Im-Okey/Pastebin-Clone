@@ -18,10 +18,11 @@
             <div class="card messages-block">
                 <div class="card-body">
                     <div class="card-title-container">
-                        <h4 class="card-title">Сообщения ({{ unread_messages_count }})</h4>
+                        <h4 class="card-title">Сообщения ({{ unread_messages.paginator.count }})</h4>
                         <a href="{% url 'general:mark-all-messages-read' %}" class="mark-all-read">Пометить все как
                             прочитанное</a>
                     </div>
+
                     <div class="messages-section">
                         <h4 class="section-title">Новое</h4>
                         <ul class="messages-list">
@@ -30,8 +31,7 @@
                                 <a href="{% url 'general:mark-message-read' message.id %}" class="message-link">
                                     <div class="message-avatar">
                                         <img src="{% if message.sender.avatar %}{{ message.sender.avatar.url }}{% else %}https://th.bing.com/th/id/OIP.0TsJGYhWWOy_hBFOH0hX-gHaHa?rs=1&pid=ImgDetMain{% endif %}"
-                                             alt="Avatar"
-                                             class="avatar-img">
+                                             alt="Avatar" class="avatar-img">
                                     </div>
                                     <div class="message-content">
                                         <span class="message-sender">{{ message.sender }}</span>
@@ -45,8 +45,8 @@
                             <p class="no-messages">Нет новых сообщений.</p>
                             {% endfor %}
                         </ul>
+                        {% include 'temps/messages_paginator_unread.html' %}
                     </div>
-
                     <div class="messages-section">
                         <h4 class="section-title">Просмотрено</h4>
                         <ul class="messages-list">
@@ -55,8 +55,7 @@
                                 <a href="{% url 'blog:post-detail' message.post.slug %}" class="message-link">
                                     <div class="message-avatar">
                                         <img src="{% if message.sender.avatar %}{{ message.sender.avatar.url }}{% else %}https://th.bing.com/th/id/OIP.0TsJGYhWWOy_hBFOH0hX-gHaHa?rs=1&pid=ImgDetMain{% endif %}"
-                                             alt="Avatar"
-                                             class="avatar-img">
+                                             alt="Avatar" class="avatar-img">
                                     </div>
                                     <div class="message-content">
                                         <span class="message-sender">{{ message.sender }}</span>
@@ -69,6 +68,7 @@
                             <p class="no-messages">Нет прочитанных сообщений.</p>
                             {% endfor %}
                         </ul>
+                        {% include 'temps/messages_paginator_read.html' %}
                     </div>
                 </div>
             </div>

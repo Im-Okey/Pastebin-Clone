@@ -20,6 +20,7 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #ffffff;
+    min-height: 1050px;
 }
 
 .left-block {
@@ -290,12 +291,18 @@ body {
     border: 1px solid #e2e3e5;
     border-radius: 8px;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .notifications-list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
 
 .notification-item {
@@ -388,5 +395,6 @@ body {
 }
 
 .mark-all-read:hover {
-     color: #784726;
+    color: #784726;
 }
+

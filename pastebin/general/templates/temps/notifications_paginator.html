@@ -1,0 +1,33 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/notifications_paginator.css' %}">
+</head>
+
+
+<div class="pagination">
+    <div class="pagination-info-container">
+        <span class="pagination-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    </div>
+    <div class="pagination-links-container">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">&laquo;
+            Назад</a>
+        {% else %}
+        <span class="pagination-disabled">&laquo; Назад</span>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+        <span class="pagination-current">{{ num }}</span>
+        {% else %}
+        <a href="?page={{ num }}" class="pagination-link">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Дальше &raquo;</a>
+        {% else %}
+        <span class="pagination-disabled">Дальше &raquo;</span>
+        {% endif %}
+    </div>
+</div>

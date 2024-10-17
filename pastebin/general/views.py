@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -9,25 +10,39 @@ from blog.models import Paste
 
 
 def notifications(request):
-    notes = Notifications.objects.all().filter(user=request.user)
+    notes = Notifications.objects.all().filter(user=request.user).order_by('-send_time')
     popular_posts = Paste.objects.order_by('-views_count')[:5]
+    paginator = Paginator(notes, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, 'notifications.html', {
         'popular_posts': popular_posts,
         'notes': notes,
+        'page_obj': page_obj,
     })
 
 
 def messages(request):
     mess = Messages.objects.all().filter(user=request.user)
+
     unread_messages = mess.filter(is_checked=False)
     read_messages = mess.filter(is_checked=True)
+
+    unread_paginator = Paginator(unread_messages, 4)  # 10 сообщений на страницу
+    unread_page_number = request.GET.get('unread_page')
+    unread_page_obj = unread_paginator.get_page(unread_page_number)
+
+    read_paginator = Paginator(read_messages, 4)  # 10 сообщений на страницу
+    read_page_number = request.GET.get('read_page')
+    read_page_obj = read_paginator.get_page(read_page_number)
+
     popular_posts = Paste.objects.order_by('-views_count')[:5]
+
     return render(request, 'messages.html', {
         'popular_posts': popular_posts,
-        'messages': mess,
-        'unread_messages': unread_messages,
-        'read_messages': read_messages
+        'unread_messages': unread_page_obj,
+        'read_messages': read_page_obj,
     })
 
 

@@ -1,0 +1,26 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/messages_paginator.css' %}">
+</head>
+
+<div class="pagination">
+    {% if read_messages.has_previous %}
+        <a href="?read_page={{ read_messages.previous_page_number }}" class="pagination-link">&laquo; Назад</a>
+    {% else %}
+        <span class="pagination-disabled">&laquo; Назад</span>
+    {% endif %}
+
+    {% for num in read_messages.paginator.page_range %}
+        {% if num == read_messages.number %}
+            <span class="pagination-current">{{ num }}</span>
+        {% else %}
+            <a href="?read_page={{ num }}" class="pagination-link">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if read_messages.has_next %}
+        <a href="?read_page={{ read_messages.next_page_number }}" class="pagination-link">Дальше &raquo;</a>
+    {% else %}
+        <span class="pagination-disabled">Дальше &raquo;</span>
+    {% endif %}
+</div>

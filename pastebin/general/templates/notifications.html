@@ -22,8 +22,9 @@
                         <a href="{% url 'general:mark-all-notes-read' %}" class="mark-all-read">Пометить все как
                             прочитанное</a>
                     </div>
+
                     <ul class="notifications-list">
-                        {% for notification in notes %}
+                        {% for notification in page_obj %}
                         <li class="notification-item">
                             <a href="{% url 'general:mark-notification-read' notification.id %}"
                                class="notification-link">
@@ -44,6 +45,7 @@
                         <p class="no-notifications">Нет новых уведомлений.</p>
                         {% endfor %}
                     </ul>
+                    {% include 'temps/notifications_paginator.html' %}
                 </div>
             </div>
         </div>
