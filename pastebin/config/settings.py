@@ -104,9 +104,14 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+"""Удаление пасты раз в час. Удаление уведомлений раз в день."""
 CELERY_BEAT_SCHEDULE = {
     'delete_expired_pastes_every_minute': {
         'task': 'blog.tasks.delete_expired_pastes',
+        'schedule': 60.0,
+    },
+    'delete_old_unread_messages_and_notifications_every_minute': {
+        'task': 'blog.tasks.delete_old_unread_messages_and_notifications',
         'schedule': 60.0,
     },
 }
