@@ -14,4 +14,7 @@ urlpatterns = [
     path('mark-notification-read/<int:notification_id>/', views.mark_notification_as_read,
          name='mark-notification-read'),
 
+    path('like/<int:paste_id>/', views.like_paste, name='like_paste'),
+    path('dislike/<int:paste_id>/', views.dislike_paste, name='dislike_paste'),
+
 ]

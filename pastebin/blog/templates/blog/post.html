@@ -31,6 +31,11 @@
                     <br>
                     <span class="post-meta">{{ request.user.username }} | {{ post.get_formatted_created_at }} | Просмотров: {{ post.views_count }} | Сохранений: 10</span>
                 </div>
+                <span class="post-favorite" data-post-slug="{{ post.slug }}" style="cursor: pointer; margin-left: auto;">
+                    <span class="star" id="favorite-star" style="color: {% if post in user.favorites.all %}#FFD700{% else %}black{% endif %}; font-size: 18px;">
+                        {% if post in user.favorites.all %}★{% else %}☆{% endif %}
+                    </span>
+                </span>
                 {% if request.user == post.author %}
                 <button id="edit-button" onclick="showEditForm(this)" style="margin-left: 20px;">Редактировать</button>
                 {% endif %}
@@ -40,9 +45,19 @@
                 <div class="post-editor">
                     <textarea placeholder="Введите текст поста..." disabled>{{post.content}}</textarea>
                 </div>
-                <div class="post-metadata">
-                    <span class="categories">{{post.category}}</span> <br>
-                    <span class="tags">{{ post.tags.all|join:", " }}</span>
+                <div class="post-metadata" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="post-info">
+                        <span class="categories"><strong>Categories:</strong> {{ post.category }}</span><br>
+                        <span class="tags"><strong>Tags:</strong> {{ post.tags.all|join:", " }}</span>
+                    </div>
+                    <div class="post-actions" style="display: flex; align-items: center;">
+                        <button id="like-button-{{ post.id }}" class="like-button" onclick="likeDislikePaste({{ post.id }}, 'like')" style="margin-right: 10px; color: {% if user_liked %}blue{% else %}black{% endif %};">
+                            👍 <span id="like-count-{{ post.id }}">{{ likes_count }}</span>
+                        </button>
+                        <button id="dislike-button-{{ post.id }}" class="dislike-button" onclick="likeDislikePaste({{ post.id }}, 'dislike')" style="margin-right: 10px; color: {% if user_disliked %}red{% else %}black{% endif %};">
+                            👎 <span id="dislike-count-{{ post.id }}">{{ dislikes_count }}</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="post-settings">
@@ -124,7 +139,6 @@
                                 <input type="password" name="password" id="password-field" placeholder="Введите пароль"
                                        {% if post.password %} value="{{ post.password }}" {% else %} value="" {% endif %} disabled>
                             </label>
-                            <!-- Скрытое поле для хеша пароля -->
                             <input type="hidden" name="stored_password" id="stored-password"
                                    value="{{ post.password }}">
                             {% if error_message %}
@@ -143,5 +157,8 @@
         {% include 'blog/temps/popular_posts.html' %}
     </div>
 </main>
+
+<script src="{% static 'js/add_post_to_favorite.js' %}"></script>
+<script src="{% static 'js/paste_likes_dislikes.js' %}"></script>
 
 {% endblock %}

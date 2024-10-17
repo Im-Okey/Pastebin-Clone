@@ -1,6 +1,10 @@
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import Notifications, Messages
+from .backends.general_backends import create_notification
+from .models import Notifications, Messages, LikeDislikePaste
 from blog.models import Paste
 
 
@@ -55,3 +59,67 @@ def mark_notification_as_read(request, notification_id):
         notification.save()
 
     return redirect('blog:post-detail', slug=notification.post.slug)
+
+
+@login_required
+@csrf_exempt
+def like_paste(request, paste_id):
+    paste = Paste.objects.get(id=paste_id)
+    user = request.user
+
+    like_dislike_record = LikeDislikePaste.objects.filter(user=user, paste=paste).first()
+
+    if like_dislike_record:
+        if like_dislike_record.action == 1:
+            like_dislike_record.delete()
+            return JsonResponse({
+                'likes_count': paste.likes_dislikes.filter(action=1).count(),
+                'dislikes_count': paste.likes_dislikes.filter(action=-1).count(),
+                'liked': False,
+                'disliked': False,
+            })
+        else:
+            like_dislike_record.action = 1
+            like_dislike_record.save()
+    else:
+        LikeDislikePaste.objects.create(user=user, paste=paste, action=1)
+        create_notification(request, paste, 'like')
+
+    return JsonResponse({
+        'likes_count': paste.likes_dislikes.filter(action=1).count(),
+        'dislikes_count': paste.likes_dislikes.filter(action=-1).count(),
+        'liked': True,
+        'disliked': False,
+    })
+
+
+@login_required
+@csrf_exempt
+def dislike_paste(request, paste_id):
+    paste = Paste.objects.get(id=paste_id)
+    user = request.user
+
+    like_dislike_record = LikeDislikePaste.objects.filter(user=user, paste=paste).first()
+
+    if like_dislike_record:
+        if like_dislike_record.action == -1:
+            like_dislike_record.delete()
+            return JsonResponse({
+                'likes_count': paste.likes_dislikes.filter(action=1).count(),
+                'dislikes_count': paste.likes_dislikes.filter(action=-1).count(),
+                'liked': False,
+                'disliked': False,
+            })
+        else:
+            like_dislike_record.action = -1
+            like_dislike_record.save()
+    else:
+        LikeDislikePaste.objects.create(user=user, paste=paste, action=-1)
+        create_notification(request, paste, 'dislike')
+
+    return JsonResponse({
+        'likes_count': paste.likes_dislikes.filter(action=1).count(),
+        'dislikes_count': paste.likes_dislikes.filter(action=-1).count(),
+        'liked': False,
+        'disliked': True,
+    })

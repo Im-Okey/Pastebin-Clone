@@ -280,3 +280,48 @@ body {
 }
 
 
+.post-actions button {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.post-actions button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.post-actions button:active {
+    transform: translateY(0);
+}
+
+.like-button, .dislike-button, .favorite-button {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+#like-count, #dislike-count, #favorite-status {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.post-favorite {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.star {
+    font-size: 34px !important;
+    transition: color 0.3s;
+    margin-top: -5px;
+    display: inline-block;
+}
+
+.post-favorite:hover .star {
+    transform: scale(1.3);
+}

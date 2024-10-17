@@ -21,23 +21,38 @@ def handle_post_deletion(request, post, popular_posts):
 def render_post_response(request, post, popular_posts, requires_password, error_message=None):
     """Рендерит страницу с постом."""
 
+    likes_count = post.likes_dislikes.filter(action=1).count()
+    dislikes_count = post.likes_dislikes.filter(action=-1).count()
+
+    user_liked = post.likes_dislikes.filter(user=request.user, action=1).exists()
+    user_disliked = post.likes_dislikes.filter(user=request.user, action=-1).exists()
+
     form = PasteForm()
     return render(request, 'blog/post.html', {
         'post': post,
         'popular_posts': popular_posts,
         'requires_password': requires_password,
         'error_message': error_message,
+        'likes_count': likes_count,
+        'dislikes_count': dislikes_count,
+        'user_liked': user_liked,
+        'user_disliked': user_disliked,
         'form': form
     })
 
 
 def render_edit_post_response(request, post, popular_posts, error_message=None):
     """Рендерит страницу редактирования поста."""
+
+    likes_count = post.likes_dislikes.filter(action=1).count()
+    dislikes_count = post.likes_dislikes.filter(action=-1).count()
     form = PasteForm(instance=post)
     return render(request, 'blog/post.html', {
         'form': form,
         'post': post,
         'popular_posts': popular_posts,
+        'likes_count': likes_count,
+        'dislikes_count': dislikes_count,
         'error_message': error_message,
     })
 
