@@ -84,18 +84,15 @@ class Paste(models.Model):
 
     def get_time_live_display(self):
         """Возвращает строковое представление времени жизни пасты."""
-        if self.time_live is None:
-            return "Никогда"
-        elif self.time_live <= timedelta(minutes=2):
-            return "Через 2 минуты"
-        elif self.time_live <= timedelta(hours=1):
-            return "Через 1 час"
-        elif self.time_live <= timedelta(days=1):
-            return "Через 1 день"
-        elif self.time_live <= timedelta(weeks=1):
-            return "Через 1 неделю"
-        else:
-            return "Неизвестно"
+        choices_dict = {
+            None: "Никогда",
+            timedelta(minutes=2): "Через 2 минуты",
+            timedelta(hours=1): "Через 1 час",
+            timedelta(days=1): "Через 1 день",
+            timedelta(weeks=1): "Через 1 неделю",
+        }
+
+        return choices_dict.get(self.time_live, "Неизвестно")
 
     class Meta:
         verbose_name = 'Паста'
