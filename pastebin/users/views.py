@@ -12,6 +12,8 @@ from blog.models import Paste
 
 from general.models import Notifications, Messages
 
+from general.backends.general_backends import create_notification
+
 
 def login(request):
     return render(request, 'registration/login.html')
@@ -56,6 +58,11 @@ def posts_list(request):
 def toggle_favorite(request, slug):
     post = get_object_or_404(Paste, slug=slug)
     user = request.user
+
+    notifications = Notifications.objects.filter(sender=user, post=post, notification_type=Notifications.FAVOURITE)
+
+    if not notifications:
+        create_notification(request, post, flag='favourite')
 
     if post in user.favorites.all():
         user.favorites.remove(post)

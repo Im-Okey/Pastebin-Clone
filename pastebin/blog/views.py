@@ -10,6 +10,9 @@ from .backends.post_logic_backends import handle_post_deletion, render_post_resp
 from .models import Paste, Comment
 from general.models import Notifications, Messages
 
+from general.backends.general_backends import create_notification, create_message
+
+
 
 # ----------------------------------------------------------------------------
 # main page
@@ -55,6 +58,8 @@ def create_comment(request, slug):
             content=request.POST.get('content')
         )
         comment.save()
+        create_notification(request, post, flag='comment')
+        create_message(request, post, comment)
     return render_post_response(request, post, popular_posts, requires_password=False)
 
 # ----------------------------------------------------------------------------

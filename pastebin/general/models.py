@@ -57,6 +57,11 @@ class Messages(models.Model):
 
 
 class Notifications(models.Model):
+    COMMENT = 1
+    LIKE = 2
+    DISLIKE = 3
+    FAVOURITE = 4
+
     NOTE_TYPES = [
         (1, 'Comment'),
         (2, 'Like'),
