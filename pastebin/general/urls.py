@@ -11,5 +11,7 @@ urlpatterns = [
     path('messages/mark-all-read/', views.mark_all_read_messages, name='mark-all-messages-read'),
 
     path('message/read/<int:message_id>/', views.mark_message_as_read, name='mark-message-read'),
+    path('mark-notification-read/<int:notification_id>/', views.mark_notification_as_read,
+         name='mark-notification-read'),
 
 ]

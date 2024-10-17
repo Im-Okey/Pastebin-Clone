@@ -20,16 +20,17 @@
                 <div class="card-body">
                     <div class="card-title-container">
                         <h4 class="card-title">Уведомления ({{ unread_notifications_count }})</h4>
-                        <a href="{% url 'general:mark-all-notes-read' %}" class="mark-all-read">Пометить все как прочитанное</a>
+                        <a href="{% url 'general:mark-all-notes-read' %}" class="mark-all-read">Пометить все как
+                            прочитанное</a>
                     </div>
                     <ul class="notifications-list">
                         {% for notification in notes %}
                         <li class="notification-item">
-                            <a href="{% url 'blog:post-detail' notification.post.slug %}" class="notification-link">
+                            <a href="{% url 'general:mark-notification-read' notification.id %}"
+                               class="notification-link">
                                 <div class="notification-avatar">
                                     <img src="{% if notification.sender.avatar %}{{ notification.sender.avatar.url }}{% else %}https://th.bing.com/th/id/OIP.0TsJGYhWWOy_hBFOH0hX-gHaHa?rs=1&pid=ImgDetMain{% endif %}"
-                                         alt="Avatar"
-                                         class="avatar-img">
+                                         alt="Avatar" class="avatar-img">
                                 </div>
                                 <div class="notification-content">
                                     <p class="notification-message">{{ notification.get_notification_message }}</p>
@@ -41,7 +42,7 @@
                             </a>
                         </li>
                         {% empty %}
-                        <p class="no-notifications">У вас пока нет уведомлений.</p>
+                        <p class="no-notifications">Нет новых уведомлений.</p>
                         {% endfor %}
                     </ul>
                 </div>

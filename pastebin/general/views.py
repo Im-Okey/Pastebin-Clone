@@ -45,3 +45,13 @@ def mark_message_as_read(request, message_id):
         message.save()
 
     return redirect('blog:post-detail', slug=message.post.slug)
+
+
+def mark_notification_as_read(request, notification_id):
+    notification = get_object_or_404(Notifications, id=notification_id)
+
+    if not notification.is_checked:
+        notification.is_checked = True
+        notification.save()
+
+    return redirect('blog:post-detail', slug=notification.post.slug)
