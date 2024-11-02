@@ -19,14 +19,18 @@ from general.backends.general_backends import create_notification, create_messag
 def index(request):
     form = PasteForm()
     popular_posts = Paste.objects.order_by('-views_count')[:5]
-    unread_notifications_count = Notifications.objects.filter(user=request.user, is_checked=False).count()
-    unread_messages_count = Messages.objects.filter(user=request.user, is_checked=False).count()
-    return render(request, 'blog/index.html', {
+    user = request.user
+    context = {
         'form': form,
         'popular_posts': popular_posts,
-        'unread_notifications_count': unread_notifications_count,
-        'unread_messages_count': unread_messages_count
-    })
+    }
+    if user.is_authenticated:
+        unread_notifications_count = Notifications.objects.filter(user=request.user, is_checked=False).count()
+        unread_messages_count = Messages.objects.filter(user=request.user, is_checked=False).count()
+        context['unread_notifications_count'] = unread_notifications_count
+        context['unread_messages_count'] = unread_messages_count
+
+    return render(request, 'blog/index.html', context)
 
 
 def posts_check(request):

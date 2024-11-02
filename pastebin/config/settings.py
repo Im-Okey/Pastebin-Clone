@@ -104,7 +104,7 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
-"""Удаление пасты раз в час. Удаление уведомлений раз в день."""
+"""Удаление пасты раз в час. Удаление уведомлений раз в день. Письмо на почту раз в неделю"""
 CELERY_BEAT_SCHEDULE = {
     'delete_expired_pastes_every_minute': {
         'task': 'blog.tasks.delete_expired_pastes',
@@ -114,4 +114,15 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'blog.tasks.delete_old_unread_messages_and_notifications',
         'schedule': 60.0,
     },
+    'send_weekly_unread_report': {
+        'task': 'blog.tasks.send_weekly_unread_report',
+        'schedule': 60.0,
+    },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'arseny.butko771@gmail.com'
+EMAIL_HOST_PASSWORD = 'fcmpzkpvrytlxoos'

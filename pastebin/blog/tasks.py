@@ -1,16 +1,19 @@
 from datetime import timedelta
 import logging
 from celery import shared_task
+from django.core.mail import send_mail
 from django.db.models import F
 from django.utils import timezone
 from .models import Paste
 from general.models import Messages, Notifications
 
+from users.models import CustomUser
+
 logger = logging.getLogger(__name__)
 
 @shared_task
 def delete_expired_pastes():
-    """Позже нужно бдует переделать на 1 день"""
+    """Позже нужно буует переделать на 1 час"""
     now = timezone.now()
     task_id = delete_expired_pastes.request.id
     logger.info(f"Задача [{task_id}] по удалению устаревших паст запущена в {now:%Y-%m-%d %H:%M:%S}")
@@ -33,7 +36,7 @@ def delete_expired_pastes():
 
 @shared_task
 def delete_old_unread_messages_and_notifications():
-    """Позже нужно бдует переделать на 1 неделю"""
+    """Позже нужно бдует переделать на 1 день"""
     now = timezone.now()
     task_id = delete_old_unread_messages_and_notifications.request.id
     logger.info(f"Задача [{task_id}] по удалению старых прочитанных сообщений и уведомлений запущена в {now:%Y-%m-%d %H:%M:%S}")
@@ -64,3 +67,35 @@ def delete_old_unread_messages_and_notifications():
         logger.info(f"Задача [{task_id}] — старых уведомлений для удаления не найдено")
 
     logger.info(f"Задача [{task_id}] по удалению старых прочитанных сообщений и уведомлений завершена")
+
+
+
+@shared_task
+def send_weekly_unread_report():
+    """Позже нужно бдует переделать на 1 неделю"""
+    task_id = send_weekly_unread_report.request.id
+    logger.info(f"Задача [{task_id}] по отправке отчета о непрочитанных сообщениях запущена в {timezone.now():%Y-%m-%d %H:%M:%S}")
+
+    users = CustomUser.objects.all()
+    for user in users:
+        unread_messages_count = Messages.objects.filter(user=user, is_checked=False).count()
+        unread_notifications_count = Notifications.objects.filter(user=user, is_checked=False).count()
+
+        if unread_messages_count > 0 or unread_notifications_count > 0:
+            subject = 'Отчет о непрочитанных сообщениях и уведомлениях'
+            message = (f'Уважаемый {user.username},\n\n'
+                       f'У вас {unread_messages_count} непрочитанных сообщений и '
+                       f'{unread_notifications_count} непрочитанных уведомлений.\n\n'
+                       'Пожалуйста, проверьте их.')
+
+            send_mail(
+                subject,
+                message,
+                'arseny.butko771@gmail.com',
+                [user.email],
+                fail_silently=False,
+            )
+
+            logger.info(f"Задача [{task_id}] — письмо отправлено пользователю {user.username}")
+
+    logger.info(f"Задача [{task_id}] по отправке отчета завершена")
