@@ -13,22 +13,36 @@
 <main>
     <div class="main-container">
         <div class="post-filter">
-            <form>
-                <input type="search" placeholder="Поиск...">
+            <form method="get" action="{% url 'blog:posts-check' %}">
+                <input type="search" name="search" placeholder="Поиск..." value="{{ search_query }}">
                 <div style="display: flex; justify-content: space-between; margin-top: 10px;">
                     <select name="category" style="width: 35%;">
                         <option value="">Все категории</option>
-                        <option value="tech">Технологии</option>
-                        <option value="design">Дизайн</option>
-                        <option value="marketing">Маркетинг</option>
+                        {% for category in categories %}
+                            <option value="{{ category.name }}"
+                                {% if category.name == selected_category %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
                     </select>
+
                     <select name="sort" style="width: 35%; margin-left: 20px;">
                         <option value="">Сортировать по</option>
-                        <option value="title">Заголовку</option>
-                        <option value="date">Дате</option>
-                        <option value="views">Количество просмотров</option>
+                        <option value="title" {% if selected_sort == 'title' %}selected{% endif %}>Заголовку</option>
+                        <option value="date" {% if selected_sort == 'date' %}selected{% endif %}>Дате</option>
+                        <option value="views" {% if selected_sort == 'views' %}selected{% endif %}>Количество просмотров</option>
                     </select>
-                    <button type="submit" style="margin-left: 327px;">Применить</button>
+
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="has_password" name="has_password" {% if has_password %}checked{% endif %}>
+                        <label for="has_password">
+                            <span>Только открытые</span>
+                            <span></span>
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" style="margin-left: 227px;">Применить</button>
                 </div>
             </form>
             <div class="post-list">

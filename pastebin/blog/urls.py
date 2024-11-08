@@ -20,8 +20,6 @@ urlpatterns = [
     # path('categories/delete/<int:id>', views.CategoryDeleteView.as_view(), name='category-delete'),
 
     path('comments/create/<slug:slug>', views.create_comment, name='comment-create'),
-    # path('comments/update/<int:id>', CommentUpdateView.as_view(), name='comment-update'),
-    # path('comments/delete/<int:id>', CommentDeleteView.as_view(), name='comment-delete'),
 
     path('posts/create/', views.create_paste, name='create-paste'),
     path('posts/<slug:slug>/', views.detail_post, name='post-detail'),

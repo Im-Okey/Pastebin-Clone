@@ -267,3 +267,60 @@ body {
 .view-count {
     margin-left: 0;
 }
+
+
+.checkbox-container {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container input {
+    display: none;
+}
+
+.checkbox-container label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+    white-space: nowrap;
+}
+
+.checkbox-container label span:first-child {
+    position: relative;
+    padding-left: 35px;
+    font-size: 14px;
+}
+
+.checkbox-container label span:nth-child(2) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30px;
+    height: 18px;
+    background-color: #ddd;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.checkbox-container label span:nth-child(3) {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.checkbox-container input:checked + label span:nth-child(2) {
+    background-color: #4CAF50 !important;
+}
+
+.checkbox-container input:checked + label span:nth-child(3) {
+    transform: translateX(12px) !important;
+}

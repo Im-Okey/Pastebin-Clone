@@ -12,7 +12,10 @@
         </a>
 
         <div class="header-search">
-            <input type="search" placeholder="Search...">
+            <form method="get" action="{% url 'blog:posts-check' %}">
+                <input type="search" name="search" placeholder="Search..." value="{{ search_query }}">
+                <button type="submit" style="display: none;"></button>  <!-- скрытая кнопка для отправки формы -->
+            </form>
         </div>
 
         {% if request.user.is_authenticated %}

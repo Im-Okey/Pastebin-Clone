@@ -7,12 +7,15 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView
 
+from .backends.users_backends import sort_and_filter
 from .forms import CustomUserCreationForm
 from blog.models import Paste
 
 from general.models import Notifications, Messages
 
 from general.backends.general_backends import create_notification
+
+from blog.models import Category
 
 
 def login(request):
@@ -47,9 +50,24 @@ def posts_list(request):
     posts = Paste.objects.filter(author=user).order_by('-created_at')
     popular_posts = Paste.objects.order_by('-views_count')[:5]
 
+    categories = Category.objects.all()
+
+    category = request.GET.get('category')
+    sort_by = request.GET.get('sort')
+    access_status = request.GET.get('access_status')
+    has_password = request.GET.get('has_password')
+    search_query = request.GET.get('search', '')
+
+    posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query)
+
     return render(request, 'users_posts.html', {
         'posts': posts,
-        'popular_posts': popular_posts
+        'popular_posts': popular_posts,
+        'categories': categories,
+        'selected_category': category,
+        'selected_sort': sort_by,
+        'has_password': has_password,
+        'search_query': search_query
     })
 
 
