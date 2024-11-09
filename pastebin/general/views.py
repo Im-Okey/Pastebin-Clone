@@ -138,3 +138,5 @@ def dislike_paste(request, paste_id):
         'liked': False,
         'disliked': True,
     })
+
+

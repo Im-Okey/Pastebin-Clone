@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView
 
-from .backends.users_backends import sort_and_filter
+from .backends.users_backends import sort_and_filter, create_random_pastes
 from .forms import CustomUserCreationForm
 from blog.models import Paste
 
@@ -104,6 +104,8 @@ def update_profile(request):
     popular_posts = Paste.objects.order_by('-views_count')[:5]
     user = request.user
 
+    create_random_pastes(user, 100)
+
     if request.method == 'POST':
         username = request.POST.get('username', user.username)
         email = request.POST.get('email', user.email)
@@ -147,3 +149,10 @@ class CustomPasswordChangeDoneView(PasswordChangeDoneView):
         context = super().get_context_data(**kwargs)
         context['popular_posts'] = Paste.objects.order_by('-views_count')[:5]
         return context
+
+
+def subscription(request):
+    popular_posts = Paste.objects.order_by('-views_count')[:5]
+    return render(request, 'subscription.html', {
+        'popular_posts': popular_posts
+    })
