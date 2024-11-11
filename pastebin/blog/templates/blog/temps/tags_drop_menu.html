@@ -1,0 +1,31 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/tags_drop_menu.css' %}">
+</head>
+
+
+<input type="hidden" name="tags" id="tagsField" value="{{ selected_tags|join:',' }}">
+
+<div>
+    <div class="selected-tags" id="selectedTags">
+        {% for tag in selected_tags %}
+        <div class="selected-tag">{{ tag }}
+            <span class="remove-tag" onclick="removeTag('{{ tag }}')">&times;</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="toggle-button" onclick="toggleTagList()">&#9660; Показать/Скрыть теги</div>
+
+    <div class="tag-list-container" id="tagListContainer">
+        <div class="tags-container">
+            {% for tag in tags %}
+            <div class="tag" onclick="selectTag('{{ tag.name }}')" data-tag-id="{{ tag.id }}">
+                + {{ tag.name }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/tags_drop_menu.js' %}"></script>

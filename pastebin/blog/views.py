@@ -7,7 +7,7 @@ from .backends.general_backends import add_tags_to_paste, verify_password, \
     process_time, handle_password, sort_and_filter
 from .backends.post_logic_backends import handle_post_deletion, render_post_response, get_post_context
 
-from .models import Paste, Comment, Category
+from .models import Paste, Comment, Category, Tag
 from general.models import Notifications, Messages
 
 from general.backends.general_backends import create_notification, create_message
@@ -34,6 +34,7 @@ def index(request):
 
 def posts_check(request):
     posts = Paste.objects.all()
+    tags = Tag.objects.all()
     popular_posts = Paste.objects.order_by('-views_count')[:5]
     categories = Category.objects.all()
 
@@ -43,7 +44,10 @@ def posts_check(request):
     has_password = request.GET.get('has_password')
     search_query = request.GET.get('search', '')
 
-    posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query)
+    selected_tags = request.GET.get('tags')
+    selected_tags = selected_tags.split(',') if selected_tags else []
+
+    posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query, selected_tags)
 
     return render(request, 'blog/posts.html', {
         'posts': posts,
@@ -52,7 +56,9 @@ def posts_check(request):
         'selected_category': category,
         'selected_sort': sort_by,
         'has_password': has_password,
-        'search_query': search_query
+        'search_query': search_query,
+        'tags': tags,
+        'selected_tags': selected_tags,
     })
 
 

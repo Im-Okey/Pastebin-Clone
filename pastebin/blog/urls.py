@@ -9,7 +9,6 @@ urlpatterns = [
     path('posts_check/', views.posts_check, name='posts-check'),
 
     # # tags logic
-    # path('tags/', views.TagListView.as_view(), name='tag-list'),
     # path('tags/create/', views.TagCreateView.as_view(), name='tag-create'),
     # path('tags/update/<int:pk>/', views.TagUpdateView.as_view(), name='tag-update'),
     # path('tags/delete/<int:pk>/', views.TagDeleteView.as_view(), name='tag-delete'),

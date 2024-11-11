@@ -13,7 +13,7 @@
 <main>
     <div class="main-container">
         <div class="post-filter">
-            <form method="get" action="{% url 'blog:posts-check' %}">
+            <form method="GET" action="{% url 'blog:posts-check' %}">
                 <input type="search" name="search" placeholder="Поиск..." value="{{ search_query }}">
                 <div style="display: flex; justify-content: space-between; margin-top: 10px;">
                     <select name="category" style="width: 35%;">
@@ -42,8 +42,10 @@
                         </label>
                     </div>
 
-                    <button type="submit" style="margin-left: 227px;">Применить</button>
+                    <button type="submit" class="styled-button" style="margin-left: 157px" onclick="applyFilters()">Применить</button>
                 </div>
+
+                {% include 'blog/temps/tags_drop_menu.html' %}
             </form>
             <div class="post-list">
                 <ul>
