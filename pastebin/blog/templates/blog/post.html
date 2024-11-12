@@ -48,7 +48,11 @@
                 <div class="post-metadata" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="post-info">
                         <span class="categories"><strong>Categories:</strong> {{ post.category }}</span><br>
-                        <span class="tags"><strong>Tags:</strong> {{ post.tags.all|join:", " }}</span>
+                        <span class="tags"><strong>Tags:</strong>
+                            {% for tag in post.tags.all %}
+                                <a href="{% url 'blog:posts-list' %}?tags={{ tag.name|urlencode }}" class="tag-link">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
                     </div>
                     <div class="post-actions" style="display: flex; align-items: center;">
                         <button id="like-button-{{ post.id }}" class="like-button" onclick="likeDislikePaste({{ post.id }}, 'like')" style="margin-right: 10px; color: {% if user_liked %}blue{% else %}black{% endif %};">

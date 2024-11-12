@@ -13,7 +13,7 @@
 <main>
     <div class="main-container">
         <div class="post-filter">
-            <form method="GET" action="{% url 'blog:posts-check' %}">
+            <form method="GET" action="{% url 'blog:posts-list' %}">
                 <input type="search" name="search" placeholder="Поиск..." value="{{ search_query }}">
                 <div style="display: flex; justify-content: space-between; margin-top: 10px;">
                     <select name="category" style="width: 35%;">

@@ -6,7 +6,7 @@ app_name = 'blog'
 urlpatterns = [
     # main page
     path('', views.index, name='index'),
-    path('posts_check/', views.posts_check, name='posts-check'),
+    path('posts_check/', views.posts_check, name='posts-list'),
 
     # # tags logic
     # path('tags/create/', views.TagCreateView.as_view(), name='tag-create'),
