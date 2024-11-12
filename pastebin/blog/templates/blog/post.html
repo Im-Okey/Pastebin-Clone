@@ -29,7 +29,7 @@
                 <div class="info" style="flex-grow: 1;">
                     <span class="post-title">{{ post.title }}</span>
                     <br>
-                    <span class="post-meta">{{ request.user.username }} | {{ post.get_formatted_created_at }} | Просмотров: {{ post.views_count }} | Сохранений: 10</span>
+                    <span class="post-meta">{{ request.user.username }} | {{ post.get_formatted_created_at }} | Просмотров: {{ post.views_count }} | Сохранений: {{ post.favourite_count }}</span>
                 </div>
                 <span class="post-favorite" data-post-slug="{{ post.slug }}" style="cursor: pointer; margin-left: auto;">
                     <span class="star" id="favorite-star" style="color: {% if post in user.favorites.all %}#FFD700{% else %}black{% endif %}; font-size: 18px;">

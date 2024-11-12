@@ -85,9 +85,13 @@ def toggle_favorite(request, slug):
     if post in user.favorites.all():
         user.favorites.remove(post)
         is_favorite = False
+        if post.favourite_count > 0:
+            post.favourite_count = post.favourite_count - 1
     else:
         user.favorites.add(post)
         is_favorite = True
+        post.favourite_count = post.favourite_count + 1
+    post.save()
 
     return JsonResponse({'is_favorite': is_favorite})
 

@@ -62,7 +62,8 @@ class Paste(models.Model):
     time_live = models.DurationField(null=True, blank=True)
     password = models.CharField(max_length=100, null=True, blank=True)
     is_delete_after_read = models.BooleanField(default=False)
-    views_count = models.PositiveIntegerField(default=100)
+    views_count = models.PositiveIntegerField(default=0)
+    favourite_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
