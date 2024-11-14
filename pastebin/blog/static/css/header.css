@@ -127,24 +127,40 @@ header {
 }
 
 .notification-badge {
-    position: absolute;  /* Размещаем по отношению к родителю */
+    position: absolute;
     top: 50%;
-    right: 10px;         /* Расстояние от правого края */
+    right: 10px;
     width: 12px;
     height: 12px;
-    background-color: #ff6600;  /* Оранжевый цвет */
+    background-color: #ff6600;
     border-radius: 50%;
     display: inline-block;
     text-align: center;
     font-size: 10px;
     color: white;
     line-height: 12px;
-    transform: translateY(-50%); /* Центрируем по вертикали */
+    transform: translateY(-50%);
+}
+
+.notification-badge-notifications {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    background-color: #ff6600;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    font-size: 10px;
+    color: white;
+    line-height: 12px;
+    transform: translateY(-50%);
 }
 
 .notification-item {
-    position: relative;  /* Родитель для абсолютного позиционирования badge */
-    padding-right: 25px; /* Добавляем отступ справа, чтобы не загораживать текст */
+    position: relative;
+    padding-right: 25px;
 }
 
 .dropdown a {

@@ -14,7 +14,7 @@
         <div class="header-search">
             <form method="get" action="{% url 'blog:posts-list' %}">
                 <input type="search" name="search" placeholder="Search..." value="{{ search_query }}">
-                <button type="submit" style="display: none;"></button>  <!-- скрытая кнопка для отправки формы -->
+                <button type="submit" style="display: none;"></button>
             </form>
         </div>
 
@@ -35,9 +35,7 @@
                         </li>
                         <li class="notification-item">
                             <a href="{% url 'general:notifications' %}">Уведомления</a>
-                            {% if unread_notifications_count > 0 %}
-                            <span class="notification-badge"></span>
-                            {% endif %}
+                            <span class="notification-badge-notifications" style="{% if unread_notifications_count == 0 %}display:none;{% endif %}"></span>
                         </li>
                         <li>
                             <form action="{% url 'logout' %}" method="post" style="display: inline;">

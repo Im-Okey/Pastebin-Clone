@@ -25,6 +25,7 @@ def create_notification(request, post, flag):
     if flag in get_flag_dictionary:
         numeric_flag = get_flag_dictionary[flag]
         create_notification_by_flag(request, post, numeric_flag)
+        create_new_notification(post)
     else:
         raise ValueError("Invalid flag provided")
 
@@ -49,5 +50,18 @@ def create_new_message(sender, recipient):
         {
             "type": "send_unread_message_count",
             "unread_messages_count": unread_count
+        }
+    )
+
+
+def create_new_notification(post):
+    unread_notifications_count = Notifications.objects.filter(user=post.author, is_checked=False).count()
+    print(unread_notifications_count)
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"user_{post.author.id}",
+        {
+            "type": "send_unread_notification_count",
+            "unread_notifications_count": unread_notifications_count
         }
     )

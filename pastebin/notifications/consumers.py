@@ -24,3 +24,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'unread_messages_count': unread_messages_count
         }))
+
+    async def send_unread_notification_count(self, event):
+        unread_notifications_count = event['unread_notifications_count']
+        await self.send(text_data=json.dumps({
+            'unread_notifications_count': unread_notifications_count
+        }))
