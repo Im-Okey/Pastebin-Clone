@@ -11,8 +11,7 @@ from .backends.users_backends import sort_and_filter, create_random_pastes
 from .forms import CustomUserCreationForm
 from blog.models import Paste
 
-from general.models import Notifications, Messages
-
+from general.models import Notifications
 from general.backends.general_backends import create_notification
 
 from blog.models import Category

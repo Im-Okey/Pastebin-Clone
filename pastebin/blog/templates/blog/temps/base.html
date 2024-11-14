@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,12 +11,13 @@
 </head>
 
 <body>
-    {% include 'blog/temps/header.html' %}
+{% include 'blog/temps/header.html' %}
 
-    {% block content %}
+{% block content %}
 
-    {% endblock %}
+{% endblock %}
 
-    {% include 'blog/temps/footer.html' %}
+{% include 'blog/temps/footer.html' %}
+<script src="{% static 'js/websockets_backends.js' %}"></script>
 </body>
 </html>

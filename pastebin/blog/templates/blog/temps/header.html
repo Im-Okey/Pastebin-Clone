@@ -31,9 +31,7 @@
                         <li><a href="{% url 'users:password-change' %}">Изменить пароль</a></li>
                         <li class="notification-item">
                             <a href="{% url 'general:messages' %}">Сообщения</a>
-                            {% if unread_messages_count > 0 %}
-                            <span class="notification-badge"></span>
-                            {% endif %}
+                            <span class="notification-badge" style="{% if unread_messages_count == 0 %}display:none;{% endif %}"></span>
                         </li>
                         <li class="notification-item">
                             <a href="{% url 'general:notifications' %}">Уведомления</a>

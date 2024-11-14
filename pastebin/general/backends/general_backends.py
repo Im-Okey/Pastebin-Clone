@@ -1,4 +1,6 @@
 from general.models import Notifications, Messages
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 def create_notification_by_flag(request, post, flag):
@@ -34,4 +36,18 @@ def create_message(request, post, comment):
         sender=request.user,
         post=post,
         text=comment.content,
+    )
+    create_new_message(sender=request.user, recipient=post.author)
+
+
+def create_new_message(sender, recipient):
+    """Создает новое уведомление для работы с WebSockets"""
+    unread_count = Messages.objects.filter(user=recipient, is_checked=False).count()
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"user_{recipient.id}",
+        {
+            "type": "send_unread_message_count",
+            "unread_messages_count": unread_count
+        }
     )

@@ -84,6 +84,7 @@ def create_comment(request, slug):
         comment.save()
         create_notification(request, post, flag='comment')
         create_message(request, post, comment)
+
     return render_post_response(request, post, popular_posts, requires_password=False)
 
 
