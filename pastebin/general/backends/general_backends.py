@@ -5,12 +5,13 @@ from asgiref.sync import async_to_sync
 
 def create_notification_by_flag(request, post, flag):
     """Создает уведобление в зависимости от флага"""
-    Notifications.objects.create(
+    notification = Notifications.objects.create(
         user=post.author,
         sender=request.user,
         post=post,
         notification_type=flag
     )
+    create_new_notification(post, notification)
 
 
 def create_notification(request, post, flag):
@@ -25,7 +26,6 @@ def create_notification(request, post, flag):
     if flag in get_flag_dictionary:
         numeric_flag = get_flag_dictionary[flag]
         create_notification_by_flag(request, post, numeric_flag)
-        create_new_notification(post)
     else:
         raise ValueError("Invalid flag provided")
 
@@ -68,15 +68,32 @@ def create_new_message(sender, recipient, message):
     )
 
 
-def create_new_notification(post):
+def create_new_notification(post, notification):
     """Создает новое уведомление для работы с WebSockets"""
     unread_notifications_count = Notifications.objects.filter(user=post.author, is_checked=False).count()
-    print(unread_notifications_count)
+
+    notification_data = {
+        "message": notification.get_notification_message(),
+        "avatar_url": notification.sender.avatar.url if notification.sender.avatar else "URL по умолчанию",
+        "send_time": notification.send_time.strftime('%Y-%m-%d %H:%M:%S'),
+        "url": f"/post/{post.slug}/",
+        "is_checked": notification.is_checked,
+    }
+
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f"user_{post.author.id}",
         {
             "type": "send_unread_notification_count",
             "unread_notifications_count": unread_notifications_count
+        }
+    )
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"user_{post.author.id}",
+        {
+            "type": "send_new_notification",
+            "notification": notification_data,
         }
     )

@@ -37,3 +37,10 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'unread_notifications_count': unread_notifications_count
         }))
+
+    async def send_new_notification(self, event):
+        notification_data = event['notification']
+        await self.send(text_data=json.dumps({
+            'type': 'new_notification',
+            'notification': notification_data
+        }))

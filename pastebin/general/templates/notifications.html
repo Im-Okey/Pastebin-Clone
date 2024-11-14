@@ -18,7 +18,9 @@
             <div class="card notifications-block">
                 <div class="card-body">
                     <div class="card-title-container">
-                        <h4 class="card-title">Уведомления ({{ unread_notifications_count }})</h4>
+                        <h4 class="card-title">
+                            Уведомления <span class="unread-count">({{ unread_notifications_count }})</span>
+                        </h4>
                         <a href="{% url 'general:mark-all-notes-read' %}" class="mark-all-read">Пометить все как
                             прочитанное</a>
                     </div>
@@ -34,7 +36,7 @@
                                 </div>
                                 <div class="notification-content">
                                     <p class="notification-message">{{ notification.get_notification_message }}</p>
-                                    <span class="notification-time">{{ notification.send_time|date:"d M Y H:i" }}</span>
+                                    <span class="notification-time">{{ notification.send_time }}</span>
                                 </div>
                                 {% if not notification.is_checked %}
                                 <span class="notification-badge"></span>
