@@ -25,17 +25,18 @@ notificationSocket.onmessage = function (e) {
         });
 
         messageItem.innerHTML = `
-        <a href="#" class="message-link">
-            <div class="message-avatar">
-                <img src="${data.message.avatar_url}" alt="Avatar" class="avatar-img">
-            </div>
-            <div class="message-content">
-                <span class="message-sender">${data.message.sender}</span>
-                <p class="message-text">${data.message.text}</p>
-                <span class="message-time">${formattedTime}</span>
-            </div>
-        </a>
-    `;
+            <a href="#" class="message-link">
+                <div class="message-avatar">
+                    <img src="${data.message.avatar_url}" alt="Avatar" class="avatar-img">
+                </div>
+                <div class="message-content">
+                    <span class="message-sender">${data.message.sender}</span>
+                    <p class="message-text">${data.message.text}</p>
+                    <span class="message-time">${formattedTime}</span>
+                </div>
+                ${!data.message.is_checked ? `<span class="notification-badge"></span>` : ''}
+            </a>
+        `;
         messagesList.prepend(messageItem);
     }
 

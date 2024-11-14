@@ -46,6 +46,14 @@ def create_new_message(sender, recipient, message):
     unread_count = Messages.objects.filter(user=recipient, is_checked=False).count()
     avatar_url = sender.avatar.url if sender.avatar else "URL по умолчанию"
 
+    message_data = {
+        "sender": sender.username,
+        "text": message.text,
+        "send_time": message.send_time.strftime('%Y-%m-%d %H:%M:%S'),
+        "avatar_url": avatar_url,
+        "is_checked": message.is_checked,
+    }
+
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f"user_{recipient.id}",
@@ -58,12 +66,7 @@ def create_new_message(sender, recipient, message):
         f"user_{recipient.id}",
         {
             "type": "send_new_message",
-            "message": {
-                "sender": sender.username,
-                "text": message.text,
-                "send_time": message.send_time.strftime('%Y-%m-%d %H:%M:%S'),
-                "avatar_url": avatar_url,
-            }
+            "message": message_data,
         }
     )
 
