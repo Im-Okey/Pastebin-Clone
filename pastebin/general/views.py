@@ -26,14 +26,14 @@ def notifications(request):
 def messages(request):
     mess = Messages.objects.all().filter(user=request.user)
 
-    unread_messages = mess.filter(is_checked=False)
-    read_messages = mess.filter(is_checked=True)
+    unread_messages = mess.filter(is_checked=False)[::-1]
+    read_messages = mess.filter(is_checked=True)[::-1]
 
-    unread_paginator = Paginator(unread_messages, 4)  # 10 сообщений на страницу
+    unread_paginator = Paginator(unread_messages, 4)
     unread_page_number = request.GET.get('unread_page')
     unread_page_obj = unread_paginator.get_page(unread_page_number)
 
-    read_paginator = Paginator(read_messages, 4)  # 10 сообщений на страницу
+    read_paginator = Paginator(read_messages, 4)
     read_page_number = request.GET.get('read_page')
     read_page_obj = read_paginator.get_page(read_page_number)
 

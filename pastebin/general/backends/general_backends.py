@@ -32,29 +32,44 @@ def create_notification(request, post, flag):
 
 def create_message(request, post, comment):
     """Создает сообщение"""
-    Messages.objects.create(
+    message = Messages.objects.create(
         user=post.author,
         sender=request.user,
         post=post,
         text=comment.content,
     )
-    create_new_message(sender=request.user, recipient=post.author)
+    create_new_message(sender=request.user, recipient=post.author, message=message)
 
 
-def create_new_message(sender, recipient):
-    """Создает новое уведомление для работы с WebSockets"""
+def create_new_message(sender, recipient, message):
+    """Создает новое сообщение для работы с WebSockets"""
     unread_count = Messages.objects.filter(user=recipient, is_checked=False).count()
+    avatar_url = sender.avatar.url if sender.avatar else "URL по умолчанию"
+
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f"user_{recipient.id}",
         {
             "type": "send_unread_message_count",
-            "unread_messages_count": unread_count
+            "unread_messages_count": unread_count,
+        }
+    )
+    async_to_sync(channel_layer.group_send)(
+        f"user_{recipient.id}",
+        {
+            "type": "send_new_message",
+            "message": {
+                "sender": sender.username,
+                "text": message.text,
+                "send_time": message.send_time.strftime('%Y-%m-%d %H:%M:%S'),
+                "avatar_url": avatar_url,
+            }
         }
     )
 
 
 def create_new_notification(post):
+    """Создает новое уведомление для работы с WebSockets"""
     unread_notifications_count = Notifications.objects.filter(user=post.author, is_checked=False).count()
     print(unread_notifications_count)
     channel_layer = get_channel_layer()

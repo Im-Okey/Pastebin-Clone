@@ -362,18 +362,6 @@ body {
     padding-right: 25px;
 }
 
-.notification-badge {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    margin-right: 20px;
-    width: 12px;
-    height: 12px;
-    background-color: #ff6600;
-    border-radius: 50%;
-    display: inline-block;
-    transform: translateY(-50%);
-}
 
 .card-title-container {
     display: flex;
