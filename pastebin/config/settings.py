@@ -101,7 +101,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 """Удаление пасты раз в час. Удаление уведомлений раз в день. Письмо на почту раз в неделю"""
@@ -112,11 +112,11 @@ CELERY_BEAT_SCHEDULE = {
     },
     'delete_old_unread_messages_and_notifications_every_minute': {
         'task': 'blog.tasks.delete_old_unread_messages_and_notifications',
-        'schedule': 60.0,
+        'schedule': 86400.0,
     },
     'send_weekly_unread_report': {
         'task': 'blog.tasks.send_weekly_unread_report',
-        'schedule': 60.0,
+        'schedule': 604800.0,
     },
 }
 
@@ -125,4 +125,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'arseny.butko771@gmail.com'
-EMAIL_HOST_PASSWORD = 'fcmpzkpvrytlxoos'
+EMAIL_HOST_PASSWORD = 'tmkzqejeveeninfe'
