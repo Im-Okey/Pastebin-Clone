@@ -75,7 +75,7 @@ class Notifications(models.Model):
     send_time = models.DateTimeField(auto_now_add=True)
     is_checked = models.BooleanField(default=False)
 
-    notification_type = models.IntegerField(choices=NOTE_TYPES, max_length=1)
+    notification_type = models.IntegerField(choices=NOTE_TYPES)
 
     class Meta:
         verbose_name = 'Уведомление'

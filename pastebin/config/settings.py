@@ -69,13 +69,14 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pastebin',  # Название базы данных
-        'USER': 'root',      # Имя пользователя
+        'NAME': 'PastebinService',  # Название базы данных
+        'USER': 'postgres',      # Имя пользователя
         'PASSWORD': 'root',  # Пароль
         'HOST': '127.0.0.1', # Адрес хоста
         'PORT': '5432',      # Порт PostgreSQL
