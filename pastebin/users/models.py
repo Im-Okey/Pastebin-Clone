@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     favorites = models.ManyToManyField('blog.Paste', related_name='favorited_by', blank=True)
-    address = models.CharField(max_length=100, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
     groups = models.ManyToManyField(
