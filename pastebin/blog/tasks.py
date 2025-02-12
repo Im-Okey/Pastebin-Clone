@@ -77,25 +77,28 @@ def send_weekly_unread_report():
     logger.info(f"Задача [{task_id}] по отправке отчета о непрочитанных сообщениях запущена в {timezone.now():%Y-%m-%d %H:%M:%S}")
 
     users = CustomUser.objects.all()
-    for user in users:
-        unread_messages_count = Messages.objects.filter(user=user, is_checked=False).count()
-        unread_notifications_count = Notifications.objects.filter(user=user, is_checked=False).count()
+    if users.exists():
+        for user in users:
+            unread_messages_count = Messages.objects.filter(user=user, is_checked=False).count()
+            unread_notifications_count = Notifications.objects.filter(user=user, is_checked=False).count()
 
-        if unread_messages_count > 0 or unread_notifications_count > 0:
-            subject = 'Отчет о непрочитанных сообщениях и уведомлениях'
-            message = (f'Уважаемый {user.username},\n\n'
-                       f'У вас {unread_messages_count} непрочитанных сообщений и '
-                       f'{unread_notifications_count} непрочитанных уведомлений.\n\n'
-                       'Пожалуйста, проверьте их.')
+            if unread_messages_count > 0 or unread_notifications_count > 0:
+                subject = 'Отчет о непрочитанных сообщениях и уведомлениях'
+                message = (f'Уважаемый {user.username},\n\n'
+                           f'У вас {unread_messages_count} непрочитанных сообщений и '
+                           f'{unread_notifications_count} непрочитанных уведомлений.\n\n'
+                           'Пожалуйста, проверьте их.')
 
-            send_mail(
-                subject,
-                message,
-                'arseny.butko771@gmail.com',
-                [user.email],
-                fail_silently=False,
-            )
+                send_mail(
+                    subject,
+                    message,
+                    'arseny.butko771@gmail.com',
+                    [user.email],
+                    fail_silently=False,
+                )
 
-            logger.info(f"Задача [{task_id}] — письмо отправлено пользователю {user.username}")
+                logger.info(f"Задача [{task_id}] — письмо отправлено пользователю {user.username}")
+    else:
+        print('Не найдено ни 1 пользователя')
 
     logger.info(f"Задача [{task_id}] по отправке отчета завершена")

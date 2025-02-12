@@ -1,13 +1,16 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-taw4#7_4vtsl2me*=6%!i!e*9$m!85+a#a)zx3rge5$i^4_b-v'
 
-DEBUG = True
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
 
-ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -35,7 +38,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
+            'hosts': [(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))],
         },
     },
 }
@@ -69,47 +72,50 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'config.wsgi.application'
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'PastebinService',  # Название базы данных
-        'USER': 'postgres',      # Имя пользователя
-        'PASSWORD': 'root',  # Пароль
-        'HOST': '127.0.0.1', # Адрес хоста
-        'PORT': '5432',      # Порт PostgreSQL
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': os.getenv('DB_NAME'),
+       'USER': os.getenv('DB_USER'),
+       'PASSWORD': os.getenv('DB_PASSWORD'),
+       'HOST': os.getenv('DB_HOST'),
+       'PORT': os.getenv('DB_PORT'),
+   }
 }
 
+
+# Other settings
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = "/"
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+
+# Static
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = "/"
-
+# Authentication
 AUTH_USER_MODEL = 'users.CustomUser'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-"""Удаление пасты раз в час. Удаление уведомлений раз в день. Письмо на почту раз в неделю"""
+
+# Celery
+CELERY_BROKER_URL = f"redis://{os.getenv('CELERY_HOST')}:{os.getenv('CELERY_PORT')}/0"
+CELERY_ACCEPT_CONTENT = os.getenv('CELERY_ACCEPT_CONTENT').split(" ")
+CELERY_TASK_SERIALIZER = os.getenv('CELERY_TASK_SERIALIZER')
 CELERY_BEAT_SCHEDULE = {
     'delete_expired_pastes_every_minute': {
         'task': 'blog.tasks.delete_expired_pastes',
@@ -117,17 +123,19 @@ CELERY_BEAT_SCHEDULE = {
     },
     'delete_old_unread_messages_and_notifications_every_minute': {
         'task': 'blog.tasks.delete_old_unread_messages_and_notifications',
-        'schedule': 86400.0,
+        'schedule': 60.0,#86400.0
     },
     'send_weekly_unread_report': {
         'task': 'blog.tasks.send_weekly_unread_report',
-        'schedule': 604800.0,
+        'schedule': 60.0,#604800.0
     },
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'arseny.butko771@gmail.com'
-EMAIL_HOST_PASSWORD = 'tmkzqejeveeninfe'
+
+# Email settings
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "False").lower() == "true"
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
