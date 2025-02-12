@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -13,8 +13,14 @@ def notifications(request):
     notes = Notifications.objects.all().filter(user=request.user).order_by('-send_time')
     popular_posts = Paste.objects.order_by('-views_count')[:5]
     paginator = Paginator(notes, 10)
+
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+
+    try:
+        page_obj = paginator.get_page(page_number)
+    except (EmptyPage, PageNotAnInteger):
+        print('Ошибка пагинации')
+        page_obj = paginator.get_page(1)
 
     return render(request, 'notifications.html', {
         'popular_posts': popular_posts,
@@ -35,7 +41,12 @@ def messages(request):
 
     read_paginator = Paginator(read_messages, 4)
     read_page_number = request.GET.get('read_page')
-    read_page_obj = read_paginator.get_page(read_page_number)
+
+    try:
+        read_page_obj = read_paginator.get_page(read_page_number)
+    except (EmptyPage, PageNotAnInteger):
+        print('Ошибка пагинации')
+        read_page_obj = read_paginator.get_page(1)
 
     popular_posts = Paste.objects.order_by('-views_count')[:5]
 

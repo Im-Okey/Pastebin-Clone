@@ -57,7 +57,10 @@ def posts_list(request):
     has_password = request.GET.get('has_password')
     search_query = request.GET.get('search', '')
 
-    posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query)
+    try:
+        posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query)
+    except Exception as e:
+        print(f'Произошла ошибка во время сортировки и фильтрации: {e}')
 
     return render(request, 'users_posts.html', {
         'posts': posts,
@@ -107,7 +110,10 @@ def update_profile(request):
     popular_posts = Paste.objects.order_by('-views_count')[:5]
     user = request.user
 
-    create_random_pastes(user, 100)
+    try:
+        create_random_pastes(user, 100)
+    except Exception as e:
+        print(f'Произошла ошибка во время генерации случайных постов: {e}')
 
     if request.method == 'POST':
         username = request.POST.get('username', user.username)

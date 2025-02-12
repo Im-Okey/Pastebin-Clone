@@ -47,7 +47,10 @@ def posts_check(request):
     selected_tags = request.GET.get('tags')
     selected_tags = selected_tags.split(',') if selected_tags else []
 
-    posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query, selected_tags)
+    try:
+        posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query, selected_tags)
+    except Exception as e:
+        print(f'Ошибка в функции сортировки и фильтрации: {e}')
 
     return render(request, 'blog/posts.html', {
         'posts': posts,
@@ -82,8 +85,15 @@ def create_comment(request, slug):
             content=request.POST.get('content')
         )
         comment.save()
-        create_notification(request, post, flag='comment')
-        create_message(request, post, comment)
+        try:
+            create_notification(request, post, flag='comment')
+        except Exception as e:
+            print(f'Ошибка при создании уведомления: {e}')
+
+        try:
+            create_message(request, post, comment)
+        except Exception as e:
+            print(f'Ошибка при создании сообщения: {e}')
 
     return render_post_response(request, post, popular_posts, requires_password=False)
 
@@ -107,15 +117,24 @@ def create_paste(request):
             paste = form.save(commit=False)
             paste.author = request.user
 
-            paste.time_live = process_time(form)
+            try:
+                paste.time_live = process_time(form)
+            except Exception as e:
+                print(f'Неправильно обработано значение времени при создании поста: {e}')
 
-            handle_password(form, paste, paste.password)
+            try:
+                handle_password(form, paste, paste.password)
+            except Exception as e:
+                print(f'Ошибка при обработке поле пароля во время создания поста: {e}')
 
             paste.save()
 
             tags_input = form.cleaned_data['tags']
-            add_tags_to_paste(paste, tags_input)
 
+            try:
+                add_tags_to_paste(paste, tags_input)
+            except Exception as e:
+                print(f'Не удалось добавить новые теги к посту: {e}')
             return redirect('/')
     else:
         form = PasteForm()
@@ -127,7 +146,10 @@ def delete_paste(request, pk):
     post = get_object_or_404(Paste, id=pk)
 
     if request.method == 'POST':
-        post.delete()
+        try:
+            post.delete()
+        except Exception as e:
+            print(f'Выбранный пост уже удален: {e}')
         return redirect('users:posts-list')
 
     return render(request, 'blog/post_confirm_delete.html', {'post': post})
@@ -144,15 +166,25 @@ def edit_post(request, slug):
         if form.is_valid():
             paste = form.save(commit=False)
 
-            paste.time_live = process_time(form)
-            password_error = handle_password(form, paste, old_hashed_password)
+            try:
+                paste.time_live = process_time(form)
+            except Exception as e:
+                print(f'Неправильно обработано значение времени при редактировании поста: {e}')
 
-            if password_error:
+            try:
+                handle_password(form, paste, old_hashed_password)
+            except Exception as e:
+                print(f'Ошибка при обработке поле пароля во время редактирования поста: {e}')
+
                 return render_post_response(request, post, popular_posts, requires_password=False,
                                             error_message="Пожалуйста, введите пароль или отключите его.")
 
+
             paste.save()
-            add_tags_to_paste(paste, form.cleaned_data['tags'])
+            try:
+                add_tags_to_paste(paste, form.cleaned_data['tags'])
+            except Exception as e:
+                print(f'Не удалось добавить новые теги к посту: {e}')
 
             return render_post_response(request, post, popular_posts, requires_password=False)
     else:
@@ -165,6 +197,9 @@ def edit_post(request, slug):
 
 
 def detail_post(request, slug):
+    if not request.user.is_authenticated:
+        return redirect('users:signup')
+
     post, popular_posts = get_post_context(request, slug)
 
     requires_password = bool(post.password)

@@ -11,7 +11,10 @@ def create_notification_by_flag(request, post, flag):
         post=post,
         notification_type=flag
     )
-    create_new_notification(post, notification)
+    try:
+        create_new_notification(post, notification)
+    except Exception as e:
+        print(f'Не удалось создать новое уведомление: {e}')
 
 
 def create_notification(request, post, flag):
@@ -38,7 +41,10 @@ def create_message(request, post, comment):
         post=post,
         text=comment.content,
     )
-    create_new_message(sender=request.user, recipient=post.author, message=message)
+    try:
+        create_new_message(sender=request.user, recipient=post.author, message=message)
+    except Exception as e:
+        print(f'Не удалось создать новое сообщение: {e}')
 
 
 def create_new_message(sender, recipient, message):
