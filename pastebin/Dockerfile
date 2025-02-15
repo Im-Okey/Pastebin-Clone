@@ -1,18 +1,33 @@
-# Базовый образ с Python 3.13
-FROM python:3.13-slim
+# Используем Python 3.12
+FROM python:3.12
 
-# Устанавливаем рабочую директорию в контейнере
+# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем зависимости и устанавливаем их
-RUN pip install --upgrade pip
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Копируем зависимости
+COPY requirements.txt ./
 
-COPY .. .
+# Устанавливаем зависимости
+RUN pip install -r requirements.txt
 
-# Открываем порт для Daphne (обычно 8000)
+# Копируем entrypoint.sh в контейнер
+COPY entrypoint.sh /entrypoint.sh
+
+# Делаем скрипт исполнимым
+RUN chmod +x /entrypoint.sh
+
+
+# Копируем код проекта
+COPY . .
+
+# Создаём директорию для статики
+RUN mkdir -p /vol/web/static && chmod -R 755 /vol/web/static
+
+# Открываем порт 8000
 EXPOSE 8000
 
-# Запускаем Django через Daphne
+# Устанавливаем entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Запуск через Daphne
 CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "config.asgi:application"]
