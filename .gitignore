@@ -1,5 +1,4 @@
 .venv
-pastebin/.env
 celerybeat-schedule*
 pastebin/dump.rdb
 .idea/
