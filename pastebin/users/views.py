@@ -9,7 +9,7 @@ from django.views.generic import CreateView
 
 from .backends.users_backends import sort_and_filter, create_random_pastes
 from .forms import CustomUserCreationForm
-from blog.models import Paste
+from blog.models import Paste, Tag
 
 from general.models import Notifications
 from general.backends.general_backends import create_notification
@@ -48,6 +48,7 @@ def posts_list(request):
     user = request.user
     posts = Paste.objects.filter(author=user).order_by('-created_at')
     popular_posts = Paste.objects.order_by('-views_count')[:5]
+    tags = Tag.objects.all()
 
     categories = Category.objects.all()
 
@@ -57,19 +58,26 @@ def posts_list(request):
     has_password = request.GET.get('has_password')
     search_query = request.GET.get('search', '')
 
+    selected_tags = request.GET.get('tags')
+    selected_tags = selected_tags.split(',') if selected_tags else []
+
     try:
-        posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query)
+        posts = sort_and_filter(posts, category, sort_by, access_status, has_password, search_query, selected_tags)
     except Exception as e:
-        print(f'Произошла ошибка во время сортировки и фильтрации: {e}')
+        print(f'Ошибка в функции сортировки и фильтрации: {e}')
+
 
     return render(request, 'users_posts.html', {
         'posts': posts,
         'popular_posts': popular_posts,
         'categories': categories,
         'selected_category': category,
+        'selected_access_status': access_status,
         'selected_sort': sort_by,
         'has_password': has_password,
-        'search_query': search_query
+        'search_query': search_query,
+        'tags': tags,
+        'selected_tags': selected_tags,
     })
 
 

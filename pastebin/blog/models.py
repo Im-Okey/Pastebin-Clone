@@ -37,9 +37,8 @@ class Category(models.Model):
 
 class Paste(models.Model):
     ACCESS_STATUS_CHOICES = [
-        (0, 'Private'),
-        (1, 'Public'),
-        (2, 'Draft'),
+        (0, 'Public'),
+        (1, 'Draft'),
     ]
 
     TIME_LIVE_CHOICES = [

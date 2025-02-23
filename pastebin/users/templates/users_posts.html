@@ -36,9 +36,8 @@
 
                     <select name="access_status" style="width: 35%; margin-left: 10px;">
                         <option value="">Тип доступа</option>
-                        <option value="0">Private</option>
-                        <option value="1">Public</option>
-                        <option value="2">Draft</option>
+                        <option value="0" {% if selected_access_status == '0' %}selected{% endif %}>Public</option>
+                        <option value="1" {% if selected_access_status == '1' %}selected{% endif %}>Draft</option>
                     </select>
 
                     <div class="checkbox-container">
@@ -50,8 +49,9 @@
                         </label>
                     </div>
 
-                    <button type="submit" style="margin-left: 100px;">Применить</button>
+                    <button type="submit" class="styled-button" style="margin-left: 157px" onclick="applyFilters()">Применить</button>
                 </div>
+                {% include 'blog/temps/tags_drop_menu.html' %}
             </form>
 
             <div class="post-list">
@@ -93,6 +93,7 @@
         </div>
 
         {% include 'blog/temps/popular_posts.html' %}
+
     </div>
 </main>
 {% endblock %}

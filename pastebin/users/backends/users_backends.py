@@ -11,7 +11,7 @@ from blog.models import Tag
 from blog.models import Paste
 
 
-def sort_and_filter(posts, category, sort_by, access_status, has_password, search_query):
+def sort_and_filter(posts, category, sort_by, access_status, has_password, search_query, selected_tags):
     """
     Фукция выполняющая сортировку и фильтрацию по параметрам
     """
@@ -38,6 +38,10 @@ def sort_and_filter(posts, category, sort_by, access_status, has_password, searc
 
     if search_query:
         posts = posts.filter(Q(title__icontains=search_query) | Q(content__icontains=search_query))
+
+    if selected_tags:
+        for tag_name in selected_tags:
+            posts = posts.filter(tags__name=tag_name)
 
     return posts
 
