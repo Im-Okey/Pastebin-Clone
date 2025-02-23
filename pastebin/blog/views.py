@@ -18,10 +18,13 @@ from general.backends.general_backends import create_notification, create_messag
 def index(request):
     form = PasteForm()
     popular_posts = Paste.objects.order_by('-views_count')[:5]
+    tags = Tag.objects.all()
+
     user = request.user
     context = {
         'form': form,
         'popular_posts': popular_posts,
+        'tags': tags,
     }
     if user.is_authenticated:
         unread_notifications_count = Notifications.objects.filter(user=request.user, is_checked=False).count()

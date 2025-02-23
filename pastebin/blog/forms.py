@@ -9,9 +9,9 @@ class PasteForm(forms.ModelForm):
     need_password = forms.BooleanField(required=False)
 
     tags = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'placeholder': 'Введите теги через запятую...',
-            'class': 'post-settings-input'
+        widget=forms.HiddenInput(attrs={
+            'placeholder': 'Выберите подходящие теги ниже...',
+            'class': 'post-settings-input',
         }),
         required=False
     )

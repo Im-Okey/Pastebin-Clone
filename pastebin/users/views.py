@@ -106,14 +106,18 @@ def profile(request):
 
 
 @login_required
+def test_pastes(request):
+    try:
+        create_random_pastes(request.user, 100)
+    except Exception as e:
+        print(f'Произошла ошибка во время генерации случайных постов: {e}')
+    return redirect('users:user-profile')
+
+
+@login_required
 def update_profile(request):
     popular_posts = Paste.objects.order_by('-views_count')[:5]
     user = request.user
-
-    try:
-        create_random_pastes(user, 100)
-    except Exception as e:
-        print(f'Произошла ошибка во время генерации случайных постов: {e}')
 
     if request.method == 'POST':
         username = request.POST.get('username', user.username)
