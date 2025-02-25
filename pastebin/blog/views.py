@@ -4,13 +4,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PasteForm
 
 from .backends.general_backends import add_tags_to_paste, verify_password, \
-    process_time, handle_password, sort_and_filter
+    process_time, handle_password, sort_and_filter, comment_pre_moderation
 from .backends.post_logic_backends import handle_post_deletion, render_post_response, get_post_context
 
 from .models import Paste, Comment, Category, Tag
 from general.models import Notifications, Messages
-
-from general.backends.general_backends import create_notification, create_message
 
 
 # ----------------------------------------------------------------------------
@@ -78,28 +76,14 @@ def posts_check(request):
 
 # ----------------------------------------------------------------------------
 # comments
-
 def create_comment(request, slug):
     post, popular_posts = get_post_context(request, slug)
-    if request.method == "POST":
-        comment = Comment.objects.create(
-            author=request.user,
-            paste=get_object_or_404(Paste, slug=slug),
-            content=request.POST.get('content')
-        )
-        comment.save()
-        try:
-            create_notification(request, post, flag='comment')
-        except Exception as e:
-            print(f'Ошибка при создании уведомления: {e}')
 
-        try:
-            create_message(request, post, comment)
-        except Exception as e:
-            print(f'Ошибка при создании сообщения: {e}')
+    if request.method == "POST":
+        comment = Comment(author=request.user, paste=post, content=request.POST.get('content'))
+        comment_pre_moderation(request, comment, post, popular_posts)
 
     return render_post_response(request, post, popular_posts, requires_password=False)
-
 
 # ----------------------------------------------------------------------------
 
@@ -181,7 +165,6 @@ def edit_post(request, slug):
 
                 return render_post_response(request, post, popular_posts, requires_password=False,
                                             error_message="Пожалуйста, введите пароль или отключите его.")
-
 
             paste.save()
             try:

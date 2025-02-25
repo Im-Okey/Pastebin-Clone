@@ -6,7 +6,12 @@ from typing import Optional, List
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
+from .post_logic_backends import render_post_response
 from ..models import Tag, Category
+
+from blog.tasks import check_toxicity
+from celery.result import AsyncResult
+from django.contrib import messages
 
 
 def process_time_live(time_live_value: Optional[str]) -> Optional[timedelta]:
@@ -119,3 +124,25 @@ def sort_and_filter(posts, category, sort_by, access_status, has_password, searc
             posts = posts.filter(tags__name=tag_name)
 
     return posts
+
+
+def comment_pre_moderation(request, comment, post, popular_posts):
+    task = check_toxicity.delay(comment.content)
+
+    try:
+        result_data = task.get()
+    except Exception as e:
+        messages.error(request, f'Ошибка при проверке комментария: {str(e)}')
+        return render_post_response(request, post, popular_posts, requires_password=False)
+    print(f"Celery Result: {result_data}")
+
+    if result_data.get('error'):
+        messages.error(request, 'Произошла ошибка при проверке комментария.')
+        return render_post_response(request, post, popular_posts, requires_password=False)
+
+    if result_data.get('blocked', False):
+        messages.error(request, 'Не удалось загрузить комментарий, попробуйте позже.')
+        return render_post_response(request, post, popular_posts, requires_password=False)
+
+    comment.save()
+    return render_post_response(request, post, popular_posts, requires_password=False)

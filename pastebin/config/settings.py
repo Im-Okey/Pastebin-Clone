@@ -111,6 +111,7 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 CELERY_BROKER_URL = f"redis://{os.getenv('CELERY_HOST')}:{os.getenv('CELERY_PORT')}/0"
 CELERY_ACCEPT_CONTENT = os.getenv('CELERY_ACCEPT_CONTENT').split(" ")
 CELERY_TASK_SERIALIZER = os.getenv('CELERY_TASK_SERIALIZER')
+CELERY_RESULT_BACKEND = f"redis://{os.getenv('CELERY_HOST')}:{os.getenv('CELERY_PORT')}/0"
 CELERY_BEAT_SCHEDULE = {
     'delete_expired_pastes_every_minute': {
         'task': 'blog.tasks.delete_expired_pastes',
@@ -125,6 +126,7 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60.0,  # 604800.0
     },
 }
+PERSPECTIVE_API_KEY = os.getenv('PERSPECTIVE_API_KEY')
 
 # Email settings
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')

@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db import models
 from django.urls import reverse
 from users.models import CustomUser as User
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 
 class Tag(models.Model):

@@ -4,165 +4,232 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block head %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
-<script src="{% static 'js/password_modal.js' %}"></script>
-<script src="{% static 'js/password_check_box.js' %}"></script>
-<script src="{% static 'js/show_edit_form.js' %}"></script>
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
+    <script src="{% static 'js/password_modal.js' %}"></script>
+    <script src="{% static 'js/password_check_box.js' %}"></script>
+    <script src="{% static 'js/show_edit_form.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-<input type="hidden" id="post-password" value="{{ post.password }}">
+    <input type="hidden" id="post-password" value="{{ post.password }}">
 
-{% if requires_password %}
-{% include 'blog/temps/post_password_modal.html' %}
-{% endif %}
+    {% if requires_password %}
+        {% include 'blog/temps/post_password_modal.html' %}
+    {% endif %}
 
-<main>
-    <div class="main-container">
-        <div id="post-content" class="left-block">
-            <div class="post-preview" style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="icon">
-                    <img src="https://th.bing.com/th/id/OIP.oESypaPq8Yzj1DuqXK9VjQAAAA?rs=1&pid=ImgDetMain"
-                         alt="{{ user.nickname }}" width="40" height="40">
-                </div>
-                <div class="info" style="flex-grow: 1;">
-                    <span class="post-title">{{ post.title }}</span>
-                    <br>
-                    <span class="post-meta">{{ post.author }} | {{ post.get_formatted_created_at }} | Просмотров: {{ post.views_count }} | Сохранений: {{ post.favourite_count }}</span>
-                </div>
-                <span class="post-favorite" data-post-slug="{{ post.slug }}" style="cursor: pointer; margin-left: auto;">
-                    <span class="star" id="favorite-star" style="color: {% if post in user.favorites.all %}#FFD700{% else %}black{% endif %}; font-size: 18px;">
+    <style>
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+    </style>
+
+    <script>
+        setTimeout(function () {
+            const messages = document.querySelector('#messages');
+            if (messages) {
+                messages.style.opacity = 0;
+                setTimeout(() => {
+                    messages.style.display = 'none';  // Убираем элемент после исчезновения
+                }, 500);  // Задержка для плавного исчезновения
+            }
+        }, 5000);  // Скрываем сообщение через 5 секунд
+    </script>
+
+    <main>
+        {% if messages %}
+            <div id="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="main-container">
+            <div id="post-content" class="left-block">
+                <div class="post-preview" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="icon">
+                        <img src="https://th.bing.com/th/id/OIP.oESypaPq8Yzj1DuqXK9VjQAAAA?rs=1&pid=ImgDetMain"
+                             alt="{{ user.nickname }}" width="40" height="40">
+                    </div>
+                    <div class="info" style="flex-grow: 1;">
+                        <span class="post-title">{{ post.title }}</span>
+                        <br>
+                        <span class="post-meta">{{ post.author }} | {{ post.get_formatted_created_at }} | Просмотров: {{ post.views_count }} | Сохранений: {{ post.favourite_count }}</span>
+                    </div>
+                    <span class="post-favorite" data-post-slug="{{ post.slug }}"
+                          style="cursor: pointer; margin-left: auto;">
+                    <span class="star" id="favorite-star"
+                          style="color: {% if post in user.favorites.all %}#FFD700{% else %}black{% endif %}; font-size: 18px;">
                         {% if post in user.favorites.all %}★{% else %}☆{% endif %}
                     </span>
                 </span>
-                {% if request.user == post.author %}
-                <button id="edit-button" onclick="showEditForm(this)" style="margin-left: 20px;">Редактировать</button>
-                {% endif %}
-            </div>
-
-            <div id="post-content-display">
-                <div class="post-editor">
-                    <textarea placeholder="Введите текст поста..." disabled>{{post.content}}</textarea>
+                    {% if request.user == post.author %}
+                        <button id="edit-button" onclick="showEditForm(this)" style="margin-left: 20px;">Редактировать
+                        </button>
+                    {% endif %}
                 </div>
-                <div class="post-metadata" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div class="post-info">
-                        <span class="categories"><strong>Categories:</strong> {{ post.category }}</span><br>
-                        <span class="tags"><strong>Tags:</strong>
-                            {% for tag in post.tags.all %}
-                                <a href="{% url 'blog:posts-list' %}?tags={{ tag.name|urlencode }}" class="tag-link">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
+
+                <div id="post-content-display">
+                    <div class="post-editor">
+                        <textarea placeholder="Введите текст поста..." disabled>{{ post.content }}</textarea>
+                    </div>
+                    <div class="post-metadata"
+                         style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="post-info">
+                            <span class="categories"><strong>Categories:</strong> {{ post.category }}</span><br>
+                            <span class="tags"><strong>Tags:</strong>
+                                {% for tag in post.tags.all %}
+                                    <a href="{% url 'blog:posts-list' %}?tags={{ tag.name|urlencode }}"
+                                       class="tag-link">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
                         </span>
+                        </div>
+                        <div class="post-actions" style="display: flex; align-items: center;">
+                            <button id="like-button-{{ post.id }}" class="like-button"
+                                    onclick="likeDislikePaste({{ post.id }}, 'like')"
+                                    style="margin-right: 10px; color: {% if user_liked %}blue{% else %}black{% endif %};">
+                                👍 <span id="like-count-{{ post.id }}">{{ likes_count }}</span>
+                            </button>
+                            <button id="dislike-button-{{ post.id }}" class="dislike-button"
+                                    onclick="likeDislikePaste({{ post.id }}, 'dislike')"
+                                    style="margin-right: 10px; color: {% if user_disliked %}red{% else %}black{% endif %};">
+                                👎 <span id="dislike-count-{{ post.id }}">{{ dislikes_count }}</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="post-actions" style="display: flex; align-items: center;">
-                        <button id="like-button-{{ post.id }}" class="like-button" onclick="likeDislikePaste({{ post.id }}, 'like')" style="margin-right: 10px; color: {% if user_liked %}blue{% else %}black{% endif %};">
-                            👍 <span id="like-count-{{ post.id }}">{{ likes_count }}</span>
-                        </button>
-                        <button id="dislike-button-{{ post.id }}" class="dislike-button" onclick="likeDislikePaste({{ post.id }}, 'dislike')" style="margin-right: 10px; color: {% if user_disliked %}red{% else %}black{% endif %};">
-                            👎 <span id="dislike-count-{{ post.id }}">{{ dislikes_count }}</span>
-                        </button>
+
+                    <div class="post-settings">
+                        <h3>Комментарии</h3>
+                        <ul class="comments-list">
+                            {% for comment in post.comments.all %}
+                                <li>
+                                    <span>{{ comment.author }}</span>
+                                    <span>{{ comment.created_at }}</span>
+                                    <p>{{ comment.content }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <form class="comment-form" method="POST" action="{% url 'blog:comment-create' post.slug %}">
+                            {% csrf_token %}
+                            <textarea placeholder="Введите текст комментария..." maxlength="100"
+                                      name="content"></textarea>
+                            <button type="submit">Отправить</button>
+                        </form>
                     </div>
                 </div>
 
-                <div class="post-settings">
-                    <h3>Комментарии</h3>
-                    <ul class="comments-list">
-                        {% for comment in post.comments.all %}
-                        <li>
-                            <span>{{comment.author}}</span>
-                            <span>{{comment.created_at}}</span>
-                            <p>{{comment.content}}</p>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    <form class="comment-form" method="POST" action="{% url 'blog:comment-create' post.slug %}">
-                        {% csrf_token %}
-                        <textarea placeholder="Введите текст комментария..." maxlength="100" name="content"></textarea>
-                        <button type="submit">Отправить</button>
-                    </form>
+                <div id="edit-post-form" style="display: none;">
+                    <div class="post-form">
+                        <form method="POST" action="{% url 'blog:post-update' post.slug %}">
+                            {% csrf_token %}
+                            <div class="post-editor">
+                                <textarea name="content"
+                                          placeholder="Введите текст поста...">{{ post.content }}</textarea>
+                            </div>
+                            <div class="post-settings">
+                                <h3>Настройки публикации</h3>
+                                <label>
+                                    Категория:
+                                    <select name="category">
+                                        {% for category in form.category.field.queryset %}
+                                            <option value="{{ category.id }}"
+                                                    {% if category == post.category %}selected{% endif %}>
+                                                {{ category.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                                <label>
+                                    Теги:
+                                    <input type="text" name="tags" value="{{ post.tags.all|join:', ' }}">
+                                </label>
+                                <label>
+                                    Название поста:
+                                    <input type="text" name="title" value="{{ post.title }}">
+                                </label>
+                                <label>
+                                    Статус публикации:
+                                    <select name="access_status">
+                                        <option value="0" {% if post.access_status == 0 %}selected{% endif %}>Приватный
+                                        </option>
+                                        <option value="1" {% if post.access_status == 1 %}selected{% endif %}>Публичный
+                                        </option>
+                                        <option value="2" {% if post.access_status == 2 %}selected{% endif %}>Черновик
+                                        </option>
+                                    </select>
+                                </label>
+                                <label>
+                                    Время удаления:
+                                    <select name="time_live" class="post-settings-select">
+                                        {% for value, label in form.time_live.field.choices %}
+                                            <option value="{{ value }}"
+                                                    {% if label == post.get_time_live_display %}selected{% endif %}>
+                                                {{ label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="need_password" id="need-password" class="need-password"
+                                           {% if post.password %}checked{% endif %} onclick="togglePasswordField()">
+                                    Требуется пароль
+                                </label>
+
+                                <label>
+                                    Пароль:
+                                    <input type="password" name="password" id="password-field"
+                                           placeholder="Введите пароль"
+                                            {% if post.password %} value="{{ post.password }}" {% else %}
+                                           value="" {% endif %} disabled>
+                                </label>
+                                <input type="hidden" name="stored_password" id="stored-password"
+                                       value="{{ post.password }}">
+                                {% if error_message %}
+                                    <div class="error-message" style="color: red;">{{ error_message }}</div>
+                                {% endif %}
+                                <label>
+                                    <input type="checkbox" name="is_delete_after_read" class="delete-after-read"
+                                           {% if post.is_delete_after_read %}checked{% endif %}> Удалить после прочтения
+                                </label>
+                                <button type="submit">Сохранить изменения</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-
-            <div id="edit-post-form" style="display: none;">
-                <div class="post-form">
-                    <form method="POST" action="{% url 'blog:post-update' post.slug %}">
-                        {% csrf_token %}
-                        <div class="post-editor">
-                            <textarea name="content" placeholder="Введите текст поста...">{{ post.content }}</textarea>
-                        </div>
-                        <div class="post-settings">
-                            <h3>Настройки публикации</h3>
-                            <label>
-                                Категория:
-                                <select name="category">
-                                    {% for category in form.category.field.queryset %}
-                                    <option value="{{ category.id }}" {% if category == post.category %}selected{% endif %}>
-                                        {{ category.name }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </label>
-                            <label>
-                                Теги:
-                                <input type="text" name="tags" value="{{ post.tags.all|join:', ' }}">
-                            </label>
-                            <label>
-                                Название поста:
-                                <input type="text" name="title" value="{{ post.title }}">
-                            </label>
-                            <label>
-                                Статус публикации:
-                                <select name="access_status">
-                                    <option value="0" {% if post.access_status == 0 %}selected{% endif %}>Приватный
-                                    </option>
-                                    <option value="1" {% if post.access_status == 1 %}selected{% endif %}>Публичный
-                                    </option>
-                                    <option value="2" {% if post.access_status == 2 %}selected{% endif %}>Черновик
-                                    </option>
-                                </select>
-                            </label>
-                            <label>
-                                Время удаления:
-                                <select name="time_live" class="post-settings-select">
-                                    {% for value, label in form.time_live.field.choices %}
-                                    <option value="{{ value }}"
-                                            {% if label == post.get_time_live_display %}selected{% endif %}>
-                                        {{ label }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </label>
-                            <label>
-                                <input type="checkbox" name="need_password" id="need-password" class="need-password"
-                                       {% if post.password %}checked{% endif %} onclick="togglePasswordField()">
-                                Требуется пароль
-                            </label>
-
-                            <label>
-                                Пароль:
-                                <input type="password" name="password" id="password-field" placeholder="Введите пароль"
-                                       {% if post.password %} value="{{ post.password }}" {% else %} value="" {% endif %} disabled>
-                            </label>
-                            <input type="hidden" name="stored_password" id="stored-password"
-                                   value="{{ post.password }}">
-                            {% if error_message %}
-                            <div class="error-message" style="color: red;">{{ error_message }}</div>
-                            {% endif %}
-                            <label>
-                                <input type="checkbox" name="is_delete_after_read" class="delete-after-read"
-                                       {% if post.is_delete_after_read %}checked{% endif %}> Удалить после прочтения
-                            </label>
-                            <button type="submit">Сохранить изменения</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            {% include 'blog/temps/popular_posts.html' %}
         </div>
-        {% include 'blog/temps/popular_posts.html' %}
-    </div>
-</main>
+    </main>
 
-<script src="{% static 'js/add_post_to_favorite.js' %}"></script>
-<script src="{% static 'js/paste_likes_dislikes.js' %}"></script>
+    <script src="{% static 'js/add_post_to_favorite.js' %}"></script>
+    <script src="{% static 'js/paste_likes_dislikes.js' %}"></script>
 
 {% endblock %}
