@@ -40,21 +40,6 @@ notificationSocket.onmessage = function (e) {
         messagesList.prepend(messageItem);
     }
 
-    if (data.unread_messages_count !== undefined) {
-
-        const messageCount = document.querySelector('.card-title .unread-count');
-        if (messageCount) {
-            messageCount.textContent = `(${data.unread_messages_count})`;
-        }
-
-        const messageBadge = document.querySelector('.notification-badge');
-        if (data.unread_messages_count > 0) {
-            messageBadge.style.display = 'inline';
-        } else {
-            messageBadge.style.display = 'none';
-        }
-    }
-
 
     if (data.notification) {
 
@@ -89,18 +74,27 @@ notificationSocket.onmessage = function (e) {
     }
 
 
-    if (data.unread_notifications_count !== undefined) {
-
-        const notificationCount = document.querySelector('.card-title .unread-count');
-        if (notificationCount) {
-            notificationCount.textContent = `(${data.unread_notifications_count})`;
+    if (data.unread_messages_count !== undefined) {
+        const messageTitle = document.querySelector('.messages-block .card-title');
+        if (messageTitle) {
+            messageTitle.textContent = `Сообщения (${data.unread_messages_count})`;
         }
 
-        const notificationBadge = document.querySelector('.notification-badge-notifications');
-        if (data.unread_notifications_count > 0) {
-            notificationBadge.style.display = 'inline';
-        } else {
-            notificationBadge.style.display = 'none';
+        const messageBadge = document.querySelector('.messages-block .notification-badge');
+        if (messageBadge) {
+            messageBadge.style.display = data.unread_messages_count > 0 ? 'inline' : 'none';
+        }
+    }
+
+    if (data.unread_notifications_count !== undefined) {
+        const notificationTitle = document.querySelector('.notifications-block .card-title');
+        if (notificationTitle) {
+            notificationTitle.textContent = `Уведомления (${data.unread_notifications_count})`;
+        }
+
+        const notificationBadge = document.querySelector('.notifications-block .notification-badge');
+        if (notificationBadge) {
+            notificationBadge.style.display = data.unread_notifications_count > 0 ? 'inline' : 'none';
         }
     }
 };

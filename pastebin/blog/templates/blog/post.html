@@ -10,6 +10,7 @@
     <script src="{% static 'js/password_check_box.js' %}"></script>
     <script src="{% static 'js/show_edit_form.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/tags_for_create_past.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/alerts.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -18,50 +19,6 @@
     {% if requires_password %}
         {% include 'blog/temps/post_password_modal.html' %}
     {% endif %}
-
-    <style>
-        .alert {
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 5px;
-            font-size: 16px;
-            text-align: center;
-            opacity: 1;
-            transition: opacity 0.5s ease-out;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .alert-info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-        }
-
-        .alert-warning {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-    </style>
-
-    <script>
-        setTimeout(function () {
-            const messages = document.querySelector('#messages');
-            if (messages) {
-                messages.style.opacity = 0;
-                setTimeout(() => {
-                    messages.style.display = 'none';  // Убираем элемент после исчезновения
-                }, 500);  // Задержка для плавного исчезновения
-            }
-        }, 5000);  // Скрываем сообщение через 5 секунд
-    </script>
 
     <main>
         {% if messages %}
@@ -259,5 +216,6 @@
     <script src="{% static 'js/add_post_to_favorite.js' %}"></script>
     <script src="{% static 'js/paste_likes_dislikes.js' %}"></script>
     <script src="{% static 'js/tags_for_create_paste.js' %}"></script>
+    <script src="{% static 'js/alerts.js' %}"></script>
 
 {% endblock %}

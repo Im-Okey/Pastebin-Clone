@@ -40,21 +40,6 @@ notificationSocket.onmessage = function (e) {
         messagesList.prepend(messageItem);
     }
 
-    if (data.unread_messages_count !== undefined) {
-
-        const messageCount = document.querySelector('.card-title .unread-count');
-        if (messageCount) {
-            messageCount.textContent = `(${data.unread_messages_count})`;
-        }
-
-        const messageBadge = document.querySelector('.notification-badge');
-        if (data.unread_messages_count > 0) {
-            messageBadge.style.display = 'inline';
-        } else {
-            messageBadge.style.display = 'none';
-        }
-    }
-
 
     if (data.notification) {
 
@@ -88,19 +73,33 @@ notificationSocket.onmessage = function (e) {
         notificationsList.prepend(notificationItem);
     }
 
+    if (data.unread_messages_count !== undefined) {
+
+        const messageCount = document.querySelector('.card-title .unread-count');
+        if (messageCount) {
+            messageCount.textContent = `(${data.unread_messages_count})`;
+        }
+
+        const messageBadge = document.querySelector('.notification-badge');
+        if (data.unread_messages_count > 0) {
+            messageBadge.style.display = 'inline';
+        } else {
+            messageBadge.style.display = 'none';
+        }
+    }
+
 
     if (data.unread_notifications_count !== undefined) {
+        const notificationTitle = document.querySelector('.card-title');
 
-        const notificationCount = document.querySelector('.card-title .unread-count');
-        if (notificationCount) {
-            notificationCount.textContent = `(${data.unread_notifications_count})`;
+        if (notificationTitle) {
+            // Убираем старый текст и вставляем новый счетчик
+            notificationTitle.innerHTML = `Уведомления (${data.unread_notifications_count})`;
         }
 
         const notificationBadge = document.querySelector('.notification-badge-notifications');
-        if (data.unread_notifications_count > 0) {
-            notificationBadge.style.display = 'inline';
-        } else {
-            notificationBadge.style.display = 'none';
+        if (notificationBadge) {
+            notificationBadge.style.display = data.unread_notifications_count > 0 ? 'inline' : 'none';
         }
     }
 };

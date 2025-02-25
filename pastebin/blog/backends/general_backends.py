@@ -6,6 +6,7 @@ from typing import Optional, List
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
+from general.backends.general_backends import create_notification, create_message
 from .post_logic_backends import render_post_response
 from ..models import Tag, Category
 
@@ -145,4 +146,13 @@ def comment_pre_moderation(request, comment, post, popular_posts):
         return render_post_response(request, post, popular_posts, requires_password=False)
 
     comment.save()
+    try:
+        create_notification(request, post, flag='comment')
+    except Exception as e:
+        print(f'Ошибка при создании уведомления: {e}')
+
+    try:
+        create_message(request, post, comment)
+    except Exception as e:
+        print(f'Ошибка при создании сообщения: {e}')
     return render_post_response(request, post, popular_posts, requires_password=False)
