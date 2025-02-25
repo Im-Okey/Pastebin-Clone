@@ -3,3 +3,4 @@ celerybeat-schedule*
 pastebin/dump.rdb
 .idea/
 .env
+__pycache__/
