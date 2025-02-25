@@ -1,6 +1,15 @@
 let selectedTags = [];
 
-// Функция для сворачивания/разворачивания списка тегов
+document.addEventListener("DOMContentLoaded", function () {
+    let existingTags = document.getElementById("tagsField").value;
+    if (existingTags) {
+        selectedTags = existingTags.split(", ").map(tag => tag.trim());
+    }
+
+    updateSelectedTags();
+});
+
+
 function toggleTagList() {
     const tagListContainer = document.getElementById('tagListContainer');
     const currentDisplay = tagListContainer.style.display;
@@ -52,7 +61,6 @@ function removeTag(tagName) {
 
 // Обновление поля с тегами в форме
 function updateTagsField() {
-    // Обновляем значение заблокированного поля с тегами через запятую
     const tagsField = document.getElementById('id_tags'); // Это ID поля формы
     tagsField.value = selectedTags.join(', ');
 

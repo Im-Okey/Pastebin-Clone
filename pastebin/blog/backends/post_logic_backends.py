@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 
 from ..forms import PasteForm
-from ..models import Paste
+from ..models import Paste, Tag
 
 
 def handle_post_deletion(request, post, popular_posts):
@@ -27,6 +27,9 @@ def render_post_response(request, post, popular_posts, requires_password, error_
     user_liked = post.likes_dislikes.filter(user=request.user, action=1).exists()
     user_disliked = post.likes_dislikes.filter(user=request.user, action=-1).exists()
 
+    all_tags = Tag.objects.all()  # Получаем все доступные теги
+    selected_tags = post.tags.values_list('name', flat=True)
+
     form = PasteForm()
     return render(request, 'blog/post.html', {
         'post': post,
@@ -37,7 +40,9 @@ def render_post_response(request, post, popular_posts, requires_password, error_
         'dislikes_count': dislikes_count,
         'user_liked': user_liked,
         'user_disliked': user_disliked,
-        'form': form
+        'form': form,
+        'tags': selected_tags,
+        'all_tags': all_tags
     })
 
 
