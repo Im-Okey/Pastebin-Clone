@@ -28,6 +28,7 @@ class PasteForm(forms.ModelForm):
                 'placeholder': 'Введите текст поста...',
                 'class': 'post-editor',
                 'rows': 10,
+                'data-editor': 'codemirror'
             }),
             'title': forms.TextInput(attrs={
                 'placeholder': 'Введите название...',
