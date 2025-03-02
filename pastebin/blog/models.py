@@ -49,6 +49,19 @@ class Paste(models.Model):
         (timedelta(weeks=1), 'Через 1 неделю'),
     ]
 
+    SYNTAX_CHOICES = [
+        ("plaintext", "Обычный текст"),
+        ("python", "Python"),
+        ("javascript", "JavaScript"),
+        ("htmlmixed", "HTML"),
+        ("markdown", "Markdown"),
+        ("xml", "XML"),
+        ("clike", "C/C++/Java"),
+        ("sql", "SQL"),
+        ("css", "CSS"),
+        ("yaml", "YAML"),
+    ]
+
     title = models.CharField(max_length=200)
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -63,6 +76,7 @@ class Paste(models.Model):
     is_delete_after_read = models.BooleanField(default=False)
     views_count = models.PositiveIntegerField(default=0)
     favourite_count = models.PositiveIntegerField(default=0)
+    syntax = models.CharField(max_length=20, choices=SYNTAX_CHOICES, default="plaintext")
 
     def __str__(self):
         return self.title

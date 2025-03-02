@@ -35,13 +35,13 @@
                     <form method="POST" action="{% url 'blog:create-paste' %}">
                         {% csrf_token %}
 
-                        <div class="post-editor">
+                        <div class="post-editor1">
                             {{ form.content }}
                         </div>
                         <div class="post-settings">
                             <h3>Настройки публикации</h3>
 
-                            <select id="language-select">
+                            <select id="language-select" name="syntax">
                                 <option value="plaintext">Обычный текст</option>
                                 <option value="python">Python</option>
                                 <option value="javascript">JavaScript</option>

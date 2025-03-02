@@ -103,6 +103,7 @@ def create_paste(request):
         if form.is_valid():
             paste = form.save(commit=False)
             paste.author = request.user
+            paste.syntax = form.cleaned_data['syntax']
 
             try:
                 paste.time_live = process_time(form)

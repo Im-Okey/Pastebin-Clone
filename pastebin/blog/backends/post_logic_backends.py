@@ -30,6 +30,8 @@ def render_post_response(request, post, popular_posts, requires_password, error_
     all_tags = Tag.objects.all()  # Получаем все доступные теги
     selected_tags = post.tags.values_list('name', flat=True)
 
+    syntax = post.syntax
+
     form = PasteForm()
     return render(request, 'blog/post.html', {
         'post': post,
@@ -42,7 +44,8 @@ def render_post_response(request, post, popular_posts, requires_password, error_
         'user_disliked': user_disliked,
         'form': form,
         'tags': selected_tags,
-        'all_tags': all_tags
+        'all_tags': all_tags,
+        'syntax': syntax,
     })
 
 

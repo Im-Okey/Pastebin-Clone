@@ -7,6 +7,7 @@ from .models import Paste
 class PasteForm(forms.ModelForm):
     time_live = forms.ChoiceField(choices=[], required=False)
     need_password = forms.BooleanField(required=False)
+    content = forms.CharField(widget=forms.Textarea(), required=False)
 
     tags = forms.CharField(
         widget=forms.HiddenInput(attrs={
@@ -15,20 +16,26 @@ class PasteForm(forms.ModelForm):
         }),
         required=False
     )
+    syntax = forms.ChoiceField(
+        choices=Paste.SYNTAX_CHOICES,
+        widget=forms.Select(attrs={'class': 'post-settings-select'}),
+        required=True
+    )
 
     class Meta:
         model = Paste
         fields = [
-            'title', 'content', 'category',
+            'syntax', 'title', 'content', 'category',
             'tags', 'access_status', 'time_live',
             'password', 'is_delete_after_read'
         ]
         widgets = {
             'content': forms.Textarea(attrs={
                 'placeholder': 'Введите текст поста...',
-                'class': 'post-editor',
+                'class': 'post-editor1',
                 'rows': 10,
-                'data-editor': 'codemirror'
+                'data-editor': 'codemirror',
+                'required': False
             }),
             'title': forms.TextInput(attrs={
                 'placeholder': 'Введите название...',

@@ -5,15 +5,35 @@
 
 {% block head %}
     {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
     <script src="{% static 'js/password_modal.js' %}"></script>
     <script src="{% static 'js/password_check_box.js' %}"></script>
     <script src="{% static 'js/show_edit_form.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/tags_for_create_past.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/alerts.css' %}">
+
+    <!-- CodeMirror стили -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/base16-light.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/monokai.min.css">
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/yaml/yaml.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
 {% endblock %}
 
 {% block content %}
+
     <input type="hidden" id="post-password" value="{{ post.password }}">
 
     {% if requires_password %}
@@ -108,12 +128,45 @@
                     <div class="post-form">
                         <form method="POST" action="{% url 'blog:post-update' post.slug %}">
                             {% csrf_token %}
-                            <div class="post-editor">
-                                <textarea name="content"
+                            <div class="post-editor1">
+                                <textarea id="code-editor" name="content"
                                           placeholder="Введите текст поста...">{{ post.content }}</textarea>
                             </div>
                             <div class="post-settings">
                                 <h3>Настройки публикации</h3>
+                                <label>
+                                    Подсветка синтаксиса
+                                    <select id="language-select" name="syntax" style="height: 40px">
+                                        <option value="plaintext"
+                                                {% if syntax == "plaintext" %}selected{% endif %}>Обычный
+                                            текст
+                                        </option>
+                                        <option value="python"
+                                                {% if syntax == "python" %}selected{% endif %}>Python
+                                        </option>
+                                        <option value="javascript"
+                                                {% if syntax == "javascript" %}selected{% endif %}>JavaScript
+                                        </option>
+                                        <option value="htmlmixed"
+                                                {% if syntax == "htmlmixed" %}selected{% endif %}>HTML
+                                        </option>
+                                        <option value="markdown"
+                                                {% if syntax == "markdown" %}selected{% endif %}>Markdown
+                                        </option>
+                                        <option value="xml" {% if syntax == "xml" %}selected{% endif %}>XML
+                                        </option>
+                                        <option value="clike" {% if syntax == "clike" %}selected{% endif %}>
+                                            C/C++/Java
+                                        </option>
+                                        <option value="sql" {% if syntax == "sql" %}selected{% endif %}>SQL
+                                        </option>
+                                        <option value="css" {% if syntax == "css" %}selected{% endif %}>CSS
+                                        </option>
+                                        <option value="yaml" {% if syntax == "yaml" %}selected{% endif %}>
+                                            YAML
+                                        </option>
+                                    </select>
+                                </label>
                                 <label>
                                     Категория:
                                     <select name="category">
@@ -132,10 +185,14 @@
                                             теги)
                                         </div>
                                     </div>
-                                    {{ form.tags }}
-                                    <input type="text" name="tags" id="tagsField" value="{{ tags|join:', ' }}" disabled>
+                                    <!-- Поле для отображения тегов, заблокированное для редактирования -->
+                                    <input type="text" id="tagsFieldDisplay" value="{{ tags|join:', ' }}" disabled>
+
+                                    <!-- Скрытое поле для отправки данных -->
+                                    <input type="hidden" name="tags" id="tagsField" value="{{ tags|join:', ' }}">
                                 </label>
 
+                                <!-- Остальная часть твоего кода с выбором тегов -->
                                 <div style="margin-top: -20px; margin-bottom: 20px">
                                     <div class="selected-tags" id="selectedTags">
                                         {% for tag in tags %}
@@ -215,7 +272,7 @@
 
     <script src="{% static 'js/add_post_to_favorite.js' %}"></script>
     <script src="{% static 'js/paste_likes_dislikes.js' %}"></script>
-    <script src="{% static 'js/tags_for_create_paste.js' %}"></script>
+    <script src="{% static 'js/tags_for_upgate.js' %}"></script>
     <script src="{% static 'js/alerts.js' %}"></script>
 
 {% endblock %}
