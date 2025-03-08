@@ -40,16 +40,17 @@
                         </div>
                         <div class="post-settings">
                             <h3>Настройки публикации</h3>
-
-                            <select id="language-select" name="syntax">
-                                <option value="plaintext">Обычный текст</option>
-                                <option value="python">Python</option>
-                                <option value="javascript">JavaScript</option>
-                                <option value="clike">C/C++/Java</option>
-                                <option value="sql">SQL</option>
-                                <option value="css">CSS</option>
-                            </select>
-
+                            <label>
+                                Подсветка синтаксиса
+                                <select id="language-select" name="syntax">
+                                    <option value="plaintext">Обычный текст</option>
+                                    <option value="python">Python</option>
+                                    <option value="javascript">JavaScript</option>
+                                    <option value="clike">C/C++/Java</option>
+                                    <option value="sql">SQL</option>
+                                    <option value="css">CSS</option>
+                                </select>
+                            </label>
                             <label>
                                 Категория:
                                 {{ form.category }}

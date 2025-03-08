@@ -66,7 +66,7 @@ class Paste(models.Model):
     slug = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     tags = models.ManyToManyField(Tag, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-    access_status = models.IntegerField(choices=ACCESS_STATUS_CHOICES, default=1)
+    access_status = models.IntegerField(choices=ACCESS_STATUS_CHOICES, default=0)
     time_live = models.DurationField(null=True, blank=True)
     password = models.CharField(max_length=100, null=True, blank=True)
     is_delete_after_read = models.BooleanField(default=False)
