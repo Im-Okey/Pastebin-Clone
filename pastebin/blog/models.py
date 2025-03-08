@@ -53,13 +53,9 @@ class Paste(models.Model):
         ("plaintext", "Обычный текст"),
         ("python", "Python"),
         ("javascript", "JavaScript"),
-        ("htmlmixed", "HTML"),
-        ("markdown", "Markdown"),
-        ("xml", "XML"),
         ("clike", "C/C++/Java"),
         ("sql", "SQL"),
         ("css", "CSS"),
-        ("yaml", "YAML"),
     ]
 
     title = models.CharField(max_length=200)

@@ -37,7 +37,7 @@ body {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    resize: none;
+    resize: vertical;
 }
 
 .post-settings {
@@ -99,6 +99,8 @@ body {
     min-height: 200px;
     margin-bottom: 10px;
     margin-right: -20px;
+    resize: vertical;
+    max-width: 837px;
 }
 
 

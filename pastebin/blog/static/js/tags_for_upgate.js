@@ -1,24 +1,20 @@
 let selectedTags = [];
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Получаем уже выбранные теги из значения поля (если они есть)
     let existingTags = document.getElementById("tagsField").value;
     if (existingTags) {
         selectedTags = existingTags.split(", ").map(tag => tag.trim());
     }
 
-    // Обновляем отображение выбранных тегов
     updateSelectedTags();
 });
 
-// Функция для показа/скрытия списка тегов
 function toggleTagList() {
     const tagListContainer = document.getElementById('tagListContainer');
     const currentDisplay = tagListContainer.style.display;
     tagListContainer.style.display = currentDisplay === 'none' || currentDisplay === '' ? 'block' : 'none';
 }
 
-// Функция для выбора/отмены выбора тега
 function selectTag(tagName) {
     const tagIndex = selectedTags.indexOf(tagName);
 
@@ -28,14 +24,10 @@ function selectTag(tagName) {
         selectedTags.splice(tagIndex, 1);
     }
 
-    // Обновляем отображение выбранных тегов
     updateSelectedTags();
-
-    // Обновляем скрытое поле, чтобы оно отправляло выбранные теги
     updateTagsField();
 }
 
-// Функция для обновления отображаемого списка выбранных тегов
 function updateSelectedTags() {
     const selectedTagsContainer = document.getElementById('selectedTags');
     selectedTagsContainer.innerHTML = '';
@@ -57,7 +49,6 @@ function updateSelectedTags() {
     });
 }
 
-// Функция для удаления выбранного тега
 function removeTag(tagName) {
     const tagIndex = selectedTags.indexOf(tagName);
     if (tagIndex !== -1) {
@@ -67,13 +58,10 @@ function removeTag(tagName) {
     }
 }
 
-// Функция для обновления скрытого поля с тегами
 function updateTagsField() {
-    // Обновляем значение скрытого поля для отправки данных
     const tagsField = document.getElementById('tagsField');
     tagsField.value = selectedTags.join(', ');
 
-    // Обновляем отображаемое поле (если нужно)
     const tagsFieldDisplay = document.getElementById('tagsFieldDisplay');
     tagsFieldDisplay.value = selectedTags.join(', ');
 }
